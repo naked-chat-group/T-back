@@ -38,6 +38,7 @@ Route::get('BrandManagementList', 'BrandController@lists');
 
 //订单管理
 Route::get('OrderManagement', 'OrderController@index');
+Route::get('OrderManagementList', 'OrderController@list');
 Route::get('OrderManagementUpdate', 'OrderController@update');
 
 //商品属性管理

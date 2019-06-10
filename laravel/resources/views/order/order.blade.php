@@ -39,9 +39,44 @@
 				<form class="layui-form" action="">
 					<div class="layui-form-item">
 						<div class="layui-input-inline">
-							<input type="text" name="name" required lay-verify="required" placeholder="输入分管名称" autocomplete="off" class="layui-input">
+							<input type="text" name="startDate" required lay-verify="required" placeholder="订单编号" autocomplete="off" class="layui-input">
 						</div>
-						<button class="layui-btn" lay-submit lay-filter="formDemo">检索</button>
+						<div class="layui-input-inline">
+							<input type="text" name="shopName" required lay-verify="required" placeholder="店铺名称/店铺编号" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-input-inline">
+							<select id='orderStatus'  style='width:20px;margin-top:2px' lay-filter="provid">
+								<option value='10000'>订单状态</option>
+								<option value='0'>待发货</option>
+								<option value='-2'>待支付</option>
+								<option value='-1'>已取消</option>
+								<option value='1'>配送中</option>
+								<option value='2'>已收货</option>
+								<option value='-3'>用户拒收</option>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select id='payType'  style='margin-top:2px' lay-filter="provid">
+								<option value='-1'>支付方式</option>
+								<option value='0'>货到付款</option>
+								<option value='1'>在线支付</option>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select id='deliverType'  style='margin-top:2px' lay-filter="provid">
+								<option value='-1'>配送方式</option>
+								<option value='1'>自提</option>
+								<option value='0'>送货上门</option>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select id='payFrom' lay-filter="provid">
+								<option value='0'>支付来源</option>
+								<option value='1'>支付宝</option>
+								<option value='2'>微信</option>
+							</select>
+						</div>
+						<button class="layui-btn" lay-submit lay-filter="formDemo">查询</button>
 					</div>
 				</form>
 
@@ -61,14 +96,15 @@
 			<table class="layui-table">
 				<thead>
 					<tr>
-						<th>分管名称</th>
-						<th>分管编码</th>
-						<th>所属区域</th>
-						<th>负责人</th>
-						<th>登录名</th>
-						<th>联系方式</th>
-						<th>传真</th>
-						<th>邮箱</th>
+						<th>订单编号</th>
+						<th>收货人</th>
+						<th>店铺</th>
+						<th>实收金额</th>
+						<th>支付方式</th>
+						<th>配送方式</th>
+						<th>订单来源</th>
+						<th>下单时间</th>
+						<th>订单状态</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -82,37 +118,9 @@
 						<td>18600001111</td>
 						<td>028-6666666</td>
 						<td>123456789@qq.com</td>
+						<td></td>
 						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs">基本信息</button>
-						</td>
-					</tr>
-					<tr>
-						<td>龙九山</td>
-						<td>DLS201802281450280741</td>
-						<td>无锡市</td>
-						<td>龙九山</td>
-						<td>龙九山</td>
-						<td>18600001111</td>
-						<td>028-6666666</td>
-						<td>123456789@qq.com</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs">基本信息</button>
-						</td>
-					</tr>
-					<tr>
-						<td>龙九山</td>
-						<td>DLS201802281450280741</td>
-						<td>无锡市</td>
-						<td>龙九山</td>
-						<td>龙九山</td>
-						<td>18600001111</td>
-						<td>028-6666666</td>
-						<td>123456789@qq.com</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs">基本信息</button>
+							<button class="layui-btn layui-btn-xs">详情</button>
 						</td>
 					</tr>
 				</tbody>
