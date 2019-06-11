@@ -61,59 +61,55 @@
 			<table class="layui-table">
 				<thead>
 					<tr>
-						<th>名称</th>
-						<th>描述</th>
+						<th>分类名称</th>
+						<th>分类名缩写</th>
+						<th>推荐楼层</th>
+						<th>是否显示</th>
+						<th>排序号</th>
 						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>前端</td>
-						<td>例：ES5、ES6、ES7</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs layui-btn-normal">添加二级分类</button>
-							<button class="layui-btn layui-btn-xs layui-btn-warm">查看二级分类</button>
-						</td>
-					</tr>
-					<tr>
-						<td>前端</td>
-						<td>例：ES5、ES6、ES7</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs layui-btn-normal">添加二级分类</button>
-							<button class="layui-btn layui-btn-xs layui-btn-warm">查看二级分类</button>
-						</td>
-					</tr>
-					<tr>
-						<td>前端</td>
-						<td>例：ES5、ES6、ES7</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs layui-btn-normal">添加二级分类</button>
-							<button class="layui-btn layui-btn-xs layui-btn-warm">查看二级分类</button>
-						</td>
-					</tr>
+
 				</tbody>
 			</table>
 			
 			<!-- layUI 分页模块 -->
 			<div id="pages"></div>
 			<script>
+
 				layui.use(['laypage', 'layer'], function() {
 					var laypage = layui.laypage,
 						layer = layui.layer;
-				
+
 					//总页数大于页码总数
 					laypage.render({
 					    elem: 'pages'
-					    ,count: 100
+					    ,count:{{ $count }}
 					    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
 					    ,jump: function(obj){
-					      console.log(obj)
+					     var page = obj.curr;
+					     var limit = obj.limit;
+					     ajaxGetData(page,limit);
 					    }
 					});
 				});
+				function ajaxGetData(page,limit)
+				{
+					$.ajax({
+						url:'CatsPage',
+						type:'get',
+						data:{
+							page:page,
+							limit:limit
+						},
+						success:function(msg)
+						{
+							$('tbody').empty();
+							$('tbody').html(msg);
+						}
+					})
+				}
 			</script>
 		</div>
 	</body>

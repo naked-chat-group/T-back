@@ -29,7 +29,11 @@ Route::get('AdminManagementAdd', 'AdminController@add');
 
 //商品分类管理
 Route::get('ClassManagement', 'ClassController@index');
+    //商品分页
+    Route::get('CatsPage', 'ClassController@page');
 Route::get('ClassManagementAdd', 'ClassController@add');
+//分类添加
+Route::post('CatsAdd','ClassController@CatsAdd');
 
 //品牌管理
 Route::get('BrandManagement', 'BrandController@index');
@@ -38,6 +42,8 @@ Route::get('BrandManagementList', 'BrandController@lists');
 
 //订单管理
 Route::get('OrderManagement', 'OrderController@index');
+    //订单分页
+    Route::get('orderPage','OrderController@page');
 Route::get('OrderManagementList', 'OrderController@list');
 Route::get('OrderManagementUpdate', 'OrderController@update');
 

@@ -225,7 +225,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Order' => App\Order::class,
+        'Order' => App\model\Order::class,
+        'Cats' => App\model\Cats::class,
     ],
 
 ];
