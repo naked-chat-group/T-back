@@ -19,7 +19,7 @@ class CreateShopGoodsTable extends Migration
             $table->string('productNo',20)->nullable(false)->comment('商品货号');
             $table->string('goodsName',50)->nullable(false)->comment('商品名称');
             $table->string('goodsImg',150)->nullable(false)->comment('商品图片');
-            $table->decimal('markPrice',11,2)->nullable(false)->default(0.00)->comment('市场价');
+            $table->decimal('marketPrice',11,2)->nullable(false)->default(0.00)->comment('市场价');
             $table->decimal('shopPrice',11,2)->nullable(false)->default(0.00)->comment('门店价');
             $table->integer('warnStock')->nullable(false)->default(0)->comment('预警库存');
             $table->integer('goodsStock')->nullable(false)->default(0)->comment('商品库存');

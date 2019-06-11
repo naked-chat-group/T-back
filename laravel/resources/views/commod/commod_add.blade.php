@@ -49,83 +49,41 @@
 		<div class="cBody">
 			<form id="addForm" class="layui-form" action="">
 				<div class="layui-form-item">
-					<label class="layui-form-label">商品名称</label>
+					<label class="layui-form-label">属性名称</label>
 					<div class="layui-input-block">
-						<input type="text" name="goodsName" required lay-verify="required" autocomplete="off" class="layui-input">
+						<input type="text" name="attrName" required lay-verify="required" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">商品图片</label>
-					<div class="layui-upload-drag" id="goodsPic">
-					  <i class="layui-icon"></i>
-					  <p>点击上传，或将文件拖拽到此处</p>
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">单位</label>
-					<div class="layui-input-block">
-						<input type="text" name="company" required lay-verify="required" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">参考价格</label>
-					<div class="layui-input-block">
-						<input type="text" name="price" required lay-verify="required|number" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">型号</label>
+					<label class="layui-form-label">属性值</label>
 					<div class="layui-input-block">
 						<input type="password" name="password" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">规格</label>
+					<label class="layui-form-label">是否显示</label>
 					<div class="layui-input-block">
-						<input type="password" name="password2" autocomplete="off" class="layui-input">
+						<input type="radio" name="isShow" value="1" title="是" checked>
+						<input type="radio" name="isShow" value="0" title="否">
 					</div>
 				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">描述</label>
-					<div class="layui-input-block">
-						<textarea name="desc" class="layui-textarea"></textarea>
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">是否是批发商品</label>
-					<div class="layui-input-block">
-						<input type="radio" name="sfpfsp" value="nan" title="是">
-						<input type="radio" name="sfpfsp" value="nv" title="否" checked>
-					</div>
-				</div>
-				<div class="layui-form-item">
+				<div class="layui-form-item" id="type">
 					<label class="layui-form-label">分类</label>
-	                <div class="layui-input-inline">
-	                    <select name="provid" id="provid" lay-filter="provid">
-	                        <option value="">一级分类</option>
-					        <option value="0">北京</option>
-					        <option value="1">上海</option>
-					        <option value="2">广州</option>
-					        <option value="3">深圳</option>
-					        <option value="4">杭州</option>
-	                    </select>
-	                </div>
-	                <div class="layui-input-inline">
-	                    <select name="cityid" id="cityid" lay-filter="cityid">
-	                        <option value="">二级分类</option>
-					        <option value="0">北京</option>
-					        <option value="1">上海</option>
-					        <option value="2">广州</option>
-					        <option value="3">深圳</option>
-					        <option value="4">杭州</option>
+	                <div class="layui-input-inline" id="1">
+	                    <select name="provid"  lay-filter="provid">
+	                        <option value=" "></option>
+							@foreach ($data as $user)
+								<option value="{{$user->catId}}">{{$user->catName}}</option>
+							@endforeach
+
 	                    </select>
 	                </div>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">状态</label>
+					<label class="layui-form-label">是否有效：</label>
 					<div class="layui-input-block">
-						<input type="radio" name="sex" value="nan" title="启用">
-						<input type="radio" name="sex" value="nv" title="禁用" checked>
+						<input type="radio" name="dataFlag" value="1" title="有效" checked>
+						<input type="radio" name="dataFlag" value="-1" title="无效">
 					</div>
 				</div>
 				
@@ -154,15 +112,49 @@
 						    ,'只允许输入中文'
 					  	] 
 					});
-					//拖拽上传
-					upload.render({
-						elem: '#goodsPic',
-						url: '/upload/',
-						done: function(res) {
-						  	console.log(res)
-						}
+					form.on('select()', function(data){
+						var that = $(this);
+						var id = that.data('id');
+
+						ajax('CommodManagementTwo',{catId:data.value},function(data){
+							if(data.length)
+							{
+								str = constr(data,id);
+								if($('#'+(id+1)).length != 0)
+								{
+									$('#type').append(str);
+								}
+								else
+								{
+									$('#'+(id+1)).html(str);
+								}
+								form.render('select');
+							}
+						});
 					});
+
 				});
+				function constr(data,ids){
+					var str="";
+					str += "<div class='layui-input-inline' id='"+ids+"'>";
+					str+="<select name='provid' id='' lay-filter='provid'>";
+					str+="<option value= ''></option>";
+					$.each( data, function(i,n){
+					str+="<option value='"+n.catId+"'>"+n.catName+"</option>";
+					});
+					str+="</select>";
+					str+="</div>";
+					return str;
+				}
+				function ajax(url,data,detal){
+					$.ajax({
+						url: url,
+						data: data,
+						type: "Post",
+						dataType: "json",
+						success: detal
+					})
+				}
 			</script>
 
 		</div>

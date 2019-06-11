@@ -24,6 +24,7 @@ class ShopGoodsSpecs extends Migration
             $table->integer('warnStock')->nullable(false)->default(0)->comment('库存预警值');
             $table->integer('saleNum')->nullable(false)->default(0)->comment('销量');
             $table->tinyInteger('isDefault')->nullable(false)->default(0)->comment('默认规格:1：默认规格 0：非默认规格');
+            $table->tinyInteger('dataFlag')->nullable(false)->default(1)->comment('有效状态：1有效 -1无效');
             $table->engine = 'InnoDB';
             $table->timestamps();
         });

@@ -78,9 +78,8 @@
 		        	<li>
 		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>商品管理<i class="iconfont icon-dajiantouyou right"></i></a>
 		                <dl>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goodsType_list.html',this)">分类列表</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goods_list.html',this)">基本商品库</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goods_add.html',this)">添加商品</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagement',this)">基本商品库</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagementAdd',this)">添加商品</a></dt>
 		                </dl>
 		            </li>
 					<li>
