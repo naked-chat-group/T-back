@@ -119,6 +119,13 @@
 							<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagementAdd',this)">添加商品</a></dt>
 						</dl>
 					</li>
+					<li>
+						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>仓库管理<i class="iconfont icon-dajiantouyou right"></i></a>
+						<dl>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('WarehouseManagement',this)">仓库列表</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('WarehouseManagementAdd',this)">添加仓库</a></dt>
+						</dl>
+					</li>
 		        </ul>
 		    </div>
 		</div>
