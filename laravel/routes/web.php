@@ -14,7 +14,11 @@
 Route::get('/index', 'StaticController@index');
 
 //登录
-Route::get('/', 'LoginController@index');
+Route::any('/', 'LoginController@index');
+Route::any('login', 'LoginController@login');
+Route::any('verityToken','LoginController@verityToken');
+//修改密码
+Route::any('update','LoginController@update');
 
 //首页
 Route::get('show', 'IndexController@index');
