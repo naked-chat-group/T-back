@@ -19,13 +19,22 @@ Route::get('/', 'LoginController@index');
 //首页
 Route::get('show', 'IndexController@index');
 
-//管理员角色管理
-Route::get('RoleManagement', 'ManageController@index');
-Route::get('RoleManagementAdd', 'ManageController@add');
-
-//管理员管理
+//管理员列表页面
 Route::get('AdminManagement', 'AdminController@index');
-Route::get('AdminManagementAdd', 'AdminController@add');
+//管理员数据页面
+Route::get('getData', 'AdminController@getData');
+//管理员添加页面
+Route::get('AdminAdd', 'AdminController@addAdmin');
+//管理员的添加方法
+Route::post('AdminStore', 'AdminController@AdminStore');
+//管理员修改页面
+Route::get('AdminEdit', 'AdminController@AdminEdit');
+//Route::get('RoleManagement', 'ManageController@index');
+//Route::get('RoleManagementAdd', 'ManageController@add');
+//
+////管理员管理
+//Route::get('AdminManagement', 'AdminController@index');
+//Route::get('AdminManagementAdd', 'AdminController@add');
 
 //商品分类管理
 Route::get('ClassManagement', 'ClassController@index');

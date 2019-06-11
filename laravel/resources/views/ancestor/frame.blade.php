@@ -58,21 +58,9 @@
 					<li>
 						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>权限管理<i class="iconfont icon-dajiantouyou right"></i></a>
 						<dl>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('JurisdManagement',this)">管理员角色列表</a></dt>
-						</dl>
-					</li>
-		        	<li>
-		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>管理员角色管理<i class="iconfont icon-dajiantouyou right"></i></a>
-		                <dl>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('RoleManagementAdd',this)">添加管理员角色</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('RoleManagement',this)">管理员角色列表</a></dt>
-		                </dl>
-		            </li>
-					<li>
-						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>管理员管理<i class="iconfont icon-dajiantouyou right"></i></a>
-						<dl>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('AdminManagementAdd',this)">添加管理员</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('AdminManagement',this)">管理员列表</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('RoleManagement',this)">角色</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('AdminManagement',this)">管理员</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('Jurisdiction',this)">权限资源</a></dt>
 						</dl>
 					</li>
 		        	<li>

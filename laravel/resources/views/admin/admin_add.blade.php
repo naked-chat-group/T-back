@@ -41,94 +41,48 @@
 
 	<body>
 		<div class="cBody">
-			<form id="addForm" class="layui-form" action="">
+			<form id="addForm" class="layui-form" action="javascript:void(0)">
 				<div class="layui-form-item">
-					<label class="layui-form-label">身份证号</label>
+					<label class="layui-form-label">管理员名称</label>
 					<div class="layui-input-inline shortInput">
-						<input type="text" name="identity" required lay-verify="required|identity" autocomplete="off" class="layui-input">
+						<input type="text" name="admin_name" required lay-verify="required|username" autocomplete="off" class="layui-input">
 					</div>
+					<i class="iconfont icon-huaban bt"></i>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">价格(12.22)</label>
+					<label class="layui-form-label">管理员密码</label>
 					<div class="layui-input-inline shortInput">
-						<input type="text" name="price" required lay-verify="required|PriceCheck" autocomplete="off" class="layui-input">
+						<input type="password" name="password" required lay-verify="required|password" autocomplete="off" class="layui-input">
 					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">分管名称</label>
-					<div class="layui-input-inline shortInput">
-						<input type="text" name="title" required lay-verify="required|ZHCheck" placeholder="例:穷在闹市银川(只允许输入中文)" autocomplete="off" class="layui-input">
-					</div>
-            		<i class="iconfont icon-huaban bt"></i>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">地区</label>
-	                <div class="layui-input-inline">
-	                    <select name="provid" id="provid" lay-filter="provid">
-	                    </select>
-	                </div>
-	                <div class="layui-input-inline">
-	                    <select name="cityid" id="cityid" lay-filter="cityid">
-	                        <option value="">请选择市</option>
-	                    </select>
-	                </div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">负责人</label>
-					<div class="layui-input-inline shortInput">
-						<input type="text" name="realName" required lay-verify="required|ZHCheck" placeholder="例:张三(只允许输入中文)" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">登录名</label>
-					<div class="layui-input-inline shortInput">
-						<input type="text" name="loginName" required lay-verify="required|ZHCheck" placeholder="例:穷在闹市银川(只允许输入中文)" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">登录密码</label>
-					<div class="layui-input-inline shortInput">
-						<input type="password" name="password" autocomplete="off" class="layui-input">
-					</div>
+					<i class="iconfont icon-huaban bt"></i>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">确认密码</label>
 					<div class="layui-input-inline shortInput">
-						<input type="password" name="password2" autocomplete="off" class="layui-input">
+						<input type="password" name="confirmPassword" required lay-verify="required|confirmPassword"  autocomplete="off" class="layui-input">
 					</div>
+            		<i class="iconfont icon-huaban bt"></i>
 				</div>
 				<div class="layui-form-item">
-					<label class="layui-form-label">电话</label>
-					<div class="layui-input-inline shortInput">
-						<input type="text" name="phone" required lay-verify="required|phone" placeholder="例：13000000000" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">传真</label>
-					<div class="layui-input-inline shortInput">
-						<input type="text" name="title" autocomplete="off" class="layui-input">
-					</div>
+					<label class="layui-form-label">选择角色</label>
+	                <div class="layui-input-inline">
+	                    <select lay-verify="role" name="role_id">
+							<option value="">请选择角色</option>
+							@foreach ($roles as $val)
+								<option value="{{ $val->id }}">{{ $val->name }}</option>
+							@endforeach
+	                    </select>
+	                </div>
+					<i class="iconfont icon-huaban bt"></i>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">邮箱</label>
 					<div class="layui-input-inline shortInput">
-						<input type="text" name="title" autocomplete="off" class="layui-input">
+						<input type="text" name="email" required lay-verify="required|email" placeholder="管理员邮箱" autocomplete="off" class="layui-input">
 					</div>
+					<i class="iconfont icon-huaban bt"></i>
 				</div>
-				<div class="layui-form-item layui-form-text">
-					<label class="layui-form-label">备注</label>
-					<div class="layui-input-block">
-						<textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">是否开通</label>
-					<div class="layui-input-block">
-						<input type="radio" name="sex" value="nan" title="启用" checked>
-						<input type="radio" name="sex" value="nv" title="禁用">
-					</div>
-				</div>
-				
+
 				<div class="layui-form-item">
 					<div class="layui-input-block">
 						<button class="layui-btn" lay-submit lay-filter="submitBut">立即提交</button>
@@ -138,18 +92,73 @@
 			</form>
 			
 			<!-- 三级省市 插件 -->
-    		<script src="../../framework/area.js"></script>
-			<script src="../../framework/province.js"></script>
+    		{{--<script src="../../framework/area.js"></script>--}}
+			{{--<script src="../../framework/province.js"></script>--}}
 			<script>
 				//默认城市为：宁夏 - 银川
-		        var defaults = {
-		            s1: 'provid',
-		            s2: 'cityid',
-		            s3: 'areaid',
-		            v1: 510000,
-		            v2: 510100,
-		            v3: null
-		        };
+		        // var defaults = {
+		        //     s1: 'provid',
+		        //     s2: 'cityid',
+		        //     s3: 'areaid',
+		        //     v1: 510000,
+		        //     v2: 510100,
+		        //     v3: null
+		        // };
+                layui.use('form', function(){
+                    var form = layui.form;
+
+                    //各种基于事件的操作，下面会有进一步介绍
+                    form.verify({
+                        username: function(value, item){ //value：表单的值、item：表单的DOM对象
+							if (!  /^[a-zA-Z]{4,16}$/.test(value)) {
+							    return '用户名称为4-16位字母组成'
+							}
+                        },
+                        password: function(value, item) {
+                            if (! /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[$@!%*#?&])[A-Za-z\d$@!%*#?&]{6,}$/.test(value)) {
+                                return '密码最少6位,且至少一位大写字母,一个数字,一个特殊字符,一个小写字母';
+							}
+						},
+						confirmPassword: function(value, item) {
+                            var pwd = $("input[name='password']").val();
+                            if (pwd != value) {
+                                return '请确认密码';
+							}
+						},
+						role: function (value, item) {
+                            if (!value) {
+                                return '请选择角色';
+							}
+						}
+                    });
+                    form.on('submit(submitBut)', function(data){
+                        var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
+                        var index = layer.load();
+						ajax('/AdminStore', 'post', data, function(e) {
+							if (200 != e.code) {
+                                layer.close(index);
+                                layer.msg(e.msg, {icon: 5,anim: 6,time:2000});
+							}
+							layer.close(index);
+							layer.msg(e.msg, {icon: 6, time: 1000}, function() {
+								location.href = '/AdminManagement';
+							})
+						});
+
+                        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+                    });
+                    function ajax(url, method, data, callback) {
+                        $.ajax({
+                            url:url,
+                            method:method,
+                            data:data,
+							dataType: 'json',
+                            headers: { 'X-CSRF-TOKEN' : '{{ csrf_token() }}' },
+                            success: callback
+                        })
+					}
+                });
+
 			</script>
 
 		</div>
