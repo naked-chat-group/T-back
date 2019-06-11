@@ -52,6 +52,7 @@ Route::get('OrderManagementUpdate', 'OrderController@update');
 //商品属性管理
 Route::get('CommodManagement', 'CommodController@index');
 Route::get('CommodManagementAdd', 'CommodController@add');
+Route::post('CommodManagementTwo', 'CommodController@two');
 
 //商品管理
 Route::get('ShopManagement', 'ShopController@index');
