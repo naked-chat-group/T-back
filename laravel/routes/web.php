@@ -60,3 +60,10 @@ Route::get('ShopManagementAdd', 'ShopController@add');
 
 //权限管理
 Route::get('JurisdManagement', 'JurisdController@index');
+
+//仓库管理
+Route::get('WarehouseManagement','WarehouseController@index');
+Route::get('WarehouseManagementAdd','WarehouseController@add');
+Route::get('WarehouseManagementCity','WarehouseController@city');
+Route::get('WarehouseManagementInsert','WarehouseController@insert');
+Route::get('a','WarehouseController@a');
