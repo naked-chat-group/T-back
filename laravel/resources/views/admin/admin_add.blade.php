@@ -30,7 +30,7 @@
 		<script src="../../framework/jquery.mCustomScrollbar.min.js"></script>
 		<script src="../../framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
 		<!-- 公共样式 结束 -->
-		
+
 		<style>
 			.layui-form{
 				margin-right: 30%;
@@ -90,7 +90,7 @@
 					</div>
 				</div>
 			</form>
-			
+
 			<!-- 三级省市 插件 -->
     		{{--<script src="../../framework/area.js"></script>--}}
 			{{--<script src="../../framework/province.js"></script>--}}
