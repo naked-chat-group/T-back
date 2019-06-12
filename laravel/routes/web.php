@@ -29,11 +29,18 @@ Route::get('AdminManagementAdd', 'AdminController@add');
 
 //商品分类管理
 Route::get('ClassManagement', 'ClassController@index');
-    //商品分页
-    Route::get('CatsPage', 'ClassController@page');
+//商品分页
+Route::get('CatsPage', 'ClassController@page');
+//商品添加页面
 Route::get('ClassManagementAdd', 'ClassController@add');
 //分类添加
 Route::post('CatsAdd','ClassController@CatsAdd');
+//分类楼层状态修改
+Route::post('CatstypeUpd','ClassController@CatstypeUpd');
+//分类删除
+Route::post('CatsDel','ClassController@CatsDel');
+//分类修改
+Route::any('CatsUpd','ClassController@CatsUpd');
 
 //品牌管理
 Route::get('BrandManagement', 'BrandController@index');
@@ -44,6 +51,7 @@ Route::get('BrandManagementList', 'BrandController@lists');
 Route::get('OrderManagement', 'OrderController@index');
     //订单分页
     Route::get('orderPage','OrderController@page');
+
 Route::get('OrderManagementList', 'OrderController@list');
 Route::get('OrderManagementUpdate', 'OrderController@update');
 
