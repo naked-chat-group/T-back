@@ -60,7 +60,7 @@
 						<dl>
 							<dt><a href="javascript:void(0)" onclick="menuCAClick('RoleManagement',this)">角色</a></dt>
 							<dt><a href="javascript:void(0)" onclick="menuCAClick('AdminManagement',this)">管理员</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('Jurisdiction',this)">权限资源</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('AuthManagement',this)">权限资源</a></dt>
 						</dl>
 					</li>
 		        	<li>
