@@ -126,6 +126,13 @@
 							<dt><a href="javascript:void(0)" onclick="menuCAClick('WarehouseManagementAdd',this)">添加仓库</a></dt>
 						</dl>
 					</li>
+					<li>
+						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>客服中心<i class="iconfont icon-dajiantouyou right"></i></a>
+						<dl>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('CommentManagement',this)">商品评论审核</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('opinionManagement',this)">意见反馈列表</a></dt>
+						</dl>
+					</li>
 		        </ul>
 		    </div>
 		</div>

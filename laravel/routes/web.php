@@ -56,4 +56,13 @@ Route::get('WarehouseManagement','WarehouseController@index');
 Route::get('WarehouseManagementAdd','WarehouseController@add');
 Route::get('WarehouseManagementCity','WarehouseController@city');
 Route::get('WarehouseManagementInsert','WarehouseController@insert');
-Route::get('a','WarehouseController@a');
+Route::get('WarehouseManagementChange','WarehouseController@change');
+Route::get('WarehouseManagementUpdate','WarehouseController@update');
+Route::get('WarehouseManagementUp','WarehouseController@up');
+Route::get('WarehouseManagementDel','WarehouseController@del');
+Route::get('WarehouseManagementSearch','WarehouseController@search');
+
+//客服中心
+Route::get('CommentManagement','Call_centerController@comment');
+Route::get('Call_centerManagementChange','Call_centerController@change');
+Route::get('OpinionManagement','Call_centerController@opinion');
