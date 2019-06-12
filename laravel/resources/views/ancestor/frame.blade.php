@@ -130,9 +130,10 @@
 				<img class="jt" src="images/top_jt.png"/>
 				<div class="topMenu">
 					<ul>
-						<li><a href="javascript:void(0)" onclick="menuCAClick('tgls/modify_password.html',this)"><i class="iconfont icon-yonghu1"></i>管理员</a></li>
+						<li><a href="javascript:void(0)"><i class="iconfont icon-yonghu1"></i>欢迎您，{{$arr['admin_name']}}</a></li>
+						<li><a href="javascript:void(0)"><i class="iconfont icon-yonghu1"></i>登陆时间：{{$arr['last_time']}}</a></li>
 						<li><a href="javascript:void(0)" onclick="menuCAClick('tgls/modify_password.html',this)"><i class="iconfont icon-xiugaimima"></i>修改密码</a></li>
-						<li><a href="login.html"><i class="iconfont icon-084tuichu"></i>注销</a></li>
+						<li><a href="{{'layout'}}"><i class="iconfont icon-084tuichu"></i>注销</a></li>
 					</ul>
 				</div>
 			</div>

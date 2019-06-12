@@ -10,16 +10,18 @@
     <title>Document</title>
 </head>
 <body>
-<form action="" style="margin-left: 500px;margin-top: 200px;">
-    <div class="form-group">
-        <label for="exampleInputEmail1">新密码</label>
-        <input type="password" class="form-control" id="pwd" name="password" placeholder="新密码" style="width: 300px;">
+<form action="">
+    <div class="form-group" style="margin-left: 500px;margin-top: 180px;">
+        <label for="exampleInputEmail1">新密码：</label>
+        <input type="password" class="form-control" id="pwd" placeholder="新密码" name="password" style="width: 350px;">
+        <span id="pwd1"></span>
     </div>
-    <div class="form-group">
-        <label for="exampleInputEmail1">确认密码</label>
-        <input type="password" class="form-control" id="repwd" placeholder="确认密码" style="width: 300px;">
+    <div class="form-group" style="margin-left: 500px;">
+        <label for="exampleInputEmail1">确认密码：</label>
+        <input type="password" class="form-control" id="repwd" placeholder="确认密码" style="width: 350px;">
+        <span id="pwd2"></span>
     </div>
-    <button class="btn btn-success">确认修改</button>
+    <button type="submit" class="btn btn-success" style="margin-left: 500px;">确认修改</button>
 </form>
 </body>
 </html>

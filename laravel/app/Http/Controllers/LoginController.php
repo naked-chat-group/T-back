@@ -23,7 +23,7 @@ class LoginController extends BaseController
         //echo $response->serverStatus;
         //确保验证状态是SERVER_SUCCESS，SDK中有容错机制，在网络出现异常的情况会返回通过
         if($response->result){
-            return 6;
+
         }
         else{
             /**token验证失败**/
@@ -33,19 +33,21 @@ class LoginController extends BaseController
     public function login(Request $request){
         $name = $request->input('name');
         $pwd = md5($request->input('pwd'));
-        $arr1 = Admin::where('admin_name',$name)->first()->toArray();
+        $arr1 = Admin::where('admin_name',$name)->first();
         if (empty($arr1)){
             return 1;
         }
         $arr2 = Password::where('uid',$arr1['id'])->where('password',$pwd)->first();
-        //echo $arr2;die;
         if (empty($arr2)){
             return 2;
         }
         $expire = $arr2['create_at']+30*24*60*60;
-        if (time()>$expire){
+        if (time()>$expire) {
             return 4;
         }
+        $request->session()->put('uid',$arr1['id']);
+        $uid = $request->session()->get('uid');
+        Admin::where('id',$uid)->update(['last_time'=>date('Y-m-d H:i:s',time())]);
         return 5;
     }
     //修改密码
