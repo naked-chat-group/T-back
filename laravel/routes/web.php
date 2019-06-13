@@ -35,12 +35,18 @@ Route::get('AdminAdd', 'AdminController@addAdmin');
 Route::post('AdminStore', 'AdminController@AdminStore');
 //管理员修改页面
 Route::get('AdminEdit', 'AdminController@AdminEdit');
+Route::post('AdminEdit', 'AdminController@AdminUpd');
+//权限列表页面
+Route::get('AuthManagement', 'AuthController@index');
+//权限数据页面
+Route::get('AuthData', 'AuthController@getData');
+//权限添加页面
+Route::get('AuthAdd', 'AuthController@addAuth');
+//获取控制器所拥有的方法
+Route::get('getAction', 'AuthController@getAction');
 //Route::get('RoleManagement', 'ManageController@index');
 //Route::get('RoleManagementAdd', 'ManageController@add');
-//
-////管理员管理
-//Route::get('AdminManagement', 'AdminController@index');
-//Route::get('AdminManagementAdd', 'AdminController@add');
+
 
 //商品分类管理
 Route::get('ClassManagement', 'ClassController@index');

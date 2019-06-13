@@ -57,6 +57,33 @@ class Admin extends Model
     //根据用户id查找管理员信息
     public function findById($id)
     {
-        dd($this->where('id', $id)->first());
+        return $this->where('id', $id)->first();
+    }
+
+    //修改管理员信息
+    public function updateAdmin($data)
+    {
+        $id = $data['id'];
+        unset($data['id']);
+        if (isset($data['password'])) {
+            $password = $data['password'];
+            unset($data['password']);
+            unset($data['confirmPassword']);
+            //判断密码是否为前三次
+
+            DB::beginTransaction();
+            try {
+                $this->where('id', $id)->update($data);
+                Password::where('uid', $id)->increment('status');
+                Password::where([['uid', $id], ['status', 3]])->delete();
+                Password::create(['uid' => $id, 'password' => md5($password), 'create_at' => time(), 'status' => 0]);
+                DB::commit();
+                return true;
+            } catch(\Exception $e) {
+                DB::rollBack();
+                return false;
+            }
+        }
+        return $this->where('id', $id)->update($data);
     }
 }

@@ -42,39 +42,45 @@
 <body>
 <div class="cBody">
     <form id="addForm" class="layui-form" action="javascript:void(0)">
+        <input type="hidden" name="id" value="{{ $admin_info->id }}">
         <div class="layui-form-item">
             <label class="layui-form-label">管理员名称</label>
             <div class="layui-input-inline shortInput">
-                <input type="text" name="admin_name" required lay-verify="required|username" autocomplete="off" class="layui-input">
+                <input type="text" name="admin_name" required lay-verify="required|username" autocomplete="off" class="layui-input" value="{{ $admin_info->admin_name }}">
             </div>
             <i class="iconfont icon-huaban bt"></i>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">管理员密码</label>
-            <div class="layui-input-inline shortInput">
-                <input type="password" name="password" required lay-verify="required|password" autocomplete="off" class="layui-input">
+        <div class="reset">
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码重设</label>
+                <button class="layui-btn layui-btn-radius layui-btn-primary" id="reset">
+                    重设
+                </button>
             </div>
-            <i class="iconfont icon-huaban bt"></i>
         </div>
+
         <div class="layui-form-item">
-            <label class="layui-form-label">确认密码</label>
-            <div class="layui-input-inline shortInput">
-                <input type="password" name="confirmPassword" required lay-verify="required|confirmPassword"  autocomplete="off" class="layui-input">
+            <label class="layui-form-label">选择角色</label>
+            <div class="layui-input-inline">
+                <select lay-verify="role" name="role_id">
+                    <option value="" >请选择角色</option>
+                    @foreach ($roles as $val)
+                        <option value="{{ $val->id }}"  @if($val->id == $admin_info->role_id) selected @endif>{{ $val->name }}</option>
+                    @endforeach
+                </select>
             </div>
             <i class="iconfont icon-huaban bt"></i>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">邮箱</label>
             <div class="layui-input-inline shortInput">
-                <input type="text" name="email" required lay-verify="required|email" placeholder="管理员邮箱" autocomplete="off" class="layui-input">
+                <input type="text" name="email" required lay-verify="required|email" value="{{ $admin_info->email }}" autocomplete="off" class="layui-input">
             </div>
             <i class="iconfont icon-huaban bt"></i>
         </div>
-
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="submitBut">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn" lay-submit lay-filter="submitBut">修改</button>
             </div>
         </div>
     </form>
@@ -122,7 +128,7 @@
             form.on('submit(submitBut)', function(data){
                 var data = data.field; //当前容器的全部表单字段，名值对形式：{name: value}
                 var index = layer.load();
-                ajax('/AdminStore', 'post', data, function(e) {
+                ajax('/AdminEdit', 'post', data, function(e) {
                     if (200 != e.code) {
                         layer.close(index);
                         layer.msg(e.msg, {icon: 5,anim: 6,time:2000});
@@ -146,7 +152,23 @@
                 })
             }
         });
-
+        $("#reset").click(function(){
+            var html = '<div class="layui-form-item pwd">\n' +
+                '            <label class="layui-form-label">新密码</label>\n' +
+                '            <div class="layui-input-inline shortInput">\n' +
+                '                <input type="password" name="password" required lay-verify="required|password" autocomplete="off" class="layui-input">\n' +
+                '            </div>\n' +
+                '            <i class="iconfont icon-huaban bt"></i>\n' +
+                '        </div>\n' +
+                '        <div class="layui-form-item pwd">\n' +
+                '            <label class="layui-form-label">确认密码</label>\n' +
+                '            <div class="layui-input-inline shortInput">\n' +
+                '                <input type="password" name="confirmPassword" required lay-verify="required|confirmPassword"  autocomplete="off" class="layui-input">\n' +
+                '            </div>\n' +
+                '            <i class="iconfont icon-huaban bt"></i>\n' +
+                '        </div>';
+            $('.reset').html(html);
+        })
     </script>
 
 </div>

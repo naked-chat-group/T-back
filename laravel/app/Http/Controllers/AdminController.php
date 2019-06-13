@@ -23,8 +23,6 @@ class AdminController extends BaseController
      */
     public function index(Request $request)
     {
-
-        $count = Admin::getCount();
         return view('admin.admin', compact('count'));
     }
 
@@ -32,11 +30,13 @@ class AdminController extends BaseController
     public function getData(Request $request)
     {
         if ($request->ajax()) {
-            $size = $request->input('size', 10);
+            $size = $request->input('limit', 10);
 //        dd($size);
             $page = $request->input('page', 1);
             $admin = Admin::findAll(($page - 1) * $size, $size);
-            return view('admin._data', compact('admin'));
+            $count = Admin::getCount();
+            return response()->json(['code' => 0, 'msg' => '', 'count' => $count, 'data' => $admin]);
+//            return view('admin._data', compact('admin'));
         }
     }
 
@@ -64,7 +64,18 @@ class AdminController extends BaseController
     public function AdminEdit(Request $request)
     {
         $id = $request->get('id');
-        Admin::findById($id);
-        return view('admin.admin_edit');
+        $admin_info = Admin::findById($id);
+        $roles = Role::getRoles();
+        if ($admin_info) {
+            return view('admin.admin_edit', compact('admin_info', 'roles'));
+        }
+    }
+
+    public function AdminUpd(Request $request)
+    {
+        if (Admin::updateAdmin($request->post())) {
+            return response()->json(['code' => 200, 'msg' => '修改成功,准备跳转']);
+        }
+        return response()->json(['code' => 400, 'msg' => '修改失败, 请联系管理员']);
     }
 }

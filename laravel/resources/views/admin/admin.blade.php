@@ -36,71 +36,70 @@
 	<body>
 		<div class="cBody">
 			<div class="console">
-				<a href="/AdminAdd"><button class="layui-btn layui-btn-xs">添加管理员</button></a>
+				<a href="/AdminAdd"><button type="button" class="layui-btn layui-btn-xs">
+					<i class="layui-icon">&#xe608;</i> 添加管理员
+				</button></a>
 				<button class="layui-btn layui-btn-xs" id="check_all">全选</button>
 				<button class="layui-btn layui-btn-xs">批量删除</button>
 				<button class="layui-btn layui-btn-xs">回收站</button>
 			</div>
-			
-			<table class="layui-table">
-				<thead>
-					<tr>
-						<th>选择</th>
-						<th>用户名</th>
-						<th>角色</th>
-						<th>Email</th>
-						<th>上次登录时间</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody id="data">
 
-				</tbody>
-			</table>
+			<table class="layui-hide" id="admin"></table>
 
-			<!-- layUI 分页模块 -->
-			<div id="pages"></div>
 			<script>
-				var flag = false;
-				$("#check_all").click( function () {
+                var flag = false;
+
+                $("#check_all").click( function () {
                     if (false == flag) {
                         $(this).text('取消全选');
+                        $('.layui-unselect').addClass('layui-form-checked');
+
                     } else {
                         $(this).text('全选');
+                        $('.layui-unselect').removeClass('layui-form-checked');
                     }
                     flag = !flag;
-                    $(".checkbox").prop('checked', flag);
+
+
                 });
-				layui.use(['laypage', 'layer'], function() {
-					var laypage = layui.laypage,
-						layer = layui.layer;
+                layui.use('table', function() {
+                    var table = layui.table
+                        , form = layui.form;
 
-					//总页数大于页码总数
-					laypage.render({
-					    elem: 'pages',
-						count: {{ $count }},
-						layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'],
-						jump: function(obj){
-					      // console.log(obj)
-					      var page = obj.curr;
-					      var limit = obj.limit;
+                    // layui.laytpl.config({
+                    //     open: '<<',
+                    //     close: '>>'
+                    // });
 
-					      ajaxData('/getData', 'get', {page:page, size:limit}, function(e) {
-					          $("#data").html(e)
-						  })
-
-					    }
-					});
-				});
-                function ajaxData(url,method,data,callback)
-                {
-                    $.ajax({
-                        url:url,
-                        method:method,
-                        data:data,
-                        success:callback
-                    })
-                }
+                    table.render({
+                        elem: '#admin'
+                        ,url:'/getData'
+                        ,cellMinWidth: 80
+                        ,cols: [[
+                            {field:'id', width:50, templet:function(d) {
+                                    return '<div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" value="'+d.id+'" lay-skin="primary"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div><div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" lay-skin="primary"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div>';
+                                }}
+                            ,{field:'admin_name', title:'管理员名称', width:200, unresize: true, sort: true}
+                            ,{field:'roles', title:'角色名', templet:function(d) {
+                            		if (null != d.roles) {
+                    					return d.roles.name;
+                                    } else {
+                    					return '超级管理员';
+                                    }
+                                }}
+                            ,{field:'email', title:'管理员邮箱', width:200, unresize: true}
+                            ,{field:'last_time', title:'上次登录时间', width:200, unresize: true}
+                            ,{field:'operation', title:'操作', templet:function(d) {
+                                	if (d.id != 1) {
+                                        return '<a href="/AdminEdit?id='+d.id+'"><button type="button" class="layui-btn layui-btn-sm"><i class="layui-icon">&#xe642;</i></button></a>&nbsp;<button type="button" class="layui-btn layui-btn-sm"> <i class="layui-icon">&#xe640;</i> </button>'
+                                    }
+                                	return '';
+                                }}
+                        ]]
+                        ,page: true
+                    });
+                    //
+                });
 
 			</script>
 		</div>
