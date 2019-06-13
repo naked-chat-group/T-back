@@ -40,18 +40,19 @@
 
 <body>
 <div class="cBody">
-    <form id="addForm" class="layui-form" action="{{ url('WarehouseManagementInsert') }}" method="get">
+    <form id="addForm" class="layui-form" action="WarehouseManagementUpdate" method="get">
         <div class="layui-form-item">
             <label class="layui-form-label">仓库名称</label>
             <div class="layui-input-inline shortInput">
-                <input type="text" name="name" required lay-verify="required|ZHCheck" placeholder="请输入仓库名称" autocomplete="off" class="layui-input">
+                <input type="hidden" name="id" value="{{$data['0']['id']}}">
+                <input type="text" name="name" required lay-verify="required|ZHCheck" placeholder="请输入仓库名称" value="{{$data['0']['name']}}" autocomplete="off" class="layui-input">
             </div>
             <i class="iconfont icon-huaban bt"></i>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">仓库编号</label>
             <div class="layui-input-inline shortInput">
-                <input type="text" name="number" required lay-verify="required" placeholder="请输入仓库编号" autocomplete="off" class="layui-input">
+                <input type="text" name="number" required lay-verify="required" placeholder="请输入仓库编号" autocomplete="off" value="{{$data['0']['number']}}" class="layui-input">
             </div>
             <i class="iconfont icon-huaban bt"></i>
         </div>
@@ -59,15 +60,16 @@
             <label class="layui-form-label">所在地区</label>
             <div class="layui-input-inline">
                 <select name="provid" required lay-verify="required" id="provid" lay-filter="provid">
-                    <option value="">请选择省/直辖市</option>
-                    @foreach($area as $v)
+                    <option value="{{$data['0']['provid']}}">{{$data['0']['provid']}}</option>
+                    @foreach($provid as $v)
                         <option value="{{$v['area_name']}}">{{$v['area_name']}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="layui-input-inline">
                 <select name="city" id="city" lay-filter="cityid">
-                    <option value="">请选择市</option>
+                    <option value="{{$data['0']['city']}}">{{$data['0']['city']}}</option>
+
                 </select>
             </div>
         </div>
@@ -75,21 +77,27 @@
             <label class="layui-form-label">服务地区</label>
             <div class="layui-input-inline">
                 <select name="serve_area" id="serve_city" lay-filter="serve_city">
-                    <option value="">请选择市</option>
+                    <option value="{{$data['0']['serve_area']}}">{{$data['0']['serve_area']}}</option>
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">负责人</label>
             <div class="layui-input-inline shortInput">
-                <input type="text" name="principal" required lay-verify="required|ZHCheck" placeholder="负责人" autocomplete="off" class="layui-input">
+                <input type="text" name="principal" required lay-verify="required|ZHCheck" placeholder="负责人" value="{{$data['0']['principal']}}" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">是否启用</label>
             <div class="layui-input-block">
-                <input type="radio" name="status" value="1" title="启用" checked>
-                <input type="radio" name="status" value="2" title="未启用">
+                @if($data['0']['status']==1)
+                    <input type="radio" name="status" value="1" title="启用" checked>
+                    <input type="radio" name="status" value="2" title="未启用">
+                @else
+                    <input type="radio" name="status" value="1" title="启用" >
+                    <input type="radio" name="status" value="2" title="未启用" checked>
+                @endif
+
             </div>
         </div>
 

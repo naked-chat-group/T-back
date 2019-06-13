@@ -54,57 +54,41 @@
     <table class="layui-table">
         <thead>
         <tr>
-            <th>仓库名称</th>
-            <th>仓库编码</th>
-            <th>所在地区</th>
-            <th>服务地区</th>
-            <th>负责人</th>
-            <th>状态</th>
-            <th>添加时间</th>
+            <th>用户名称</th>
+            <th>商品名称</th>
+            <th>评论内容</th>
+            <th>评论时间</th>
+            <th>审核</th>
             <th>操作</th>
         </tr>
         </thead>
-        @foreach($data as $v)
-        <tbody>
-        <tr>
-            <td>{{$v['name']}}</td>
-            <td>{{$v['number']}}</td>
-            <td>{{$v['city']}}</td>
-            <td>{{$v['serve_area']}}</td>
-            <td>{{$v['principal']}}</td>
-            <td>
-                @if($v['status']==1)
-                    <button class="layui-btn layui-btn-radius layui-btn-normal" id="btn" onclick="status(2,{{$v['id']}})">启用</button>
-                @else
-                    <button class="layui-btn layui-btn-radius layui-btn-danger" id="btn" onclick="status(1,{{$v['id']}})">未启用</button>
-                @endif
-            </td>
-            <td>{{$v['add_time']}}</td>
-            <td>
-                <a href="WarehouseManagementUp?id={{$v['id']}}"><button class="layui-btn layui-btn-primary layui-btn-sm">修改</button></a>
-                <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="del({{$v['id']}})"> <i class="layui-icon">&#xe640;</i></button>
-            </td>
-        </tr>
-        </tbody>
+        @foreach($list as $k=>$v)
+            <tbody>
+            <tr>
+                <td>{{$v['nick']}}</td>
+                <td>{{$v['goodsName']}}</td>
+                <td>{{$v['comment']}}</td>
+                <td>{{date("Y-m-d H:i:s",$v['add_time'])}}</td>
+                <td>
+                    @if($v['status']==1)
+                        <button class="layui-btn layui-btn-radius layui-btn-normal" id="btn" onclick="status(1,{{$v['id']}})">审核通过</button>
+                    @else
+                        <button class="layui-btn layui-btn-radius layui-btn-danger" id="btn" onclick="status(1,{{$v['id']}})">审核未通过</button>
+                    @endif
+                </td>
+                <td>
+                    <a href="Call_centerManagementshow?id={{$v['id']}}"><button class="layui-btn layui-btn-primary layui-btn-sm">查看全文</button></a>
+                </td>
+            </tr>
+            </tbody>
         @endforeach
     </table>
-{!! $data->links() !!}
+    {!! $list->links() !!}
     <script>
         function status(i,id) {
             $.ajax({
-                url:"WarehouseManagementChange",
+                url:"Call_centerManagementChange",
                 data:{id:id,status:i},
-                type:'get',
-                success:function (v) {
-                    alert(v);
-                    history.go(0)
-                }
-            })
-        }
-        function del(id) {
-            $.ajax({
-                url:"WarehouseManagementDel",
-                data:{id:id},
                 type:'get',
                 success:function (v) {
                     alert(v);
