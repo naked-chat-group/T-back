@@ -30,8 +30,9 @@
     <script>
         layui.use('layer',function()
         {
+            var url= "{{ $url }}";
             layer.msg("{{ $data }}", {time: 2000,shade: [0.5,'#333333']},function(index){
-                location.href='ClassManagementAdd';
+                location.href=url;
                 layer.close(index);
             });
         });

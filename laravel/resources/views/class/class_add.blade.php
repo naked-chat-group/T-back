@@ -30,7 +30,7 @@
 		<script src="../../framework/jquery.mCustomScrollbar.min.js"></script>
 		<script src="../../framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
 		<!-- 公共样式 结束 -->
-		
+
 		<style>
 			.layui-form{
 				margin-right: 30%;
@@ -69,7 +69,7 @@
 					<label class="layui-form-label">是否首页楼层</label>
 					<div class="layui-input-block">
 						<input type="radio" name="isFloor" value="1" title="显示" checked>
-						<input type="radio" name="isFloor" value="nv" title="隐藏">
+						<input type="radio" name="isFloor" value="0" title="隐藏">
 					</div>
 				</div>
 				<div class="layui-form-item">
