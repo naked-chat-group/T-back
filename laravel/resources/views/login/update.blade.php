@@ -11,6 +11,7 @@
 </head>
 <body>
 <form action="">
+    {{ csrf_token() }}
     <div class="form-group" style="margin-left: 500px;margin-top: 180px;">
         <label for="exampleInputEmail1">新密码：</label>
         <input type="password" class="form-control" id="pwd" placeholder="新密码" name="password" style="width: 350px;">

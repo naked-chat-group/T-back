@@ -84,6 +84,7 @@
 					url:'login',
 					type:'post',
 					data:{name:name,pwd:pwd},
+                    headers: { 'X-CSRF-TOKEN' : '{{ csrf_token() }}' },
 					dataType:'json',
 					success:function (data) {
 						if (data == 1){
