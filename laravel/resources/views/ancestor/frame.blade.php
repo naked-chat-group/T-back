@@ -108,9 +108,8 @@
 		        	<li>
 		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>品牌管理<i class="iconfont icon-dajiantouyou right"></i></a>
 		                <dl>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('BrandManagement',this)">分类列表</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('BrandManagementList',this)">基本商品库</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('BrandManagementAdd',this)">添加商品分类</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('BrandManagementList',this)">品牌列表</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('BrandManagementAdd',this)">添加品牌</a></dt>
 		                </dl>
 		            </li>
 					<li>

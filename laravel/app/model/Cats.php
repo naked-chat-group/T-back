@@ -40,9 +40,9 @@ class Cats extends Model
      * @param $limit
      * @return mixed
      */
-    public function SelPage($offset,$limit)
+    public function SelPage()
     {
-        return Cats::where('parentId',0)->offset($offset)->limit($limit)->get();
+        return Cats::get();
     }
     public function DelSel($catId)
     {
@@ -80,5 +80,9 @@ class Cats extends Model
     {
         $key = $post['switch_key'];
         return Cats::where('catId',$post['switch_id'])->update(["$key"=>$post['switch_isShow']]);
+    }
+    public function addSel()
+    {
+        return Cats::where('parentId',0)->select('catId','catName')->get();
     }
 }

@@ -42,15 +42,21 @@ Route::post('CatsDel','ClassController@CatsDel');
 //分类修改
 Route::any('CatsUpd','ClassController@CatsUpd');
 
-//品牌管理
-Route::get('BrandManagement', 'BrandController@index');
-Route::get('BrandManagementAdd', 'BrandController@add');
+//品牌管理列表
 Route::get('BrandManagementList', 'BrandController@lists');
+//品牌添加
+Route::get('BrandManagementAdd', 'BrandController@add');
+//品牌添加方法
+Route::post('BrandManagementAdds', 'BrandController@adds');
+
+//品牌图片添加接口
+Route::post('BrandManagementUpload', 'BrandController@Upload');
+
 
 //订单管理
 Route::get('OrderManagement', 'OrderController@index');
-    //订单分页
-    Route::get('orderPage','OrderController@page');
+//订单分页
+Route::get('orderPage','OrderController@page');
 
 Route::get('OrderManagementList', 'OrderController@list');
 Route::get('OrderManagementUpdate', 'OrderController@update');
