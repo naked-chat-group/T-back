@@ -72,38 +72,45 @@
 		appId: '8ad5be8319737e8a0119770f7b5ff7e4', //appId，在控制台中“应用管理”或“应用配置”模获取
 		style: 'popup', // 可省略
 		success:function (token) {
-			$.post('verityToken',{token:token},function (data) {
-				if (data == 3){
-					alert('token获取失败');
-					return;
+		    $.ajax({
+				url: 'verityToken',
+				type:'post',
+				data:{token:token},
+                headers: { 'X-CSRF-TOKEN' : '{{ csrf_token() }}' },
+				dataType: 'json',
+				success:function(data) {
+                    if (data == 3){
+                        alert('token获取失败');
+                        return;
+                    }
+                    // layer.msg(JSON.stringify(data.field));
+                    var name = $("#name").val();
+                    var pwd = $("#pwd").val();
+                    $.ajax({
+                        url:'login',
+                        type:'post',
+                        data:{name:name,pwd:pwd},
+                        headers: { 'X-CSRF-TOKEN' : '{{ csrf_token() }}' },
+                        dataType:'json',
+                        success:function (data) {
+                            if (data == 1){
+                                alert('用户不存在');
+                            }
+                            if (data == 2){
+                                alert('密码错误');
+                            }
+                            if (data == 4){
+                                alert('密码设置已超过一个月，请及时修改');
+                                window.location.href="http://www.shop.com/update";
+                            }
+                            if (data == 5){
+                                alert('登陆成功');
+                                window.location.href="http://www.shop.com/index";
+                            }
+                        }
+                    });
 				}
-				// layer.msg(JSON.stringify(data.field));
-				var name = $("#name").val();
-				var pwd = $("#pwd").val();
-				$.ajax({
-					url:'login',
-					type:'post',
-					data:{name:name,pwd:pwd},
-                    headers: { 'X-CSRF-TOKEN' : '{{ csrf_token() }}' },
-					dataType:'json',
-					success:function (data) {
-						if (data == 1){
-							alert('用户不存在');
-						}
-						if (data == 2){
-							alert('密码错误');
-						}
-						if (data == 4){
-							alert('密码设置已超过一个月，请及时修改');
-							window.location.href="http://www.shop.com/update";
-						}
-						if (data == 5){
-							alert('登陆成功');
-							window.location.href="http://www.shop.com/index";
-						}
-					}
-				});
-			})
+			});
 		}
 	});
     function changepwd() {
