@@ -71,6 +71,9 @@ class AdminController extends BaseController
         }
     }
 
+    /*
+     * 管理员信息修改
+     */
     public function AdminUpd(Request $request)
     {
         if (Admin::updateAdmin($request->post())) {

@@ -88,9 +88,9 @@
                     {field:'id', width:50, templet:function(d) {
                             return '<div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" value="'+d.id+'" lay-skin="primary"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div><div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" lay-skin="primary"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div>';
                         }}
-                    ,{field:'name', title:'名字', width:100, unresize: true, sort: true}
+                    ,{field:'name', title:'名字', width:150, unresize: true, sort: true}
                     ,{field:'right', title:'权限码'}
-                    ,{field:'types', title:'类别', templet: function(d) {
+                    ,{field:'types', width:100, title:'类别', templet: function(d) {
                             if (1 == d.types) {
                                 return '<span>页面权限</span>';
                             } else if (2 == d.types) {
@@ -99,6 +99,13 @@
                         }, unresize: true}
                     ,{field:'operation', title:'操作', templet:function(d) {
                             return '<a href="/?id='+d.id+'"><button type="button" class="layui-btn layui-btn-sm"><i class="layui-icon">&#xe642;</i></button></a>&nbsp;<button type="button" class="layui-btn layui-btn-sm"> <i class="layui-icon">&#xe640;</i> </button>'
+                        }}
+                    ,{field: 'menu', title: 'Menu', templet:function(d){
+
+                            if (!d.right && d.types == 1) {
+                                return '<a href="/MenuCreate?id='+d.id+'"><button type="button" class="layui-btn layui-btn-sm"> <i class="layui-icon">&#xe608;</i>生成父菜单</button></a>';
+                            }
+                            return '';
                         }}
                 ]]
                 ,page: true

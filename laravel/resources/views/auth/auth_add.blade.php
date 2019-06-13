@@ -45,7 +45,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">权限名称</label>
             <div class="layui-input-inline shortInput">
-                <input type="text" name="admin_name" required lay-verify="required|username" autocomplete="off" class="layui-input">
+                <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input">
             </div>
             <i class="iconfont icon-huaban bt"></i>
         </div>
@@ -58,12 +58,12 @@
                         <th>操作</th>
                     </tr>
                     <tbody id="auth-data">
-                    <tr>
+                    <tr id="code">
                         <td>
-                            <input type="text" value="" class="layui-input">
+                            <input type="text" value="" class="layui-input code">
                         </td>
                         <td>
-                            <button type="button" class="layui-btn layui-btn-sm">
+                            <button type="button" class="layui-btn layui-btn-sm delCode">
                                 <i class="layui-icon">&#xe640;</i>
                             </button>
                         </td>
@@ -79,7 +79,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">添加权限码</label>
             <div class="layui-input-inline">
-                <select lay-filter="controller" name="">
+                <select lay-filter="controller" name="" id="controller">
                     <option value="">请选择控制器</option>
                     @foreach($planList as $val)
                         <option value="{{ $val }}">{{ $val }}</option>
@@ -99,8 +99,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label">选择类型</label>
             <div class="layui-input-block">
-                <input type="radio" name="sex" value="nan" title="页面权限" checked>
-                <input type="radio" name="sex" value="nv" title="操作权限">
+                <input type="radio" name="types" value="1" title="页面权限" checked>
+                <input type="radio" name="types" value="2" title="操作权限">
             </div>
             <div class="layui-input-inline" style="width: 300px">
                 <i class="iconfont icon-huaban bt"></i>
@@ -128,12 +128,45 @@
         //     v2: 510100,
         //     v3: null
         // };
-        $('#addAuthCode').click(function(){
-
-        });
         layui.use('form', function() {
             var form = layui.form;
 
+
+            $('#addAuthCode').click(function(){
+                var controller = $("#controller").val();
+                var action = $("#action").val();
+                if (!controller) {
+                    layer.msg('请选择控制器', {icon: 5, offset: 't', anim: 6});
+                    return
+                }
+                if (!action) {
+                    layer.msg('请选择方法', {icon: 5, offset: 't', anim: 6});
+                    return
+                }
+                code = controller + '@' + action;
+                //判断code是否已经存在
+                $(".code").each(function(i,v){
+                   if ($(v).val() == code) {
+                       code = '';
+                       return
+                   }
+                });
+                if (!code) {
+                    layer.msg('权限码已经存在', {icon: 5, offset: 't', anim: 6});
+                    return
+                }
+                var code_elem = $("#code").clone();
+                code_elem.find('input').val(code);
+                $("#auth-data").append(code_elem);
+            });
+
+            $(document).on('click', ".delCode", function(){
+                // console.log($(this).parents('#code').find('.code').val())
+               if (!$(this).parents('#code').find('.code').val()) {
+                   return
+               }
+               $(this).parents('#code').remove();
+            });
 
             form.on('select(controller)', function (obj) {
                 ajax('/getAction', 'get', {controller:obj.value}, function(e) {
@@ -146,6 +179,17 @@
                 })
             });
 
+            form.on('submit(submitBut)', function(obj) {
+               var code = {};
+               $(".code").each(function(i,v){
+                   code[i] = $(v).val()
+               });
+               obj.field.code = code;
+               // console.log(obj.field);
+                ajax('/AuthStore', 'post', obj.field, function(e){
+                    console.log(e)
+                })
+            });
             function ajax(url, method, data, callback) {
                 $.ajax({
                     url:url,

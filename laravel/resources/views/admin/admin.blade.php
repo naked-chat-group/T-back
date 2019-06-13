@@ -71,13 +71,17 @@
                     //     close: '>>'
                     // });
 
+
                     table.render({
                         elem: '#admin'
                         ,url:'/getData'
                         ,cellMinWidth: 80
                         ,cols: [[
                             {field:'id', width:50, templet:function(d) {
-                                    return '<div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" value="'+d.id+'" lay-skin="primary"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div><div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" lay-skin="primary"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div>';
+                                	if (d.id != 1) {
+                                        return '<div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" value="'+d.id+'" lay-skin="primary"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div><div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" lay-skin="primary"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div>';
+                                    }
+                                	return '';
                                 }}
                             ,{field:'admin_name', title:'管理员名称', width:200, unresize: true, sort: true}
                             ,{field:'roles', title:'角色名', templet:function(d) {
