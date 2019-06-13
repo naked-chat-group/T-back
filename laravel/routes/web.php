@@ -19,6 +19,8 @@ Route::any('login', 'LoginController@login');
 Route::any('verityToken','LoginController@verityToken');
 //修改密码
 Route::any('update','LoginController@update');
+//退出登录
+Route::any('layout','StaticController@layout');
 
 //首页
 Route::get('show', 'IndexController@index');

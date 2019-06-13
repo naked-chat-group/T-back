@@ -31,7 +31,6 @@ class Admin extends Model
     {
         return $this->count();
     }
-
     //添加数据
     public function store($validated)
     {
