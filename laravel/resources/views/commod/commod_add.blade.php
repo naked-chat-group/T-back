@@ -152,7 +152,8 @@
 						data: data,
 						type: "Post",
 						dataType: "json",
-						success: detal
+                        headers: { 'X-CSRF-TOKEN' : '{{ csrf_token() }}' },
+                        success: detal
 					})
 				}
 			</script>
