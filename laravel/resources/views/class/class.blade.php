@@ -39,16 +39,14 @@
 				<form class="layui-form" action="">
 					<div class="layui-form-item">
 						<div class="layui-input-inline">
-							<input type="text" name="name" required lay-verify="required" placeholder="输入分管名称" autocomplete="off" class="layui-input">
+							<input type="text" name="name" required lay-verify="required" placeholder="输入分类名称" autocomplete="off" class="layui-input">
 						</div>
-						<button class="layui-btn" lay-submit lay-filter="formDemo">检索</button>
+						<button class="layui-btn" lay-submit lay-filter="formDemo">查询</button>
 					</div>
 				</form>
-
 				<script>
 					layui.use('form', function() {
 						var form = layui.form;
-				
 						//监听提交
 						form.on('submit(formDemo)', function(data) {
 							layer.msg(JSON.stringify(data.field));
@@ -57,62 +55,119 @@
 					});
 				</script>
 			</div>
-			
-			<table class="layui-table">
-				<thead>
-					<tr>
-						<th>名称</th>
-						<th>描述</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>前端</td>
-						<td>例：ES5、ES6、ES7</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs layui-btn-normal">添加二级分类</button>
-							<button class="layui-btn layui-btn-xs layui-btn-warm">查看二级分类</button>
-						</td>
-					</tr>
-					<tr>
-						<td>前端</td>
-						<td>例：ES5、ES6、ES7</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs layui-btn-normal">添加二级分类</button>
-							<button class="layui-btn layui-btn-xs layui-btn-warm">查看二级分类</button>
-						</td>
-					</tr>
-					<tr>
-						<td>前端</td>
-						<td>例：ES5、ES6、ES7</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs layui-btn-normal">添加二级分类</button>
-							<button class="layui-btn layui-btn-xs layui-btn-warm">查看二级分类</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			<!-- layUI 分页模块 -->
-			<div id="pages"></div>
+			<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+			<table class="layui-hide" id="test"></table>
 			<script>
-				layui.use(['laypage', 'layer'], function() {
-					var laypage = layui.laypage,
-						layer = layui.layer;
-				
-					//总页数大于页码总数
-					laypage.render({
-					    elem: 'pages'
-					    ,count: 100
-					    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
-					    ,jump: function(obj){
-					      console.log(obj)
-					    }
+				//修改规格
+				layui.use(['table','form'] , function() {
+					var table = layui.table
+							, form = layui.form;
+					table.render({
+						elem: '#test'
+						, url: '/CatsPage'
+						, cellMinWidth: 80
+						, cols: [[
+							{type: 'numbers'}
+							, {type: 'checkbox'}
+							, {field: 'catName',width:180, title: '分类名称', templet: '#usernameTpl'}
+							, {field: 'simpleName',width:150, title: '分类缩写'}
+							, {field: 'isShow', title: '是否显示',width:150,templet: function(d){
+									return '<input type="checkbox" name="sex" switch_id="'+d.catId+'" switch_key="isShow" switch_isShow="'+d.isShow+'" value="'+d.idShow+'" lay-skin="switch" lay-text="显示|隐藏" lay-filter="isShow" '+(d.isShow == 1 ? "checked" : "")+'>';
+								}}
+							, {field: 'isFloor', title: '是否显示楼层',width:150,  templet: function(d){
+								return '<input type="checkbox" name="sex" switch_id="'+d.catId+'" switch_key="isFloor" switch_isShow="'+d.isFloor+'"  value="'+d.isFloor+'" lay-skin="switch" lay-text="显示|隐藏" lay-filter="isShow" '+(d.isFloor == 1 ? "checked" : "")+'>';
+								}}
+							, {field: 'catSort', title: '排序号', width:150,  sort: true}
+							, {field: '',title:'操作' ,width:300,templet: function(d)
+								{
+									var html = "";
+									html +='<a href="ClassManagementAdd?parentId='+d.catId+'"><button type="button" class="layui-btn"><i class="layui-icon">&#xe608;</i> 添加二级分类</button></a>';
+									html +='<a href="CatsUpd?catId='+d.catId+'"><button type="button" class="layui-btn"><i class="layui-icon layui-icon-edit">&#xe642;</i></button></a>';
+									html +='<button type="button" class="layui-btn delete" id="'+d.catId+'"><i class="layui-icon layui-icon-delete" ></i></button>'
+									return html;
+								}}
+						]]
+						, page: true
 					});
+					form.on('switch(isShow)',function(data)
+					{
+						//开关是否开启，true或者false
+						var checked = data.elem.checked;
+                        var switch_isShow = data.elem.attributes['switch_isShow'].nodeValue;
+                        var switch_key = data.elem.attributes['switch_key'].nodeValue;
+                        var switch_id = data.elem.attributes['switch_id'].nodeValue;
+						console.log(switch_isShow);
+						console.log(switch_key);
+
+
+                        layer.msg('确定要修改吗？', {
+                            time: 5000, //5s后自动关闭
+                            btn: ['确定', '取消']
+                            , yes: function (index) {
+                                $.post('CatstypeUpd',{switch_id:switch_id,switch_key:switch_key,switch_isShow:switch_isShow,"_token": $('#token').val()},function(msg)
+                                {
+                                    if(msg.code == 1001){
+                                        if(switch_isShow == 1)
+                                        {
+                                            data.elem.attributes['switch_isShow'].nodeValue = 0;
+                                        }else {
+                                            data.elem.attributes['switch_isShow'].nodeValue = 1;
+                                        }
+                                        var icon = 6;
+                                    }else if(msg.code == 1002){
+                                        var icon = 2;
+                                    }else if(msg.code == 1004) {
+                                        layui.use('layer', function () {
+                                            layer.msg(msg.msg, {icon: 2});
+                                        })
+                                        return;
+                                    }
+                                    layui.use('layer',function()
+                                    {
+                                        layer.msg(msg.msg, {icon: icon});
+                                    })
+                                },'json')
+                                data.elem.checked = checked;
+                                form.render('checkbox');
+                                layer.close(index);
+                            }
+                            , btn2: function (index) {
+                                //按钮【按钮二】的回调
+                                data.elem.checked = !checked;
+                                form.render('checkbox');
+                                layer.close(index);
+                                return false; //开启该代码可禁止点击该按钮关闭
+                            }
+                        });
+					});
+				});
+
+				//删除
+				$(document).on('click','.delete',function()
+				{
+					var catId = $(this).attr('id');
+					var obj = $(this);
+					$.post('CatsDel',{catId:catId,"_token": $('#token').val()},function(msg)
+					{
+						if(msg.code == 1001){
+							var icon = 6;
+						}else if(msg.code == 1002){
+							var icon = 2;
+						}else if(msg.code == 1003){
+							var icon = 5;
+						}else if(msg.code == 1004){
+                            layui.use('layer',function()
+                            {
+                                layer.msg(msg.msg, {icon: 2});
+                            })
+                            return;
+                        }
+						obj.parents('tr').remove();
+						layui.use('layer',function()
+						{
+							layer.msg(msg.msg, {icon: icon});
+						})
+					},'json');
 				});
 			</script>
 		</div>

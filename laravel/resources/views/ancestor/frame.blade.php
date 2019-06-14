@@ -58,29 +58,16 @@
 					<li>
 						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>权限管理<i class="iconfont icon-dajiantouyou right"></i></a>
 						<dl>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('JurisdManagement',this)">管理员角色列表</a></dt>
-						</dl>
-					</li>
-		        	<li>
-		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>管理员角色管理<i class="iconfont icon-dajiantouyou right"></i></a>
-		                <dl>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('RoleManagementAdd',this)">添加管理员角色</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('RoleManagement',this)">管理员角色列表</a></dt>
-		                </dl>
-		            </li>
-					<li>
-						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>管理员管理<i class="iconfont icon-dajiantouyou right"></i></a>
-						<dl>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('AdminManagementAdd',this)">添加管理员</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('AdminManagement',this)">管理员列表</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('RoleManagement',this)">角色</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('AdminManagement',this)">管理员</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('AuthManagement',this)">权限资源</a></dt>
 						</dl>
 					</li>
 		        	<li>
 		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>商品管理<i class="iconfont icon-dajiantouyou right"></i></a>
 		                <dl>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goodsType_list.html',this)">分类列表</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goods_list.html',this)">基本商品库</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('tgls/goodsManage/goods_add.html',this)">添加商品</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagement',this)">基本商品库</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagementAdd',this)">添加商品</a></dt>
 		                </dl>
 		            </li>
 					<li>
@@ -100,8 +87,9 @@
 		            <li>
 		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>订单管理<i class="iconfont icon-dajiantouyou right"></i></a>
 		                <dl>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('OrderManagement',this)">订单列表</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('OrderManagementUpdate',this)">订单状态管理</a></dt>
+		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('OrderManagement',this)">订单管理</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('OrderManagementList',this)">投诉订单</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('OrderManagementUpdate',this)">退款订单</a></dt>
 		                </dl>
 		            </li>
 		        	<li>
@@ -117,6 +105,20 @@
 						<dl>
 							<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagement',this)">商品列表</a></dt>
 							<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagementAdd',this)">添加商品</a></dt>
+						</dl>
+					</li>
+					<li>
+						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>仓库管理<i class="iconfont icon-dajiantouyou right"></i></a>
+						<dl>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('WarehouseManagement',this)">仓库列表</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('WarehouseManagementAdd',this)">添加仓库</a></dt>
+						</dl>
+					</li>
+					<li>
+						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>客服中心<i class="iconfont icon-dajiantouyou right"></i></a>
+						<dl>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('CommentManagement',this)">商品评论审核</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('opinionManagement',this)">意见反馈列表</a></dt>
 						</dl>
 					</li>
 		        </ul>

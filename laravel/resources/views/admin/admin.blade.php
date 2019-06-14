@@ -36,105 +36,71 @@
 	<body>
 		<div class="cBody">
 			<div class="console">
-				<form class="layui-form" action="">
-					<div class="layui-form-item">
-						<div class="layui-input-inline">
-							<input type="text" name="name" required lay-verify="required" placeholder="输入分管名称" autocomplete="off" class="layui-input">
-						</div>
-						<button class="layui-btn" lay-submit lay-filter="formDemo">检索</button>
-					</div>
-				</form>
-
-				<script>
-					layui.use('form', function() {
-						var form = layui.form;
-				
-						//监听提交
-						form.on('submit(formDemo)', function(data) {
-							layer.msg(JSON.stringify(data.field));
-							return false;
-						});
-					});
-				</script>
+				<a href="/AdminAdd"><button type="button" class="layui-btn layui-btn-xs">
+					<i class="layui-icon">&#xe608;</i> 添加管理员
+				</button></a>
+				<button class="layui-btn layui-btn-xs" id="check_all">全选</button>
+				<button class="layui-btn layui-btn-xs">批量删除</button>
+				<button class="layui-btn layui-btn-xs">回收站</button>
 			</div>
-			
-			<table class="layui-table">
-				<thead>
-					<tr>
-						<th>分管名称</th>
-						<th>分管编码</th>
-						<th>所属区域</th>
-						<th>负责人</th>
-						<th>登录名</th>
-						<th>联系方式</th>
-						<th>传真</th>
-						<th>邮箱</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>龙九山</td>
-						<td>DLS201802281450280741</td>
-						<td>无锡市</td>
-						<td>龙九山</td>
-						<td>龙九山</td>
-						<td>18600001111</td>
-						<td>028-6666666</td>
-						<td>123456789@qq.com</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs">基本信息</button>
-						</td>
-					</tr>
-					<tr>
-						<td>龙九山</td>
-						<td>DLS201802281450280741</td>
-						<td>无锡市</td>
-						<td>龙九山</td>
-						<td>龙九山</td>
-						<td>18600001111</td>
-						<td>028-6666666</td>
-						<td>123456789@qq.com</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs">基本信息</button>
-						</td>
-					</tr>
-					<tr>
-						<td>龙九山</td>
-						<td>DLS201802281450280741</td>
-						<td>无锡市</td>
-						<td>龙九山</td>
-						<td>龙九山</td>
-						<td>18600001111</td>
-						<td>028-6666666</td>
-						<td>123456789@qq.com</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs">基本信息</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			<!-- layUI 分页模块 -->
-			<div id="pages"></div>
+
+			<table class="layui-hide" id="admin"></table>
+
 			<script>
-				layui.use(['laypage', 'layer'], function() {
-					var laypage = layui.laypage,
-						layer = layui.layer;
-				
-					//总页数大于页码总数
-					laypage.render({
-					    elem: 'pages'
-					    ,count: 100
-					    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
-					    ,jump: function(obj){
-					      console.log(obj)
-					    }
-					});
-				});
+                var flag = false;
+
+                $("#check_all").click( function () {
+                    if (false == flag) {
+                        $(this).text('取消全选');
+                        $('.layui-unselect').addClass('layui-form-checked');
+
+                    } else {
+                        $(this).text('全选');
+                        $('.layui-unselect').removeClass('layui-form-checked');
+                    }
+                    flag = !flag;
+
+
+                });
+                layui.use('table', function() {
+                    var table = layui.table
+                        , form = layui.form;
+
+                    // layui.laytpl.config({
+                    //     open: '<<',
+                    //     close: '>>'
+                    // });
+
+                    table.render({
+                        elem: '#admin'
+                        ,url:'/getData'
+                        ,cellMinWidth: 80
+                        ,cols: [[
+                            {field:'id', width:50, templet:function(d) {
+                                    return '<div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" value="'+d.id+'" lay-skin="primary"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div><div class="layui-table-cell laytable-cell-1-0 laytable-cell-checkbox"><input type="checkbox" name="layTableCheckbox" lay-skin="primary"><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon"></i></div></div>';
+                                }}
+                            ,{field:'admin_name', title:'管理员名称', width:200, unresize: true, sort: true}
+                            ,{field:'roles', title:'角色名', templet:function(d) {
+                            		if (null != d.roles) {
+                    					return d.roles.name;
+                                    } else {
+                    					return '超级管理员';
+                                    }
+                                }}
+                            ,{field:'email', title:'管理员邮箱', width:200, unresize: true}
+                            ,{field:'last_time', title:'上次登录时间', width:200, unresize: true}
+                            ,{field:'operation', title:'操作', templet:function(d) {
+                                	if (d.id != 1) {
+                                        return '<a href="/AdminEdit?id='+d.id+'"><button type="button" class="layui-btn layui-btn-sm"><i class="layui-icon">&#xe642;</i></button></a>&nbsp;<button type="button" class="layui-btn layui-btn-sm"> <i class="layui-icon">&#xe640;</i> </button>'
+                                    }
+                                	return '';
+                                }}
+                        ]]
+                        ,page: true
+                    });
+                    //
+                });
+
 			</script>
 		</div>
 	</body>

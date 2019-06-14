@@ -23,11 +23,11 @@ class LoginController extends BaseController
         //echo $response->serverStatus;
         //确保验证状态是SERVER_SUCCESS，SDK中有容错机制，在网络出现异常的情况会返回通过
         if($response->result){
-
+            return response()->json(['code' => 0]);
         }
         else{
             /**token验证失败**/
-            return 3;
+            return response()->json(['code' => 3]);
         }
     }
     public function login(Request $request){
@@ -43,9 +43,9 @@ class LoginController extends BaseController
         }
         $expire = $arr2['create_at']+30*24*60*60;
         if (time()>$expire) {
+            $request->session()->put('uid',$arr1['id']);
             return 4;
         }
-        $request->session()->put('uid',$arr1['id']);
         $uid = $request->session()->get('uid');
         Admin::where('id',$uid)->update(['last_time'=>date('Y-m-d H:i:s',time())]);
         return 5;
@@ -53,5 +53,67 @@ class LoginController extends BaseController
     //修改密码
     public function update(){
         return view('login.update');
+    }
+    public function changepwd(Request $request){
+        $pwd = $request->input('pwd');
+        $uid = $request->session()->get('uid');
+        $arr = Password::where('uid',$uid)->orderBy('status','desc')->first()->toArray();
+        $status = $arr['status'];
+        if($status == 0){
+            $ypwd = $arr['password'];
+            if ($ypwd != $pwd){
+                Password::insert([
+                    'uid'=>$uid,
+                    'password' => md5($pwd),
+                    'create_at' => time(),
+                    'status' => 1
+                ]);
+                return 2;
+            }
+            else{
+                return 1;
+            }
+        }
+        if ($status == 1){
+            $arr1 = Password::where('uid',$uid)->get();
+            $data1 = [];
+            foreach ($arr1 as $k => $v){
+                $data1[] = $v['password'];
+            }
+            if (!in_array($pwd,$data1)){
+                Password::insert([
+                    'uid'=>$uid,
+                    'password'=>md5($pwd),
+                    'create_at' => time(),
+                    'status' => 2
+                ]);
+                return 2;
+            }
+            else{
+                return 3;
+            }
+        }
+        if ($status == 2){
+            $arr2 = Password::where('uid',$uid)->get();
+            $data2 = [];
+            foreach ($arr2 as $k => $v){
+                $data2[] = $v['password'];
+            }
+            if (!in_array($pwd,$data2)){
+                Password::insert([
+                    'uid'=>$uid,
+                    'password'=>md5($pwd),
+                    'create_at' => time(),
+                    'status' => 3
+                ]);
+                return 2;
+            }
+            else{
+                return 4;
+            }
+        }
+        if ($status == 3){
+            $arr3 = Password::where('uid',$uid)->where('status','3')->delete();
+        }
     }
 }
