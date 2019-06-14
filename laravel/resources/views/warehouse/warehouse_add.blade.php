@@ -71,14 +71,16 @@
                 </select>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">服务地区</label>
-            <div class="layui-input-inline">
-                <select name="serve_area" id="serve_city" lay-filter="serve_city">
-                    <option value="">请选择市</option>
-                </select>
+            <div class="">
+                <label class="layui-form-label">服务地区</label>
+                <div class="" id="serve_city">
+                    <label class="layui-form-label">服务地区</label>
+                    <input type="checkbox">
+                </div>
+
             </div>
-        </div>
+
+
         <div class="layui-form-item">
             <label class="layui-form-label">负责人</label>
             <div class="layui-input-inline shortInput">
@@ -92,7 +94,6 @@
                 <input type="radio" name="status" value="2" title="未启用">
             </div>
         </div>
-
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="submitBut">立即提交</button>
@@ -107,6 +108,7 @@
 </body>
 </html>
 <script>
+    var city = '<option value="">请选择城市</option>';
     layui.use(['layer', 'form'], function () {
         var layer = layui.layer,
             form = layui.form;
@@ -120,16 +122,27 @@
                 url:"WarehouseManagementCity",
                 success:function (v) {
                     var option = '';
+                    var serve = '';
                     for(var i=0;i<v.length;i++){  //循环获取返回值，并组装成html代码
                         option +='<option value="'+v[i]['area_name']+'">'+v[i]['area_name']+'</option>';
+                        // serve + ="<input type='checkbox'>";
+                    // <div class="">
+                    //         <label class="layui-form-label">服务地区</label>
+                    //         <div class="" id="serve_city">
+                    //         <label class="layui-form-label">服务地区</label>
+                    //         <input type="checkbox">
+                    //         </div>
+                    //
+                    //         </div>
+                        serve += "<label class=\"layui-form-label\">服务地区</label>";
                     }
+                    city = option;
                     $("#city").html(option);
-                    $("#serve_city").html(option);
+                    $("#serve_city").html(serve);
                     form.render('select');
                 }
 
             })
         });
-
     })
 </script>

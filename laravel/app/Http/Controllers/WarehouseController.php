@@ -19,7 +19,7 @@ class WarehouseController extends BaseController
     //仓库列表
     public function index()
     {
-        $list = Shop_warehouse::paginate(5);
+        $list = Shop_warehouse::orderBy('add_time', 'DESC')->paginate(5);
         return view('warehouse.warehouse',['data'=>$list]);
     }
     //展示添加

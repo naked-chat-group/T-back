@@ -64,5 +64,9 @@ Route::get('WarehouseManagementSearch','WarehouseController@search');
 
 //客服中心
 Route::get('CommentManagement','Call_centerController@comment');
-Route::get('Call_centerManagementChange','Call_centerController@change');
+Route::get('CommentManagementChange','Call_centerController@change');
+Route::get('CommentManagementReply','Call_centerController@reply');
+Route::get('CommentManagementSearch','Call_centerController@search');
 Route::get('OpinionManagement','Call_centerController@opinion');
+Route::get('OpinionManagementReply','Call_centerController@opinion_reply');
+Route::get('OpinionManagementSearch','Call_centerController@opinion_search');
