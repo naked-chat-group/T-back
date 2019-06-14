@@ -44,6 +44,11 @@ Route::get('AuthData', 'AuthController@getData');
 Route::get('AuthAdd', 'AuthController@addAuth');
 //获取控制器所拥有的方法
 Route::get('getAction', 'AuthController@getAction');
+//权限添加方法
+Route::post('AuthStore', 'AuthController@AuthStore');
+//菜单生成页面
+Route::get('MenuCreate', 'AuthController@MenuCreate');
+
 //Route::get('RoleManagement', 'ManageController@index');
 //Route::get('RoleManagementAdd', 'ManageController@add');
 

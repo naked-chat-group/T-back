@@ -8,11 +8,17 @@ use App\Facade\Auth;
 
 class AuthController extends Controller
 {
+    /*
+     * 权限资源首页
+     */
     public function index()
     {
         return view('auth.auth');
     }
 
+    /*
+     * 权限获取数据接口
+     */
     public function getData(Request $request)
     {
         if ($request->ajax()) {
@@ -26,8 +32,12 @@ class AuthController extends Controller
         }
     }
 
+    /*
+     * 权限添加页面
+     */
     public function addAuth()
     {
+        //获取当前目录的所有控制器名
         $planList = array();
         $dirRes   = opendir(__DIR__);
 
@@ -42,6 +52,9 @@ class AuthController extends Controller
         return view('auth.auth_add', compact('planList'));
     }
 
+    /*
+     * 获取每个控制所拥有的方法
+     */
     public function getAction(Request $request)
     {
         $controller = $request->input('controller');
@@ -53,4 +66,34 @@ class AuthController extends Controller
             return response()->json(['code' => 0, 'data' => $action]);
         }
     }
+
+    //执行权限添加方法
+    public function AuthStore(Request $request)
+    {
+        $data = $request->post();
+
+        if (!Auth::store($data)) {
+            return response()->json(['code' => 400, 'msg' => '添加失败, 请联系管理员']);
+        }
+
+        return response()->json(['code' => 200, 'msg' => '添加成功,准备跳转']);
+    }
+
+
+    /*
+     *生成菜单页面
+     */
+    public function MenuCreate(Request $request)
+    {
+
+        $id = $request->input('id');
+
+        $parentMenu = Auth::findById($id);
+
+        $childMenu = Auth::findByType(1);
+
+        return view('auth.MenuCreate', compact('parentMenu', 'childMenu'));
+
+    }
+
 }
