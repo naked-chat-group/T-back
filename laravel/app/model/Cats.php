@@ -19,7 +19,7 @@ class Cats extends Model
      */
     public function CatsCount()
     {
-        return Cats::all()->count();
+        return $this->count();
     }
     /**
      * 添加分类

@@ -36,24 +36,7 @@
 	<body>
 		<div class="cBody">
 			<div class="console">
-				<form class="layui-form" action="">
-					<div class="layui-form-item">
-						<div class="layui-input-inline">
-							<input type="text" name="name" required lay-verify="required" placeholder="输入分类名称" autocomplete="off" class="layui-input">
-						</div>
-						<button class="layui-btn" lay-submit lay-filter="formDemo">查询</button>
-					</div>
-				</form>
-				<script>
-					layui.use('form', function() {
-						var form = layui.form;
-						//监听提交
-						form.on('submit(formDemo)', function(data) {
-							layer.msg(JSON.stringify(data.field));
-							return false;
-						});
-					});
-				</script>
+
 			</div>
 			<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 			<table id="auth-table" class="layui-table" lay-filter="auth-table"></table>

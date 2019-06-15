@@ -17,9 +17,7 @@ class OrderController extends BaseController
      */
     public function index()
     {
-        $count = Order::Sel();
-
-        return view('order.order',['count'=>$count]);
+        return view('order.order');
     }
 
     /**
@@ -33,10 +31,12 @@ class OrderController extends BaseController
             $page = $request->get('page',1);
             $limit = $request->get('limit',10);
             $html = Order::SelPage(($page-1)*$limit,$limit);
-           return view('order._order_page',['code'=>'1001','html'=>$html]);
+            $count = Order::Sel();
+            return response()->json(['code'=>0,'msg'=>'','count'=>$count,'data'=>$html]);
 
         }else{
-            return view('order._order_page',['code'=>'1002']);
+            $count = Order::CatsCount();
+            return response()->json(['code'=>0,'msg'=>'请求格式有误','count'=>$count,'data'=>'']);
         }
     }
 
@@ -50,7 +50,13 @@ class OrderController extends BaseController
     }
     public function list()
     {
-
         return view('order.order_list');
+    }
+    public function desc(Request $request)
+    {
+        $orderNo = $request->get('orderNo');
+        $order = Order::OrderSel($orderNo);
+
+        return view('order.order_desc',['order'=>$order]);
     }
 }

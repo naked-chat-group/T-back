@@ -15,6 +15,20 @@ class BrandsCats extends Model
     {
         return $this->insert($arrs);
     }
+    public function brandCatsSel($brandId)
+    {
+        $data =  $this->where('brand_Id',$brandId)->select('cat_Id')->get()->toarray();
+        $cat_Id = [];
+        foreach ($data as $val)
+        {
+            $cat_Id[] = $val['cat_Id'];
+        }
+        return $cat_Id;
+    }
+    public function BrandsCatsDel($brand_Id)
+    {
+        return $this->where('brand_Id',$brand_Id)->delete();
+    }
 
 
 }

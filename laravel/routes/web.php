@@ -48,15 +48,28 @@ Route::get('BrandManagementList', 'BrandController@lists');
 Route::get('BrandManagementAdd', 'BrandController@add');
 //品牌添加方法
 Route::post('BrandManagementAdds', 'BrandController@adds');
-
+//品牌删除
+Route::post('BrandManagementDel', 'BrandController@Del');
+//品牌分页数据
+Route::get('BrandManagementPages','BrandController@BrandsPage');
+//修改页面
+Route::get('BrandManagementUpd','BrandController@BrandsUpd');
+//品牌修改
+Route::post('BrandManagementUpds','BrandController@BrandsUpds');
 //品牌图片添加接口
 Route::post('BrandManagementUpload', 'BrandController@Upload');
+//品牌搜索
+Route::post('BrandManagementSel', 'BrandController@Sel');
 
 
 //订单管理
 Route::get('OrderManagement', 'OrderController@index');
+//订单详情
+Route::get('OrderManagementDesc', 'OrderController@desc');
 //订单分页
 Route::get('orderPage','OrderController@page');
+//订单修改
+Route::get('orderUpdate','OrderController@update');
 
 Route::get('OrderManagementList', 'OrderController@list');
 Route::get('OrderManagementUpdate', 'OrderController@update');

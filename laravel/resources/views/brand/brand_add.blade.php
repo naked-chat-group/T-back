@@ -72,7 +72,7 @@
 				<div class="layui-form-item layui-form-text">
 					<label class="layui-form-label">品牌介绍</label>
 					<div class="layui-input-block">
-						<textarea name="desc" id="brandDesc" name="brandDesc" placeholder="请输入内容" class="layui-textarea"></textarea>
+						<textarea name="desc"  id="brandDesc" name="brandDesc" placeholder="请输入内容" class="layui-textarea"></textarea>
 					</div>
 				</div>
 				<div class="layui-form-item">

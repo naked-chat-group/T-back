@@ -22,6 +22,8 @@ class BrandController extends BaseController
     }
     public function lists()
     {
+
+
         return view('brand.brand_list');
     }
     public function Upload(Request $request)
@@ -31,7 +33,7 @@ class BrandController extends BaseController
             $path = $request->file('file')->store('public');
             //截取/后面的字符串
             $path= substr(strrchr($path, "/"), 1);
-            $path = asset('storage/'.$path);
+            $path = '/storage/'.$path;
             return response()->json(['code'=>'1000','msg'=>'','path'=>$path]);
         }
     }
@@ -50,5 +52,66 @@ class BrandController extends BaseController
         }else{
             return response()->json(['code'=>'1003','msg'=>'请求失败']);
         }
+    }
+    public function BrandsPage(Request $request)
+    {
+        if($request->ajax()){
+            $page = $request->get('page',1);
+            $limit = $request->get('limit',10);
+            $where = $request->get('brandName',"");
+
+            $count = Brands::BrandCount($where);
+           
+            $html = Brands::SelPage(($page-1)*$limit,$limit,$where);
+
+            return response()->json(['code'=>0,'msg'=>'','count'=>$count,'data'=>$html]);
+        }else{
+            $count = Brands::BrandCount($where ="");
+            return response()->json(['code'=>0,'msg'=>'请求格式有误','count'=>$count,'data'=>'']);
+        }
+    }
+    public function Del(Request $request)
+    {
+        $post = $request->post();
+        $res = Brands::BrandDel($post['brandId']);
+        if($res)
+        {
+            return  response()->json(['code'=>'1001','msg'=>'删除成功']);
+        }else{
+            return  response()->json(['code'=>'1002','msg'=>'删除失败']);
+        }
+
+    }
+    //修改渲染页面
+    public function BrandsUpd(Request $request)
+    {
+        $brandId = $request->get('brandId');
+        $brandCats = BrandsCats::brandCatsSel($brandId);
+        $html = Brands::brandIdSel($brandId);
+        $cats = Cats::addSel()->toarray();
+        return view('brand.brand_upd',['html'=>$html,'cats'=>$cats,'brandCats'=>$brandCats]);
+    }
+    public function BrandsUpds(Request $request)
+    {
+        if($request->isMethod('post'))
+        {
+            $post = $request->post();
+            return Brands::BrandsUpd($post);
+        }else{
+            return response()->json(['code'=>'1003','msg'=>'请求失败']);
+        }
+
+    }
+    //条件查询
+    public function Sel(Request $request)
+    {
+        if($request->isMethod('post'))
+        {
+            $post = $request->post();
+            return Brands::BrandSel($post['brandName']);
+        }else{
+            return response()->json(['code'=>'1003','msg'=>'请求失败']);
+        }
+
     }
 }
