@@ -74,13 +74,11 @@
             <div class="">
                 <label class="layui-form-label">服务地区</label>
                 <div class="" id="serve_city">
-                    <label class="layui-form-label">服务地区</label>
-                    <input type="checkbox">
+                    <div class="layui-input-block" id="checkbox">
+                        <label class="layui-form-label">服务地区</label>
+                    </div>
                 </div>
-
             </div>
-
-
         <div class="layui-form-item">
             <label class="layui-form-label">负责人</label>
             <div class="layui-input-inline shortInput">
@@ -125,21 +123,12 @@
                     var serve = '';
                     for(var i=0;i<v.length;i++){  //循环获取返回值，并组装成html代码
                         option +='<option value="'+v[i]['area_name']+'">'+v[i]['area_name']+'</option>';
-                        // serve + ="<input type='checkbox'>";
-                    // <div class="">
-                    //         <label class="layui-form-label">服务地区</label>
-                    //         <div class="" id="serve_city">
-                    //         <label class="layui-form-label">服务地区</label>
-                    //         <input type="checkbox">
-                    //         </div>
-                    //
-                    //         </div>
-                        serve += "<label class=\"layui-form-label\">服务地区</label>";
+                        serve += '<input type="checkbox" value="'+v[i]['area_name']+'" name="serve_area[]" title="'+v[i]['area_name']+'">&nbsp;&nbsp;&nbsp;&nbsp; ';
                     }
-                    city = option;
                     $("#city").html(option);
-                    $("#serve_city").html(serve);
                     form.render('select');
+                    $("#checkbox").html(serve);
+                    form.render('checkbox');
                 }
 
             })

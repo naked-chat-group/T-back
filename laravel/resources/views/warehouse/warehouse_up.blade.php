@@ -60,25 +60,37 @@
             <label class="layui-form-label">所在地区</label>
             <div class="layui-input-inline">
                 <select name="provid" required lay-verify="required" id="provid" lay-filter="provid">
-                    <option value="{{$data['0']['provid']}}">{{$data['0']['provid']}}</option>
                     @foreach($provid as $v)
-                        <option value="{{$v['area_name']}}">{{$v['area_name']}}</option>
+                        @if($v['area_name']==$data['0']['provid'])
+                            <option value="{{$v['area_name']}}" selected>{{$v['area_name']}}</option>
+                        @else
+                            <option value="{{$v['area_name']}}">{{$v['area_name']}}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
             <div class="layui-input-inline">
                 <select name="city" id="city" lay-filter="cityid">
-                    <option value="{{$data['0']['city']}}">{{$data['0']['city']}}</option>
-
+                    @foreach($city as $v)
+                        @if($v['area_name']==$data['0']['city'])
+                        <option value="{{$v['area_name']}}" selected>{{$v['area_name']}}</option>
+                        @else
+                            <option value="{{$v['area_name']}}" >{{$v['area_name']}}</option>
+                        @endif
+                    @endforeach
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">服务地区</label>
-            <div class="layui-input-inline">
-                <select name="serve_area" id="serve_city" lay-filter="serve_city">
-                    <option value="{{$data['0']['serve_area']}}">{{$data['0']['serve_area']}}</option>
-                </select>
+            <div class="layui-input-block" id="checkbox">
+                @foreach($city as $v)
+                    @if(in_array($v['area_name'],$data[0]['serve_area']))
+                        <input type="checkbox" checked value="{{$v['area_name']}}" name="serve_area[]" title="{{$v['area_name']}}">&nbsp;&nbsp;&nbsp;&nbsp;
+                    @else
+                        <input type="checkbox" value="{{$v['area_name']}}" name="serve_area[]" title="{{$v['area_name']}}">&nbsp;&nbsp;&nbsp;&nbsp;
+                    @endif
+                @endforeach
             </div>
         </div>
         <div class="layui-form-item">
@@ -128,12 +140,15 @@
                 url:"WarehouseManagementCity",
                 success:function (v) {
                     var option = '';
+                    var serve='';
                     for(var i=0;i<v.length;i++){  //循环获取返回值，并组装成html代码
                         option +='<option value="'+v[i]['area_name']+'">'+v[i]['area_name']+'</option>';
+                        serve += '<input type="checkbox" value="'+v[i]['area_name']+'" name="serve_area[]" title="'+v[i]['area_name']+'">&nbsp;&nbsp;&nbsp;&nbsp; ';
                     }
                     $("#city").html(option);
-                    $("#serve_city").html(option);
                     form.render('select');
+                    $("#checkbox").html(serve);
+                    form.render('checkbox');
                 }
 
             })
