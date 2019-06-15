@@ -47,7 +47,10 @@
             <div class="layui-input-inline shortInput">
                 <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input">
             </div>
-            <i class="iconfont icon-huaban bt"></i>
+            <div class="layui-input-inline" style="width: 300px">
+                <i class="iconfont icon-huaban bt"></i>
+                <div class="layui-form-mid layui-word-aux">例如[商品]商品管理, []中的内容为分组信息</div>
+            </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">权限集合</label>
@@ -128,7 +131,7 @@
         //     v2: 510100,
         //     v3: null
         // };
-        layui.use('form', function() {
+        layui.use(['form', 'layer'], function() {
             var form = layui.form;
 
 
@@ -186,8 +189,16 @@
                });
                obj.field.code = code;
                // console.log(obj.field);
+                var index = layer.load();
                 ajax('/AuthStore', 'post', obj.field, function(e){
-                    console.log(e)
+                    if (200 != e.code) {
+                        layer.close(index);
+                        layer.msg(e.msg, {icon: 5,anim: 6,time:2000});
+                    }
+                    layer.close(index);
+                    layer.msg(e.msg, {icon: 6, time: 1000}, function() {
+                        location.href = '/AuthManagement';
+                    })
                 })
             });
             function ajax(url, method, data, callback) {

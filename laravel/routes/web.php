@@ -42,7 +42,20 @@ Route::get('getAction', 'AuthController@getAction');
 Route::post('AuthStore', 'AuthController@AuthStore');
 //菜单生成页面
 Route::get('MenuCreate', 'AuthController@MenuCreate');
+//添加菜单
+Route::post('MenuStore', 'AuthController@MenuStore');
 
+//角色页面
+Route::get('RoleManagement', 'RoleController@index');
+//角色数据
+Route::get('RoleData', 'RoleController@RoleData');
+//添加角色
+Route::get('RoleCreate', 'RoleController@RoleCreate');
+//执行添加角色
+Route::post('RoleStore', 'RoleController@RoleStore');
+//修改角色信息
+Route::get('RoleEdit', 'RoleController@RoleEdit');
+Route::post('RoleEdit', 'RoleController@RoleUpd');
 //Route::get('RoleManagement', 'ManageController@index');
 //Route::get('RoleManagementAdd', 'ManageController@add');
 

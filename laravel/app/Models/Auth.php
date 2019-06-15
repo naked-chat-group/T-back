@@ -47,14 +47,32 @@ class Auth extends Model
      */
     public function findById($id)
     {
-        return $this->where([['id',$id], ['types', 1]])->select('name','id')->first();
+        return $this->where([['id',$id], ['types', 1]])->select('name','id')->first()->toArray();
     }
     /*
      * 根据类型查找权限
      */
-    public function findByType($type)
+    public function findByType($type, $id)
     {
-        return $this->where([['right','<>',''],['types', $type]])->select('name','id')->get();
+        return $this->where([['right','<>',''],['types', $type], ['id', '<>', $id]])->select('name','id')->get()->toArray();
+    }
+
+    public function getAuth()
+    {
+        $auth = $this->get()->toArray();
+//        dd($auth);
+        $newAuth = [];
+        foreach ($auth as $key => $val) {
+            preg_match('/\[.*?\]/',$val['name'],$localPre);
+            $arrayKey = trim($localPre[0],'[]');
+            if (isset($newAuth[$arrayKey])) {
+                $newAuth[$arrayKey][] = $val;
+            } else {
+                $newAuth[$arrayKey] = [];
+            }
+        }
+
+        return $newAuth;
     }
 
 }

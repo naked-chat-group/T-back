@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Facade\Auth;
+use App\Facade\Menu;
 
 class AuthController extends Controller
 {
@@ -90,9 +91,27 @@ class AuthController extends Controller
 
         $parentMenu = Auth::findById($id);
 
-        $childMenu = Auth::findByType(1);
+        $childMenu = Auth::findByType(1,$id);
 
-        return view('auth.MenuCreate', compact('parentMenu', 'childMenu'));
+        $ownMenu = Menu::findByPid($id);
+//        dd($ownMenu);
+        return view('auth.MenuCreate', compact('parentMenu', 'childMenu', 'ownMenu'));
+
+    }
+
+    /*
+     * 添加菜单
+     */
+    public function MenuStore(Request $request)
+    {
+        $parentId = $request->post('parentId');
+        $childId = $request->post('child');
+
+        if (!Menu::store($parentId, $childId)) {
+            return response()->json(['code' => 400, 'msg' => '添加失败, 请联系管理员']);
+        }
+
+        return response()->json(['code' => 200, 'msg' => '成功,准备跳转']);
 
     }
 
