@@ -132,6 +132,7 @@
                     if (200 != e.code) {
                         layer.close(index);
                         layer.msg(e.msg, {icon: 5,anim: 6,time:2000});
+                        return;
                     }
                     layer.close(index);
                     layer.msg(e.msg, {icon: 6, time: 1000}, function() {

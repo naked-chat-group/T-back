@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Facade\RoleMenu;
+use App\Facade\RoleAuth;
+use Illuminate\Support\Facades\DB;
+use yii\db\Exception;
 
 class Role extends Model
 {
@@ -33,18 +37,25 @@ class Role extends Model
 
     public function store($post)
     {
-        $data = [];
-        $menu = $post['menu'];
-        $data['name']  = $post['name'];
-        $auth = $post['auth'];
-        if ($menu) {
-            $data['menus'] = serialize($menu);
+        DB::beginTransaction();
+        try {
+            $role = $this->create(['name' => $post['name']]);
+            if (isset($post['menu'])) {
+                if (!RoleMenu::store($role->id, $post['menu'])) {
+                    throw new \Exception('菜单添加错误');
+                }
+            }
+            if (isset($post['auth'])) {
+               if (!RoleAuth::store($role->id, $post['auth'])) {
+                   throw new \Exception('权限添加错误');
+               }
+            }
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return false;
         }
-        if ($auth) {
-            $data['rights'] = implode('|', $auth);
-        }
-
-        return $this->create($data);
     }
 
     public function findById($id)
@@ -60,22 +71,27 @@ class Role extends Model
 
     public function upd($post)
     {
-        $data = [];
-        $data['rights'] = '';
-        $data['menus'] = '';
-        if (isset($post['menu'])) {
-            $menu = $post['menu'];
-            if ($menu) {
-                $data['menus'] = serialize($menu);
+
+        DB::beginTransaction();
+        try {
+            $this->where('id', $post['id'])->update(['name' => $post['name']]);
+            RoleMenu::delByRid($post['id']);
+            RoleAuth::delByRid($post['id']);
+            if (isset($post['menu'])) {
+                if (!RoleMenu::store($post['id'], $post['menu'])) {
+                    throw new \Exception('菜单修改错误');
+                }
             }
-        }
-        $data['name']  = $post['name'];
-        if (isset($post['auth'])) {
-            $auth = $post['auth'];
-            if ($auth) {
-                $data['rights'] = implode('|', $auth);
+            if (isset($post['auth'])) {
+                if (!RoleAuth::store($post['id'], $post['auth'])) {
+                    throw new \Exception('权限修改错误');
+                }
             }
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return false;
         }
-        return $this->where('id', $post['id'])->update($data);
     }
 }

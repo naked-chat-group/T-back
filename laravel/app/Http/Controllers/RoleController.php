@@ -7,7 +7,8 @@ use Illuminate\Routing\Controller;
 use App\Facade\Menu;
 use App\Facade\Auth;
 use App\Facade\Role;
-use Illuminate\Support\Facades\DB;
+use App\Facade\RoleAuth;
+use App\Facade\RoleMenu;
 
 
 class RoleController extends Controller
@@ -53,6 +54,7 @@ class RoleController extends Controller
 
     public function RoleStore(Request $request)
     {
+
         if (!Role::store($request->post())) {
             return response()->json(['code' => 400, 'msg' => '添加失败, 请联系管理员']);
         }
@@ -60,29 +62,32 @@ class RoleController extends Controller
         return response()->json(['code' => 200, 'msg' => '添加成功,准备跳转']);
     }
 
+    protected function checkData($data)
+    {
+        return array_reduce($data, function($v, $w) {
+            return array_merge($v, array_values($w));
+        }, array());
+    }
+
     public function RoleEdit(Request $request)
     {
         $id = $request->input('id');
         $role = Role::findById($id);
-        if ($role) {
-            $rights = explode('|', $role->rights);
+        if ($id) {
 
-            $menus = unserialize($role->menus);
-            $newMenus = [];
-            if (is_array($menus)) {
-                foreach($menus as $key => $val) {
-                    $newMenus[] = $key;
-                    if ($val) {
-                        $newMenus = array_merge($newMenus, $val);
-                    }
-                }
-            }
+            $RoleMenu = RoleMenu::findByRid($id);
+
+
+            $RoleMenu = $this->checkData($RoleMenu);
+
+            $RoleAuth = RoleAuth::findByRid($id);
+            $RoleAuth = $this->checkData($RoleAuth);
 
             $menu = Menu::getMenu();
             $menu = $this->getTree($menu);
             $auth = Auth::getAuth();
 
-            return view('role.role_edit', compact('menu', 'auth', 'rights', 'newMenus', 'role'));
+            return view('role.role_edit', compact('menu', 'auth', 'RoleMenu', 'RoleAuth', 'role'));
         }
     }
 

@@ -59,12 +59,12 @@
                     @foreach($menu as $key => $val)
                         <div class="layui-form-item">
                             <div class="layui-input-inline">
-                                <input type="checkbox" value="{{ substr($val['right']['name'], stripos($val['right']['name'], ']')+1) }}" title="{{ substr($val['right']['name'], stripos($val['right']['name'], ']')+1) }}" lay-skin="primary" class="parentMenu">
+                                <input type="checkbox" value="{{ $val['right']['id'] }}" title="{{ substr($val['right']['name'], stripos($val['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
                             </div>
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
                                     @foreach($val['children'] as $val2)
-                                        <input type="checkbox" value="{{ substr($val2['right']['name'], stripos($val2['right']['name'], ']')+1) }},{{ $val2['right']['right'] }}" title="{{ substr($val2['right']['name'], stripos($val2['right']['name'], ']')+1) }}" lay-skin="primary" class="childMenu">
+                                        <input type="checkbox" value="{{ $val2['right']['id'] }}" title="{{ substr($val2['right']['name'], stripos($val2['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
                                     @endforeach
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
                                     @foreach($val as $val2)
-                                        <input type="checkbox" value="{{ $val2['right'] }}" title="{{ substr($val2['name'], stripos($val2['name'], ']')+1) }}" lay-skin="primary" class="auth">
+                                        <input type="checkbox" value="{{ $val2['id'] }}" title="{{ substr($val2['name'], stripos($val2['name'], ']')+1) }}" lay-skin="primary" class="auth">
                                     @endforeach
                                 </div>
                             </div>
@@ -110,37 +110,32 @@
             //各种基于事件的操作，下面会有进一步介绍
 
             form.on('submit(submitBut)', function(data){
-                var menu = {};
-                $('.parentMenu').each(function(i,v){
+                var menu = [];
+                $('.menu').each(function(i,v){
                     if ($(v).prop('checked')) {
-                        var childMenu = [];
-                        $('.childMenu').each(function(i2,v2){
-                            if ($(v2).prop('checked')) {
-                                childMenu[i2] = $(v2).val()
-                            }
-                        });
-                        // console.log(childMenu);
-                        if (!childMenu.length) {
-                            menu[$(v).val()] = '';
-                        } else {
-                            menu[$(v).val()] = childMenu;
-                        }
+                        menu[i] = $(v).val();
                     }
                 });
 
+                if (!menu.length) {
+                    menu = '';
+                }
                 // console.log(menu);
-                var auth = {};
+                var auth = [];
                 $('.auth').each(function(i,v){
                     if ($(v).prop('checked')) {
                         auth[i] = $(v).val();
                     }
                 });
-
+                if (!auth.length) {
+                    auth = '';
+                }
                 var index = layer.load();
                 ajax('/RoleStore', 'post', {menu:menu,auth:auth,name:data.field.name}, function(e){
                     if (200 != e.code) {
                         layer.close(index);
                         layer.msg(e.msg, {icon: 5,anim: 6,time:2000});
+                        return;
                     }
                     layer.close(index);
                     layer.msg(e.msg, {icon: 6, time: 1000}, function() {

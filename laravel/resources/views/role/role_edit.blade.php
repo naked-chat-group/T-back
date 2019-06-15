@@ -46,7 +46,7 @@
         <input type="hidden" value="{{ $role->id }}" name="id">
         <div class="layui-form-item">
             <div class="layui-input-inline shortInput">
-                <input type="text" name="name" required lay-verify="required" autocomplete="off" class="layui-input" value="{{ $role->name }}">
+                <input type="text" name="name" value="{{ $role->name }}" required lay-verify="required" autocomplete="off" class="layui-input">
             </div>
             <div class="layui-input-inline" style="width: 500px">
                 <i class="iconfont icon-huaban bt"></i>
@@ -60,14 +60,12 @@
                     @foreach($menu as $key => $val)
                         <div class="layui-form-item">
                             <div class="layui-input-inline">
-                                <?php $m = substr($val['right']['name'], stripos($val['right']['name'], ']')+1) ?>
-                                <input type="checkbox" @if(in_array($m, $newMenus)) checked @endif value="{{ $m }}" title="{{ $m }}" lay-skin="primary" class="parentMenu">
+                                <input type="checkbox"  @if(in_array($val['right']['id'], $RoleMenu)) checked @endif value="{{ $val['right']['id'] }}" title="{{ substr($val['right']['name'], stripos($val['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
                             </div>
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
                                     @foreach($val['children'] as $val2)
-                                        <?php $m = substr($val2['right']['name'], stripos($val2['right']['name'], ']')+1) ?>
-                                        <input type="checkbox" @if(in_array($m .',' .$val2['right']['right'], $newMenus)) checked @endif value="{{ $m .','.$val2['right']['right'] }}" title="{{ $m }}" lay-skin="primary" class="childMenu">
+                                        <input type="checkbox" @if(in_array($val2['right']['id'], $RoleMenu)) checked @endif value="{{ $val2['right']['id'] }}" title="{{ substr($val2['right']['name'], stripos($val2['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
                                     @endforeach
                                 </div>
                             </div>
@@ -89,7 +87,7 @@
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
                                     @foreach($val as $val2)
-                                        <input type="checkbox" @if(in_array($val2['right'], $rights)) checked @endif value="{{ $val2['right'] }}" title="{{ substr($val2['name'], stripos($val2['name'], ']')+1) }}" lay-skin="primary" class="auth">
+                                        <input type="checkbox" @if(in_array($val2['id'], $RoleAuth)) checked @endif value="{{ $val2['id'] }}" title="{{ substr($val2['name'], stripos($val2['name'], ']')+1) }}" lay-skin="primary" class="auth">
                                     @endforeach
                                 </div>
                             </div>
@@ -113,32 +111,26 @@
             //各种基于事件的操作，下面会有进一步介绍
 
             form.on('submit(submitBut)', function(data){
-                var menu = {};
-                $('.parentMenu').each(function(i,v){
+                var menu = [];
+                $('.menu').each(function(i,v){
                     if ($(v).prop('checked')) {
-                        var childMenu = [];
-                        $('.childMenu').each(function(i2,v2){
-                            if ($(v2).prop('checked')) {
-                                childMenu[i2] = $(v2).val()
-                            }
-                        });
-                        // console.log(childMenu);
-                        if (!childMenu.length) {
-                            menu[$(v).val()] = '';
-                        } else {
-                            menu[$(v).val()] = childMenu;
-                        }
+                        menu[i] = $(v).val();
                     }
                 });
 
+                if (!menu.length) {
+                    menu = '';
+                }
                 // console.log(menu);
-                var auth = {};
+                var auth = [];
                 $('.auth').each(function(i,v){
                     if ($(v).prop('checked')) {
                         auth[i] = $(v).val();
                     }
                 });
-
+                if (!auth.length) {
+                    auth = '';
+                }
                 var index = layer.load();
                 ajax('/RoleEdit', 'post', {menu:menu,auth:auth,name:data.field.name,id:data.field.id}, function(e){
                     if (200 != e.code) {
