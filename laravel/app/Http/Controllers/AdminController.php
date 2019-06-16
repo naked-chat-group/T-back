@@ -23,6 +23,8 @@ class AdminController extends BaseController
      */
     public function index(Request $request)
     {
+//        dd(session('user'));
+        session(['user' => ['uid' => 1, 'admin_name' => 'root']]);
         return view('admin.admin', compact('count'));
     }
 

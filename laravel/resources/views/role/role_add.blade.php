@@ -59,12 +59,12 @@
                     @foreach($menu as $key => $val)
                         <div class="layui-form-item">
                             <div class="layui-input-inline">
-                                <input type="checkbox" value="{{ $val['right']['id'] }}" title="{{ substr($val['right']['name'], stripos($val['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
+                                <input type="checkbox" value="{{ $val['id'] }}" title="{{ substr($val['right']['name'], stripos($val['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
                             </div>
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
                                     @foreach($val['children'] as $val2)
-                                        <input type="checkbox" value="{{ $val2['right']['id'] }}" title="{{ substr($val2['right']['name'], stripos($val2['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
+                                        <input type="checkbox" value="{{ $val2['id'] }}" title="{{ substr($val2['right']['name'], stripos($val2['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
                                     @endforeach
                                 </div>
                             </div>

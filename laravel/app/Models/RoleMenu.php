@@ -12,6 +12,10 @@ class RoleMenu extends Model
 
     public $timestamps = false;
 
+    public function menu()
+    {
+        return $this->hasOne('App\Models\Menu', 'id', 'mid');
+    }
 
     public function store($rid, $data)
     {
@@ -32,5 +36,10 @@ class RoleMenu extends Model
     public function delByRid($id)
     {
         return $this->where('rid',$id)->delete();
+    }
+
+    public function getMenu($rid)
+    {
+        return $this->with('menu.right')->where('rid', $rid)->get()->toArray();
     }
 }

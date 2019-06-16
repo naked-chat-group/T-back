@@ -57,12 +57,12 @@
 
             var data = [
                 @foreach($childMenu as $key => $val)
-                    {"value": "{{ $val['id'] }}", "title": "{{ $val['name'] }}", "disabled": "", "checked": ""}
+                    {"value": "{{ $val['id'] }}", "title": "{{ $val['name'] }}", "disabled": "", "checked": ""},
                 @endforeach
             ];
             var value = [
                 @foreach($ownMenu as $key => $val)
-                {{ $val['right']['id'] }}
+                {{ $val['right']['id'] }},
                 @endforeach
             ];
 

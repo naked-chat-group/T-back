@@ -60,12 +60,12 @@
                     @foreach($menu as $key => $val)
                         <div class="layui-form-item">
                             <div class="layui-input-inline">
-                                <input type="checkbox"  @if(in_array($val['right']['id'], $RoleMenu)) checked @endif value="{{ $val['right']['id'] }}" title="{{ substr($val['right']['name'], stripos($val['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
+                                <input type="checkbox"  @if(in_array($val['id'], $RoleMenu)) checked @endif value="{{ $val['id'] }}" title="{{ substr($val['right']['name'], stripos($val['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
                             </div>
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
                                     @foreach($val['children'] as $val2)
-                                        <input type="checkbox" @if(in_array($val2['right']['id'], $RoleMenu)) checked @endif value="{{ $val2['right']['id'] }}" title="{{ substr($val2['right']['name'], stripos($val2['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
+                                        <input type="checkbox" @if(in_array($val2['id'], $RoleMenu)) checked @endif value="{{ $val2['id'] }}" title="{{ substr($val2['right']['name'], stripos($val2['right']['name'], ']')+1) }}" lay-skin="primary" class="menu">
                                     @endforeach
                                 </div>
                             </div>

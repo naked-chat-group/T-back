@@ -12,6 +12,10 @@ class RoleAuth extends Model
 
     public $timestamps = false;
 
+    public function auth()
+    {
+        return $this->hasOne('App\Models\Auth', 'id', 'aid');
+    }
 
     public function store($rid, $data)
     {
@@ -32,5 +36,10 @@ class RoleAuth extends Model
     public function delByRid($id)
     {
         return $this->where('rid',$id)->delete();
+    }
+
+    public function getAuth($rid)
+    {
+        return $this->with('auth')->where('rid', $rid)->get()->toArray();
     }
 }

@@ -11,51 +11,51 @@
 |
 */
 //左侧菜单栏
-Route::get('/index', 'StaticController@index');
+Route::get('/index', 'StaticController@index')->name('StaticController@index');
 
 //登录
 Route::get('/', 'LoginController@index');
 
 //首页
-Route::get('show', 'IndexController@index');
+Route::get('show', 'IndexController@index')->name('IndexController@index');
 
 //管理员列表页面
-Route::get('AdminManagement', 'AdminController@index');
+Route::get('AdminManagement', 'AdminController@index')->name('AdminController@index');
 //管理员数据页面
-Route::get('getData', 'AdminController@getData');
+Route::get('getData', 'AdminController@getData')->name('AdminController@getData');
 //管理员添加页面
-Route::get('AdminAdd', 'AdminController@addAdmin');
+Route::get('AdminAdd', 'AdminController@addAdmin')->name('AdminController@addAdmin');
 //管理员的添加方法
-Route::post('AdminStore', 'AdminController@AdminStore');
+Route::post('AdminStore', 'AdminController@AdminStore')->name('AdminController@AdminStore');
 //管理员修改页面
-Route::get('AdminEdit', 'AdminController@AdminEdit');
-Route::post('AdminEdit', 'AdminController@AdminUpd');
+Route::get('AdminEdit', 'AdminController@AdminEdit')->name('AdminController@AdminEdit');
+Route::post('AdminEdit', 'AdminController@AdminUpd')->name('AdminController@AdminUpd');
 //权限列表页面
-Route::get('AuthManagement', 'AuthController@index');
+Route::get('AuthManagement', 'AuthController@index')->name('AuthController@index');
 //权限数据页面
-Route::get('AuthData', 'AuthController@getData');
+Route::get('AuthData', 'AuthController@getData')->name('AuthController@getData');
 //权限添加页面
-Route::get('AuthAdd', 'AuthController@addAuth');
+Route::get('AuthAdd', 'AuthController@addAuth')->name('AuthController@addAuth');
 //获取控制器所拥有的方法
-Route::get('getAction', 'AuthController@getAction');
+Route::get('getAction', 'AuthController@getAction')->name('AuthController@getAction');
 //权限添加方法
-Route::post('AuthStore', 'AuthController@AuthStore');
+Route::post('AuthStore', 'AuthController@AuthStore')->name('AuthController@AuthStore');
 //菜单生成页面
-Route::get('MenuCreate', 'AuthController@MenuCreate');
+Route::get('MenuCreate', 'AuthController@MenuCreate')->name('AuthController@MenuCreate');
 //添加菜单
-Route::post('MenuStore', 'AuthController@MenuStore');
+Route::post('MenuStore', 'AuthController@MenuStore')->name('AuthController@MenuStore');
 
 //角色页面
-Route::get('RoleManagement', 'RoleController@index');
+Route::get('RoleManagement', 'RoleController@index')->name('RoleController@index');
 //角色数据
-Route::get('RoleData', 'RoleController@RoleData');
+Route::get('RoleData', 'RoleController@RoleData')->name('RoleController@RoleData');
 //添加角色
-Route::get('RoleCreate', 'RoleController@RoleCreate');
+Route::get('RoleCreate', 'RoleController@RoleCreate')->name('RoleController@RoleCreate');
 //执行添加角色
-Route::post('RoleStore', 'RoleController@RoleStore');
+Route::post('RoleStore', 'RoleController@RoleStore')->name('RoleController@RoleStore');
 //修改角色信息
-Route::get('RoleEdit', 'RoleController@RoleEdit');
-Route::post('RoleEdit', 'RoleController@RoleUpd');
+Route::get('RoleEdit', 'RoleController@RoleEdit')->name('RoleController@RoleEdit');
+Route::post('RoleEdit', 'RoleController@RoleUpd')->name('RoleController@RoleUpd');
 //Route::get('RoleManagement', 'ManageController@index');
 //Route::get('RoleManagementAdd', 'ManageController@add');
 
