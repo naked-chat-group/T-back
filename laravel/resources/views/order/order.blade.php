@@ -92,24 +92,8 @@
             });
         </script>
     </div>
+    <table class="layui-table" id="test">
 
-    <table class="layui-table">
-        <thead>
-        <tr>
-            <th>订单编号</th>
-            <th>收货人</th>
-            <th>实收金额</th>
-            <th>支付方式</th>
-            <th>配送方式</th>
-            <th>订单来源</th>
-            <th>下单时间</th>
-            <th>订单状态</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
     </table>
 
     <!-- layUI 分页模块 -->
@@ -117,37 +101,76 @@
     <script>
 
 
-        layui.use(['laypage', 'layer'], function() {
-            var laypage = layui.laypage,
-                layer = layui.layer;
+        layui.use('table', function() {
+            var table = layui.table;
+            table.render({
+                elem: '#test',
+                url: 'orderPage',
+                page:true,
+                cols: [[
+                    {field: 'orderNo',width:230, title: '订单编号'},
+                    {field: 'userName',width:100, title: '收货人'},
+                    {field: 'realTotalMoney',width:100, title: '实收金额'},
+                    {field: 'payType',width:100, title: '支付方式',templet: function(d){
+                        if(d.payType == 0){return '货到付款'}else {return '在线支付'}}},
+                    {field: 'deliverType',width:100, title: '配送方式',templet: function(d){
+                            if(d.deliverType == 0){return '送货上门'}else {return '自提'}}},
+                    {field: 'payFrom',width:100, title: '支付来源',templet: function(d){
+                            if(d.payFrom == 0){return '支付宝'}else {return '微信'}}},
+                    {field: 'createTime',width:180, title: '下单时间',sort: true},
+                    {field: 'orderStatus',width:100, title: '订单状态',templet: function(d){
+                            switch (d.orderStatus){
+                                case -3:return '用户拒收';
+                                case -2:return '未支付';
+                                case -1:return '取消订单';
+                                case 0:return '待发货';
+                                case 1:return '配送中';
+                                case 2:return '用户确认收货';
+                            }
+                        }},
+                    {field: '',title:'操作' ,width:180,templet: function(d)
+                        {
+                            $html ="";
+                            $html +='<button class="layui-btn layui-btn-xs" onclick="updateBut('+d.orderNo+')">查看详情</button>';
+                            $html +='<button class="layui-btn layui-btn-xs" onclick="updateorder('+d.orderNo+','+d.orderId+')">订单修改</button>';
+                            return $html;
+                        }}
+                ]], id: 'testReload'
+                ,
+                done:function(res,curr,count){
 
-            //总页数大于页码总数
-            laypage.render({
-                elem: 'pages'
-                ,count:{{ $count }}
-                ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
-                ,jump: function(obj){
-                    var page = obj.curr;
-                    var limit = obj.limit;
-
-                    ajaxGetData(page,limit);
                 }
             });
         });
-        function ajaxGetData(page,limit) {
-            $.ajax({
-                url:'orderPage',
-                type:'get',
-                data:{
-                    page:page,
-                    limit:limit
-                },
-                success:function(msg)
-                {
-                    $('tbody').empty();
-                    $('tbody').html(msg);
-                }
-            })
+        var updateFrame = null;
+        function updateBut(orderNo){
+                layui.use('layer', function() {
+                    var layer = layui.layer;
+                    //iframe层-父子操作
+                    updateFrame = layer.open({
+                        title: "订单详情信息",
+                        type: 2,
+                        area: ['80%', '90%'],
+                        scrollbar: false,	//默认：true,默认允许浏览器滚动，如果设定scrollbar: false，则屏蔽
+                        maxmin: true,
+                        content: 'OrderManagementDesc?orderNo='+orderNo
+                    });
+                });
+        }
+        var updateorderFrame = null;
+        function updateorder(orderNo,orderId){
+            layui.use('layer', function() {
+                var layer = layui.layer;
+                //iframe层-父子操作
+                updateorderFrame = layer.open({
+                    title: "订单修改",
+                    type: 2,
+                    area: ['80%', '90%'],
+                    scrollbar: false,	//默认：true,默认允许浏览器滚动，如果设定scrollbar: false，则屏蔽
+                    maxmin: true,
+                    content: 'orderUpdate?orderNo='+orderNo+'&orderId='+orderId
+                });
+            });
         }
     </script>
 </div>

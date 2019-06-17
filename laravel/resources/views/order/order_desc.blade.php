@@ -39,17 +39,42 @@
 </fieldset>
 <div style="padding: 20px; background-color: #F2F2F2;">
     <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">订单信息</div>
+                <div class="layui-card-body">
+                    订单编号：	{{ $order->orderNo }}<br>
+                    支付方式：	{{ $order->payType }}<br>
+                    配送方式：	{{ $order->deliverType }}<br>
+                    买家留言：	{{ $order->orderRemarks }}<br>
 
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">发票信息</div>
+                <div class="layui-card-body">
+                    是否需要发票：
+                    @if($order->isInvoice == 1)
+                        需要
+                        @else
+                        不需要
+                        @endif
+                        <br>
 
+                </div>
+            </div>
+        </div>
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-header">收货人信息</div>
                 <div class="layui-card-body">
+                    下单会员： <input type="text" value="{{ $order->userid }}"><br>
+                    收货人： <input type="text" value="{{ $order->userName }}"><br>
+                    收货地址： <input type="text" value="{{ $order->userAddress }}"><br>
+                    联系方式： <input type="text" value="{{ $order->userPhone }}"><br>
 
-                    下单会员： <input type="text" lay-verify="title" autocomplete="off" class="layui-input" value="{{ $order->userid }}"><br>
-                    收货人： <input type="text" lay-verify="title" autocomplete="off" class="layui-input" value="{{ $order->userName }}"><br>
-                    收货地址： <input type="text" lay-verify="title" autocomplete="off" class="layui-input" value="{{ $order->userAddress }}"><br>
-                    联系方式： <input type="text" lay-verify="title" autocomplete="off" class="layui-input" value="{{ $order->userPhone }}"><br>
                 </div>
             </div>
         </div>
@@ -62,13 +87,24 @@
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
     <legend>商品清单</legend>
 </fieldset>
-<div class="layui-card-body">
-    商品名称： {{ $ordergood['goodsName'] }}<br>
-    单价： {{ $ordergood['goodsNum'] }}<br>
-    数量：<input type="text" lay-verify="title" autocomplete="off" class="layui-input" value="{{ $ordergood['goodsNum'] }}"><br>
-    总价：{{ $order->realTotalMoney }}<br>
-</div>
-
+<table class="layui-table" lay-size="sm" lay-even="" lay-skin="nob">
+    <thead>
+        <tr>
+            <td>商品</td>
+            <td>单价</td>
+            <td>数量</td>
+            <td>总价</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 <div style="padding: 20px; background-color: #F2F2F2;">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
@@ -89,14 +125,6 @@
 
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-
-            <button class="layui-btn" lay-submit lay-filter="submitBut" >立即修改</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 </body>

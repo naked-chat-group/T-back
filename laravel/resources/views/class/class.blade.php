@@ -36,49 +36,42 @@
 	<body>
 		<div class="cBody">
 			<div class="console">
-				<form class="layui-form" action="">
-					<div class="layui-form-item">
-						<div class="layui-input-inline">
-							<input type="text" name="name" required lay-verify="required" placeholder="输入分类名称" autocomplete="off" class="layui-input">
-						</div>
-						<button class="layui-btn" lay-submit lay-filter="formDemo">查询</button>
-					</div>
-				</form>
-				<script>
-					layui.use('form', function() {
-						var form = layui.form;
-						//监听提交
-						form.on('submit(formDemo)', function(data) {
-							layer.msg(JSON.stringify(data.field));
-							return false;
-						});
-					});
-				</script>
+
 			</div>
 			<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-			<table class="layui-hide" id="test"></table>
+			<table id="auth-table" class="layui-table" lay-filter="auth-table"></table>
 			<script>
 				//修改规格
-				layui.use(['table','form'] , function() {
+				layui.config({
+					base: '/module/'
+				}).extend({
+					treetable: 'treetable-lay/treetable'
+				}).use(['table','form','treetable'] , function() {
 					var table = layui.table
-							, form = layui.form;
-					table.render({
-						elem: '#test'
-						, url: '/CatsPage'
-						, cellMinWidth: 80
-						, cols: [[
-							{type: 'numbers'}
-							, {type: 'checkbox'}
-							, {field: 'catName',width:180, title: '分类名称', templet: '#usernameTpl'}
-							, {field: 'simpleName',width:150, title: '分类缩写'}
-							, {field: 'isShow', title: '是否显示',width:150,templet: function(d){
+							, form = layui.form
+							, treetable = layui.treetable;
+					layer.load(2);
+					treetable.render({
+						treeColIndex:1,
+						treeSpid:0,
+						treeIdName: 'catId',
+						treePidName: 'parentId',
+						treeDefaultClose: true,
+						treeLinkage: false,
+						elem: '#auth-table',
+						url: '/CatsPage',
+						cols: [[
+							 {type: 'checkbox'},
+							{field: 'catName',width:230, title: '分类名称'},
+							{field: 'simpleName',width:150, title: '分类缩写'},
+							{field: 'isShow', title: '是否显示',width:150,templet: function(d){
 									return '<input type="checkbox" name="sex" switch_id="'+d.catId+'" switch_key="isShow" switch_isShow="'+d.isShow+'" value="'+d.idShow+'" lay-skin="switch" lay-text="显示|隐藏" lay-filter="isShow" '+(d.isShow == 1 ? "checked" : "")+'>';
-								}}
-							, {field: 'isFloor', title: '是否显示楼层',width:150,  templet: function(d){
+								}},
+							{field: 'isFloor', title: '是否显示楼层',width:150,  templet: function(d){
 								return '<input type="checkbox" name="sex" switch_id="'+d.catId+'" switch_key="isFloor" switch_isShow="'+d.isFloor+'"  value="'+d.isFloor+'" lay-skin="switch" lay-text="显示|隐藏" lay-filter="isShow" '+(d.isFloor == 1 ? "checked" : "")+'>';
-								}}
-							, {field: 'catSort', title: '排序号', width:150,  sort: true}
-							, {field: '',title:'操作' ,width:300,templet: function(d)
+								}},
+							{field: 'catSort', title: '排序号', width:150,  sort: true},
+							{field: '',title:'操作' ,width:300,templet: function(d)
 								{
 									var html = "";
 									html +='<a href="ClassManagementAdd?parentId='+d.catId+'"><button type="button" class="layui-btn"><i class="layui-icon">&#xe608;</i> 添加二级分类</button></a>';
@@ -86,8 +79,11 @@
 									html +='<button type="button" class="layui-btn delete" id="'+d.catId+'"><i class="layui-icon layui-icon-delete" ></i></button>'
 									return html;
 								}}
-						]]
-						, page: true
+						]],
+
+						done: function () {
+							layer.closeAll('loading');
+						}
 					});
 					form.on('switch(isShow)',function(data)
 					{

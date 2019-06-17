@@ -13,14 +13,23 @@ class Order extends Model
      */
     public function Sel()
     {
-        return Order::all()->count();
+        return $this->count();
     }
-
     /**
      * 获取分页数据
      */
     public function SelPage($offset,$limit)
     {
-        return Order::offset($offset)->limit($limit)->get();
+        return $this->offset($offset)->limit($limit)->get();
+    }
+    //详情
+    public function OrderSel($orderNo)
+    {
+        return $this->where('orderNo',$orderNo)->first();
+    }
+    //
+    public function OrdergoodSel()
+    {
+
     }
 }

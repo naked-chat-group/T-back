@@ -42,25 +42,14 @@
 	<body>
 		<div class="cBody">
 			<div class="console">
-				<form class="layui-form" action="">
-					<div class="layui-form-item">
-						<div class="layui-input-inline">
-							<input type="text" name="name" required lay-verify="required" placeholder="输入商品名称" autocomplete="off" class="layui-input">
-						</div>
-						<div class="layui-input-inline">
-		                    <select name="provid" id="provid" lay-filter="provid">
-		                        <option value="">一级分类</option>
-		                    </select>
-		                </div>
-		                <div class="layui-input-inline">
-		                    <select name="cityid" id="cityid" lay-filter="cityid">
-		                        <option value="">二级分类</option>
-		                    </select>
-		                </div>
-						<button class="layui-btn" lay-submit lay-filter="formDemo">检索</button>
-						<a class="layui-btn">导入商品</a>
+				<div class="demoTable">
+					搜索品牌：
+					<div class="layui-inline">
+						<input class="layui-input" name="brandName" placeholder="请输入品牌名称" id="demoReload" autocomplete="off">
 					</div>
-				</form>
+					<button class="layui-btn" data-type="reload">搜索</button>
+				</div>
+
 
 				<script>
 					layui.use('form', function() {
@@ -74,476 +63,100 @@
 					});
 				</script>
 			</div>
-			
-			<table class="layui-table">
-				<thead>
-					<tr>
-						<th>商品名称</th>
-						<th>商品图片</th>
-						<th>参考价格</th>
-						<th>商品单位</th>
-						<th>一级分类</th>
-						<th>二级分类</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC1.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC2.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-					<tr>
-						<td>HTML5</td>
-						<td><img src="../../images/goodsPIC3.png" width="20" height="20" onmouseenter="imgBig(this)" onmouseleave="imgSmall(this)"/></td>
-						<td>10</td>
-						<td>斤</td>
-						<td>技术</td>
-						<td>CSS3</td>
-						<td>
-							<button class="layui-btn layui-btn-xs" onclick="updateBut()">修改</button>
-							<button class="layui-btn layui-btn-xs" onclick="specificationsBut()">规格</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			<!-- layUI 分页模块 -->
-			<div id="pages"></div>
+
+			<table class="layui-hide" id="test"></table>
+			<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+
 			<script>
-				layui.use('laypage', function() {
-					var laypage = layui.laypage;
-				
-					//总页数大于页码总数
-					laypage.render({
-					    elem: 'pages'
-					    ,count: 100
-					    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
-					    ,jump: function(obj){
-//					      console.log(obj)
-					    }
+
+				layui.use('table', function() {
+					var table = layui.table;
+
+					table.render({
+						elem: '#test',
+						url: 'BrandManagementPages',
+						page:true,
+						cols: [[
+							{field: 'brandId',width:230, title: '#'},
+							{field: 'brandImg',width:230, title: '品牌图片',templet: function(d){
+									return '<img src="'+d.brandImg+'" alt="" width="30px" height="30px">';
+								}},
+							{field: 'brandName',width:150, title: '品牌名称'},
+							{field: 'brandDesc',width:150, title: '品牌简介'},
+							{field: 'sortNo',width:150, title: '排序号',sort: true},
+							{field: '',title:'操作' ,width:300,templet: function(d)
+							{
+								var html = "";
+								html +='<button class="layui-btn layui-btn-xs" onclick="updateBut('+d.brandId+')">修改</button>';
+								html +='<button class="layui-btn layui-btn-xs" id="brandDel" brandId='+d.brandId+'>删除</button>';
+								return html;
+							}}
+						]], id: 'testReload'
+							,
+						done:function(res,curr,count){
+							hoverOpenImg();//显示大图
+							}
 					});
+					var $ = layui.$;
+					active = {
+						reload: function(){
+							var demoReload = $('#demoReload');
+							//执行重载
+							table.reload('testReload',{
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},where: {
+									brandName: demoReload.val()
+								}
+							}, 'data');
+						}
+					};
+
+					$('.demoTable .layui-btn').on('click', function(){
+						var type = $(this).data('type');
+						active[type] ? active[type].call(this) : '';
+					});
+					$(document).on('click','#brandDel',function() {
+						var brandId = $(this).attr('brandId');
+						obj = $(this);
+						$.post('BrandManagementDel',{brandId:brandId,"_token": $('#token').val()},function(msg)
+						{
+							if(msg.code == 1001){
+								var icon = 6;
+							}else if(msg.code == 1002){
+								var icon = 2;
+							}
+							$(obj).parents('tr').remove();
+							active.reload();
+							layui.use('layer',function()
+							{
+								layer.msg(msg.msg, {icon: icon});
+							})
+						},'json');
+					})
 				});
+
+				//图片划过放大
+				function hoverOpenImg(){
+					var img_show = null; // tips提示
+					$('td img').hover(function(){
+						var kd=$(this).width();
+						kd1=kd*3;          //图片放大倍数
+						kd2=kd*3+30;       //图片放大倍数
+						var img = "<img class='img_msg' src='"+$(this).attr('src')+"' style='width:"+kd1+"px;' />";
+						img_show = layer.tips(img, this,{
+							tips:[2, 'rgba(41,41,41,.5)']
+							,area: [kd2+'px']
+						});
+					},function(){
+						layer.close(img_show);
+					});
+					$('td img').attr('style','max-width:70px;display:block!important');
+				}
 				//修改规格
 				function specificationsBut(){
 					layui.use('layer', function() {
 						var layer = layui.layer;
-						
 						//iframe层-父子操作
 						layer.open({
 							type: 2,
@@ -553,25 +166,22 @@
 							content: 'specifications_list.html'
 						});
 					});
-					
 				}
 				//修改按钮
 				var updateFrame = null;
-				function updateBut(){
+				function updateBut(brandId){
 					layui.use('layer', function() {
 						var layer = layui.layer;
-							
 						//iframe层-父子操作
 						updateFrame = layer.open({
-                    		title: "商品信息修改",
+                    		title: "品牌信息修改",
 							type: 2,
-							area: ['70%', '60%'],
+							area: ['80%', '90%'],
 							scrollbar: false,	//默认：true,默认允许浏览器滚动，如果设定scrollbar: false，则屏蔽
 							maxmin: true,
-							content: 'goods_update.html'
+							content: 'BrandManagementUpd?brandId='+brandId
 						});
 					});
-					
 				}
 			</script>
 		</div>

@@ -227,6 +227,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Order' => App\model\Order::class,
         'Cats' => App\model\Cats::class,
+        'Brands' => App\model\Brands::class,
+        'BrandsCats'=>App\model\BrandsCats::class,
+        'OrderGoods'=>App\model\OrderGoods::class,
     ],
 
 ];

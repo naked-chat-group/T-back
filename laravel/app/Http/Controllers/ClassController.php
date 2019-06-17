@@ -30,13 +30,14 @@ class ClassController extends BaseController
     public function page(Request $request)
     {
         if($request->ajax()){
-            $page = $request->get('page',1);
-            $limit = $request->get('limit',10);
-            $html = Cats::SelPage(($page-1)*$limit,$limit);
+//            $page = $request->get('page',1);
+//            $limit = $request->get('limit',10);
+            $html = Cats::SelPage();
             $count = Cats::CatsCount();
             return response()->json(['code'=>0,'msg'=>'','count'=>$count,'data'=>$html]);
         }else{
-            return response()->json(['code'=>0,'msg'=>'请求格式有误','count'=>$count,'data'=>$html]);
+            $count = Cats::CatsCount();
+            return response()->json(['code'=>0,'msg'=>'请求格式有误','count'=>$count,'data'=>'']);
         }
     }
 
@@ -101,7 +102,12 @@ class ClassController extends BaseController
             return  response()->json(['code'=>'1003','msg'=>'请求错误']);
         }
     }
-    //修改
+
+    /**
+     * 分类修改
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function CatsUpd(Request $request)
     {
         if($request->isMethod('post'))
@@ -123,6 +129,11 @@ class ClassController extends BaseController
 
     }
 
+    /**
+     * 分类状态修改
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function CatstypeUpd(Request $request)
     {
         if($request->isMethod('post'))
