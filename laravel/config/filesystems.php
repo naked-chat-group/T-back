@@ -46,7 +46,6 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
-
         ],
 
         'public' => [
@@ -63,6 +62,11 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
+        ],
+        'upload' => [
+            'driver' => 'local',
+            //'root' => storage_path('app/uploads'),
+            'root' => public_path('uploads/'.date('Ymd')),
         ],
 
     ],

@@ -116,13 +116,27 @@ Route::get('OrderManagementList', 'OrderController@list');
 Route::get('OrderManagementUpdate', 'OrderController@update');
 
 //商品属性管理
-Route::get('CommodManagement', 'CommodController@index');
-Route::get('CommodManagementAdd', 'CommodController@add');
+Route::any('CommodManagement', 'CommodController@index');
+Route::any('CommodManagementAdd', 'CommodController@add');
 Route::post('CommodManagementTwo', 'CommodController@two');
+Route::get('CommodManagementDel', 'CommodController@del');//删除
+Route::post('CommodManagementUpdshow', 'CommodController@upshow');//修改显示
+Route::post('CommodManagementUpdflag', 'CommodController@flag');//修改有效
+Route::get('CommodManagementInputs', 'CommodController@inputs');//分页
+Route::get('CommodManagementUpdate/{id}', 'CommodController@update');
+Route::post('CommodManagementUpdates', 'CommodController@updates');//修改
+Route::get('CommodManagementUpdateShu/{id}', 'CommodController@updatesShu');//修改属性值
+Route::post('CommodManagementUpdateShus', 'CommodController@updatesShus');//修改属性值
+
 
 //商品管理
 Route::get('ShopManagement', 'ShopController@index');
 Route::get('ShopManagementAdd', 'ShopController@add');
+Route::get('ShopManagementBrand/{id}', 'ShopController@brand');//所属品牌
+Route::post('ShopManagementUpload', 'ShopController@upload');//文件上传
+Route::post('ShopManagementValue', 'ShopController@value');//文件上传
+Route::post('ShopManagementValues', 'ShopController@values');//文件上传
+
 
 //权限管理
 Route::get('JurisdManagement', 'JurisdController@index');
