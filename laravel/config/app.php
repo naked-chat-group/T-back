@@ -229,6 +229,7 @@ return [
         'Cats' => App\model\Cats::class,
         'Brands' => App\model\Brands::class,
         'BrandsCats'=>App\model\BrandsCats::class,
+        'OrderGoods'=>App\model\OrderGoods::class,
     ],
 
 ];

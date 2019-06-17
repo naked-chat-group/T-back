@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Facades\Order;
+use App\Facades\OrderGoods;
 
 class OrderController extends BaseController
 {
@@ -44,9 +45,16 @@ class OrderController extends BaseController
      * 订单修改
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function update()
+    public function update(Request $request)
     {
-        return view('order.order_update');
+        $orderNo = $request->get('orderNo');
+        $orderId = $request->get('orderId');
+        $order = Order::OrderSel($orderNo);
+
+        $ordergood = OrderGoods::ordergoodSel($orderId);
+
+
+        return view('order.order_update',['order'=>$order,'ordergood'=>$ordergood]);
     }
     public function list()
     {
@@ -59,4 +67,5 @@ class OrderController extends BaseController
 
         return view('order.order_desc',['order'=>$order]);
     }
+
 }

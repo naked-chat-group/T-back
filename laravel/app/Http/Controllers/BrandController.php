@@ -61,7 +61,7 @@ class BrandController extends BaseController
             $where = $request->get('brandName',"");
 
             $count = Brands::BrandCount($where);
-           
+
             $html = Brands::SelPage(($page-1)*$limit,$limit,$where);
 
             return response()->json(['code'=>0,'msg'=>'','count'=>$count,'data'=>$html]);

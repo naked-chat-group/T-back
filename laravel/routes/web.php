@@ -70,6 +70,8 @@ Route::get('OrderManagementDesc', 'OrderController@desc');
 Route::get('orderPage','OrderController@page');
 //订单修改
 Route::get('orderUpdate','OrderController@update');
+//订单商品修改OrdergoodSel
+Route::get('ordergoodSel','OrderController@OrdergoodSel');
 
 Route::get('OrderManagementList', 'OrderController@list');
 Route::get('OrderManagementUpdate', 'OrderController@update');

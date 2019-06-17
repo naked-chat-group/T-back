@@ -27,4 +27,9 @@ class Order extends Model
     {
         return $this->where('orderNo',$orderNo)->first();
     }
+    //
+    public function OrdergoodSel()
+    {
+
+    }
 }

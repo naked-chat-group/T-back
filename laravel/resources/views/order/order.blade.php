@@ -128,10 +128,12 @@
                                 case 2:return '用户确认收货';
                             }
                         }},
-                    {field: '',title:'操作' ,width:124,templet: function(d)
+                    {field: '',title:'操作' ,width:180,templet: function(d)
                         {
-                            return '<button class="layui-btn layui-btn-xs" onclick="updateBut('+d.orderNo+')">查看详情</button>';
-                            return '<button class="layui-btn layui-btn-xs" onclick="updateorder('+d.orderNo+')">订单修改</button>';
+                            $html ="";
+                            $html +='<button class="layui-btn layui-btn-xs" onclick="updateBut('+d.orderNo+')">查看详情</button>';
+                            $html +='<button class="layui-btn layui-btn-xs" onclick="updateorder('+d.orderNo+','+d.orderId+')">订单修改</button>';
+                            return $html;
                         }}
                 ]], id: 'testReload'
                 ,
@@ -142,16 +144,31 @@
         });
         var updateFrame = null;
         function updateBut(orderNo){
+                layui.use('layer', function() {
+                    var layer = layui.layer;
+                    //iframe层-父子操作
+                    updateFrame = layer.open({
+                        title: "订单详情信息",
+                        type: 2,
+                        area: ['80%', '90%'],
+                        scrollbar: false,	//默认：true,默认允许浏览器滚动，如果设定scrollbar: false，则屏蔽
+                        maxmin: true,
+                        content: 'OrderManagementDesc?orderNo='+orderNo
+                    });
+                });
+        }
+        var updateorderFrame = null;
+        function updateorder(orderNo,orderId){
             layui.use('layer', function() {
                 var layer = layui.layer;
                 //iframe层-父子操作
-                updateFrame = layer.open({
-                    title: "订单详情信息",
+                updateorderFrame = layer.open({
+                    title: "订单修改",
                     type: 2,
                     area: ['80%', '90%'],
                     scrollbar: false,	//默认：true,默认允许浏览器滚动，如果设定scrollbar: false，则屏蔽
                     maxmin: true,
-                    content: 'OrderManagementDesc?orderNo='+orderNo
+                    content: 'orderUpdate?orderNo='+orderNo+'&orderId='+orderId
                 });
             });
         }

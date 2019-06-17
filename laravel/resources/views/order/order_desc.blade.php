@@ -70,10 +70,10 @@
             <div class="layui-card">
                 <div class="layui-card-header">收货人信息</div>
                 <div class="layui-card-body">
-                    下单会员：	{{ $order->userid }}<br>
-                    收货人：	{{ $order->userName }}<br>
-                    收货地址：	{{ $order->userAddress }}<br>
-                    联系方式：	{{ $order->userPhone }}<br>
+                    下单会员： <input type="text" value="{{ $order->userid }}"><br>
+                    收货人： <input type="text" value="{{ $order->userName }}"><br>
+                    收货地址： <input type="text" value="{{ $order->userAddress }}"><br>
+                    联系方式： <input type="text" value="{{ $order->userPhone }}"><br>
 
                 </div>
             </div>
