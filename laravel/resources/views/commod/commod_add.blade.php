@@ -30,7 +30,7 @@
 		<script src="../../framework/jquery.mCustomScrollbar.min.js"></script>
 		<script src="../../framework/cframe.js"></script><!-- 仅供所有子页面使用 -->
 		<!-- 公共样式 结束 -->
-		
+		<script src="js/tabControl.js"></script>
 		<style>
 			.layui-form-label{
 				width: 100px;
@@ -39,8 +39,16 @@
 				margin-left: 130px;
 			}
 			.layui-form{
-				margin-right: 30%;
+				margin-right: 20%;
 			}
+			#tag{width:600px; height:300px; text-align:left; padding:10px; border:2px #E0E0E0 inset ; line-height:25px;}
+			/*input post tab*/
+			div.radius_shadow{border:1px solid #DBDBDB;-moz-border-radius:5px;-khtml-border-radius:5px;-webkit-border-radius:5px;border-radius: 5px;padding:5px;-webkit-box-shadow:0 0 10px #414141;-moz-box-shadow:0 0 10px #414141;box-shadow:0 0 10px #414141;font-size:12px;background:#fff;}
+			span#radius{display:inline-block;float:none;font-size:12px;padding:2px 5px;margin:-2px 5px 15px;border:1px solid #E0E0E0; background-color:#F0F0F0;-moz-border-radius:5px;-khtml-border-radius:5px;-webkit-border-radius:5px;border-radius: 5px;color:#000;}
+			.tabinput{margin-left:5px;border:0;}
+			a#deltab{cursor:pointer;display:inline-block;color:#808080;margin-left:5px;font-weight:bold;}
+			a#deltab:hover{color:#D2D2D2;text-decoration:none;}
+			#getTab{ margin-top:10px;border:1px solid #E0E0E0; background-color:#F0F0F0; padding:10px; cursor:pointer;}
 		</style>
 
 	</head>
@@ -51,27 +59,29 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">属性名称</label>
 					<div class="layui-input-block">
-						<input type="text" name="attrName" required lay-verify="required" autocomplete="off" class="layui-input">
+						<input type="text" id="catName" lay-verify="required|ZHCheck" lay-reqtext="用户名是必填项，岂能为空？" lay-verify="catName" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">属性值</label>
 					<div class="layui-input-block">
-						<input type="password" name="password" autocomplete="off" class="layui-input">
+						<div style="width:600px;margin:40px auto 0 auto;text-align:center;">
+							<div id="tag"></div>
+						</div>
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">是否显示</label>
 					<div class="layui-input-block">
-						<input type="radio" name="isShow" value="1" title="是" checked>
-						<input type="radio" name="isShow" value="0" title="否">
+						<input type="radio" class="isShow" name="isShow" value="1" title="是" checked>
+						<input type="radio" class="isShow" name="isShow" value="0" title="否">
 					</div>
-				</div>
+				
 				<div class="layui-form-item" id="type">
 					<label class="layui-form-label">分类</label>
 	                <div class="layui-input-inline" id="1">
-	                    <select name="provid"  lay-filter="provid">
-	                        <option value=" "></option>
+	                    <select name="provid" class="select" lay-verify="required" lay-reqtext="请选择" lay-filter="provid">
+							<option value="">请选择</option>
 							@foreach ($data as $user)
 								<option value="{{$user->catId}}">{{$user->catName}}</option>
 							@endforeach
@@ -82,8 +92,8 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">是否有效：</label>
 					<div class="layui-input-block">
-						<input type="radio" name="dataFlag" value="1" title="有效" checked>
-						<input type="radio" name="dataFlag" value="-1" title="无效">
+						<input type="radio" class="dataFlag" name="dataFlag" value="1" title="有效" checked>
+						<input type="radio" class="dataFlag" name="dataFlag" value="-1" title="无效">
 					</div>
 				</div>
 				
@@ -97,12 +107,48 @@
 			
 			
 			<script>
+				$(function(){
+					$("#tag").tabControl({maxTabCount:5,tabW:80});
+				});
 				layui.use(['upload','form'], function() {
 					var form = layui.form;
 					var upload = layui.upload;
 					var layer = layui.layer;
 					//监听提交
 					form.on('submit(submitBut)', function(data) {
+						var catVal = $("#tag").getTabVals().join(",");
+
+
+						var catName = $('#catName').val();
+						var isShow = $('.isShow:checked').val();
+						var dataFlag = $('.dataFlag:checked').val();
+						var goodsCatId = '';
+						var goodsCatPath = '';
+						$( ".select option:selected" ).each(function(v,n) {
+							goodsCatPath += $(this).text()+',';
+							goodsCatId = $(this).val();
+						});
+						ajax('CommodManagementAdd',{attrVal:catVal,attrName:catName,isShow:isShow,dataFlag:dataFlag,goodsCatId:goodsCatId,goodsCatPath:goodsCatPath},function(data){
+							if(data.code == 1)
+							{
+								layer.msg(data.error, {
+									icon:5,
+									offset: 'a',
+									anim: 6
+								});
+							}
+							else
+							{
+								layer.msg('添加成功', {
+									icon:6,
+									offset: 'a',
+									anim: 6,
+									success:function () {
+										document.getElementById("addForm").reset();
+									}
+								});
+							}
+						})
 						return false;
 					});
 					form.verify({
@@ -112,33 +158,29 @@
 						    ,'只允许输入中文'
 					  	] 
 					});
-					form.on('select()', function(data){
-						var that = $(this);
-						var id = that.data('id');
 
+					form.on('select(provid)', function(data){
+						var that = $(this);
+						var id = that.parents('.layui-input-inline').attr('id');
+
+						$('#'+id).nextAll().remove();
 						ajax('CommodManagementTwo',{catId:data.value},function(data){
-							if(data.length)
+							if(data.code == 1)
 							{
-								str = constr(data,id);
-								if($('#'+(id+1)).length != 0)
-								{
-									$('#type').append(str);
-								}
-								else
-								{
-									$('#'+(id+1)).html(str);
-								}
+								str = constr(data.data,id+1);
+								$('#type').append(str);
 								form.render('select');
 							}
 						});
 					});
 
 				});
+
 				function constr(data,ids){
 					var str="";
 					str += "<div class='layui-input-inline' id='"+ids+"'>";
-					str+="<select name='provid' id='' lay-filter='provid'>";
-					str+="<option value= ''></option>";
+					str+="<select name='provid' id='' class='select' lay-verify='required' lay-filter='provid'>";
+					str+="<option value= ''>请选择</option>";
 					$.each( data, function(i,n){
 					str+="<option value='"+n.catId+"'>"+n.catName+"</option>";
 					});
@@ -155,8 +197,8 @@
 						success: detal
 					})
 				}
-			</script>
 
+			</script>
 		</div>
 	</body>
 

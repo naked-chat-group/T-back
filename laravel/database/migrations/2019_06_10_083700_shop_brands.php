@@ -13,7 +13,7 @@ class ShowBrands extends Migration
      */
     public function up()
     {
-        Schema::create('show_brands', function (Blueprint $table) {
+        Schema::create('shop_brands', function (Blueprint $table) {
             $table->increments('brandId')->comment('品牌自增ID');
             $table->string('brandName',100)->nullable(false)->comment('品牌名称');
             $table->string('brandImg',150)->nullable(false)->comment('品牌商标');

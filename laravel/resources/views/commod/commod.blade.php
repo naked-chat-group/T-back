@@ -34,109 +34,169 @@
 	</head>
 
 	<body>
-		<div class="cBody">
-			<div class="console">
-				<form class="layui-form" action="">
-					<div class="layui-form-item">
-						<div class="layui-input-inline">
-							<input type="text" name="name" required lay-verify="required" placeholder="输入分管名称" autocomplete="off" class="layui-input">
-						</div>
-						<button class="layui-btn" lay-submit lay-filter="formDemo">检索</button>
-					</div>
-				</form>
 
-				<script>
-					layui.use('form', function() {
-						var form = layui.form;
-				
-						//监听提交
-						form.on('submit(formDemo)', function(data) {
-							layer.msg(JSON.stringify(data.field));
-							return false;
-						});
-					});
-				</script>
-			</div>
-			
-			<table class="layui-table">
-				<thead>
-					<tr>
-						<th>分管名称</th>
-						<th>分管编码</th>
-						<th>所属区域</th>
-						<th>负责人</th>
-						<th>登录名</th>
-						<th>联系方式</th>
-						<th>传真</th>
-						<th>邮箱</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>龙九山</td>
-						<td>DLS201802281450280741</td>
-						<td>无锡市</td>
-						<td>龙九山</td>
-						<td>龙九山</td>
-						<td>18600001111</td>
-						<td>028-6666666</td>
-						<td>123456789@qq.com</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs">基本信息</button>
-						</td>
-					</tr>
-					<tr>
-						<td>龙九山</td>
-						<td>DLS201802281450280741</td>
-						<td>无锡市</td>
-						<td>龙九山</td>
-						<td>龙九山</td>
-						<td>18600001111</td>
-						<td>028-6666666</td>
-						<td>123456789@qq.com</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs">基本信息</button>
-						</td>
-					</tr>
-					<tr>
-						<td>龙九山</td>
-						<td>DLS201802281450280741</td>
-						<td>无锡市</td>
-						<td>龙九山</td>
-						<td>龙九山</td>
-						<td>18600001111</td>
-						<td>028-6666666</td>
-						<td>123456789@qq.com</td>
-						<td>
-							<button class="layui-btn layui-btn-xs">修改</button>
-							<button class="layui-btn layui-btn-xs">基本信息</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			<!-- layUI 分页模块 -->
-			<div id="pages"></div>
-			<script>
-				layui.use(['laypage', 'layer'], function() {
-					var laypage = layui.laypage,
-						layer = layui.layer;
-				
-					//总页数大于页码总数
-					laypage.render({
-					    elem: 'pages'
-					    ,count: 100
-					    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
-					    ,jump: function(obj){
-					      console.log(obj)
-					    }
-					});
-				});
-			</script>
+	<div class="demoTable">
+		搜索属性名称：
+		<div class="layui-inline">
+			<input class="layui-input" name="id" id="demoReload" autocomplete="off">
 		</div>
+		<button class="layui-btn" data-type="reload">搜索</button>
+	</div>
+
+	<table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+    <script>
+        var tableIns = '';
+        function ajax(url,data,type,detal)
+        {
+            $.ajax({
+                url:url,
+                data:data,
+                type:type,
+                dataType:'json',
+                success:detal
+            })
+        }
+
+		layui.use('table', function(){
+			var table = layui.table,form = layui.form;
+            table.on('tool(user)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    ,layEvent = obj.event; //获得 lay-event 对应的值
+                if(layEvent === 'del'){
+                    layer.confirm('真的删除行么', function(index){
+
+                        //向服务端发送删除指令
+                        ajax('CommodManagementDel',{attrId:obj.data.attrId},'get',function (data) {
+							if(data.code == 1)
+							{
+								obj.del(); //删除对应行（tr）的DOM结构
+								layer.close(index);
+								layer.msg(data.message);
+                                active['reloads'].call(this);
+								return false;
+							}
+								layer.msg(data.message);
+                        })
+                    });
+                } else if(layEvent === 'edit'){
+                    layer.open({
+                        type: 2,
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['1000px', '600px'], //
+                        anim:3,
+                        content: 'CommodManagementUpdate/'+obj.data.attrId, //这里content是一个普通的String
+                        success:function (layero, index) {
+                            console.log(layero, index);
+                        }
+                    });
+                }else if(layEvent === 'load'){
+                    layer.open({
+                        type: 2,
+                        skin: 'layui-layer-rim', //加上边框
+                        area: ['1000px', '600px'], //
+                        anim:3,
+                        content: 'CommodManagementUpdateShu/'+obj.data.attrId, //这里content是一个普通的String
+                        success:function (layero, index) {
+                            console.log(layero, index);
+                        }
+                    });
+                }
+            });
+			//方法级渲染
+			 tableIns = table.render({
+				elem: '#LAY_table_user'
+				,url: 'CommodManagementInputs'
+				,cols: [[
+					{checkbox: true, fixed: true},
+					{field:'attrId', title:'属性id'}
+					,{field:'attrName', title:'属性名称'}
+					,{field:'goodsCatPath', title:'商品分类'}
+					,{field:'goodsCatId', title:'最后一级商品分类ID'}
+					,{field:'attrVal', title:'属性值(可点)',event:'load'}
+					,{field:'isShow', title:'是否显示', templet: function(d){
+						return '<input type="checkbox" name="isShow" attrid="'+d.attrId+'" value="'+d.isShow+'" lay-skin="switch" lay-text="yes|no" lay-filter="sexDemo" '+(d.isShow == 1 ? 'checked':'')+'>';
+						}}
+					,{field:'dataFlag', title:'有效状态',templet: function(d){
+							return '<input type="checkbox" name="dataFlag" attrid="'+d.attrId+'" value="'+d.dataFlag+'" lay-filter="lockDemo" title="有效" '+(d.dataFlag == 1 ? 'checked':'')+'>';
+						}}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+				]]
+				,id: 'testReload'
+				,page: true
+				,height: 500
+			});
+			form.on('switch(sexDemo)', function(obj){
+			    var that = $(this);
+			    var val = $(this).val();
+                ajax('CommodManagementUpdshow',{attrId:$(this).attr('attrId'),isShow:$(this).val()},'post',function (data) {
+                    if(data.code == 1)
+                    {
+                        if(val == 1)
+                        {
+                            that.val(0);
+                        }
+                        else
+                        {
+                            that.val(1)
+                        }
+                        layer.msg('成功');
+                    }
+                })
+			});
+            form.on('checkbox(lockDemo)', function(obj){
+                var that = $(this);
+                var val = $(this).val();
+                ajax('CommodManagementUpdflag',{attrId:$(this).attr('attrId'),flag:$(this).val()},'post',function (data) {
+                    if(data.code == 1)
+                    {
+                        if(val == 1)
+                        {
+                            that.val(0);
+                        }
+                        else
+                        {
+                            that.val(-1)
+                        }
+                        layer.msg('成功');
+                    }
+                })
+            });
+			var $ = layui.$, active = {
+				reload: function(){
+					var demoReload = $('#demoReload');
+
+					//执行重载
+					table.reload('testReload', {
+						page: {
+							curr: 1 //重新从第 1 页开始
+						}
+						,where: {
+							key: demoReload.val()
+						}
+					}, 'data');
+				},
+                reloads:function () {
+                    tableIns.reload({
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
+                }
+			};
+            $('.demoTable .layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+
+        });
+
+	</script>
+
 	</body>
 
 </html>

@@ -19,6 +19,16 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'CommodManagementTwo'
+        'CommodManagementTwo',
+        'CommodManagementAdd',
+        'CommodManagement',
+        'CommodManagementInputs',
+        'CommodManagementUpdshow',
+        'CommodManagementUpdflag',
+        'CommodManagementUpdates',
+        'CommodManagementUpdateShus',
+        'ShopManagementUpload',
+        'ShopManagementValue',
+        'ShopManagementValues'
     ];
 }
