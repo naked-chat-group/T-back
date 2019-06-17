@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-06-13 09:40:30
+Date: 2019-06-17 09:31:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -224,14 +224,34 @@ CREATE TABLE `shop_admin` (
   `is_del` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否删除0未删除，1删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `admin_name` (`admin_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of shop_admin
 -- ----------------------------
-INSERT INTO `shop_admin` VALUES ('1', 'root', '0', '2019-06-11 08:57:00', '123456@qq.com', null, '0');
-INSERT INTO `shop_admin` VALUES ('2', 'lxinkC', '1', '2019-06-11 09:04:51', '123456@qq.com', null, '0');
-INSERT INTO `shop_admin` VALUES ('3', 'lxink', '1', '2019-06-12 08:53:23', '123456@qq.com', null, '0');
+INSERT INTO `shop_admin` VALUES ('1', 'root', '1', '2019-06-11 08:57:00', '123456@qq.com', null, '0');
+INSERT INTO `shop_admin` VALUES ('2', 'lxinkC', '2', '2019-06-11 09:04:51', '123456@qq.com', null, '0');
+INSERT INTO `shop_admin` VALUES ('3', 'lxink', '2', '2019-06-12 08:53:23', '123456@qq.com', null, '0');
+INSERT INTO `shop_admin` VALUES ('4', 'lxinkae', '2', '2019-06-13 08:32:36', '123456@qq.com', null, '0');
+
+-- ----------------------------
+-- Table structure for shop_admin_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `shop_admin_menu`;
+CREATE TABLE `shop_admin_menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '菜单id',
+  `rid` int(11) NOT NULL COMMENT '权限id',
+  `pid` int(11) NOT NULL DEFAULT '0' COMMENT '父级菜单id',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of shop_admin_menu
+-- ----------------------------
+INSERT INTO `shop_admin_menu` VALUES ('1', '1', '0');
+INSERT INTO `shop_admin_menu` VALUES ('4', '2', '1');
+INSERT INTO `shop_admin_menu` VALUES ('5', '4', '1');
+INSERT INTO `shop_admin_menu` VALUES ('6', '6', '1');
 
 -- ----------------------------
 -- Table structure for shop_admin_password
@@ -253,6 +273,8 @@ INSERT INTO `shop_admin_password` VALUES ('1', '3b5326ff8ce1447ff490db4ad2c96160
 INSERT INTO `shop_admin_password` VALUES ('2', 'f3102216de30bd27004a5fcdc5310f42', '1560319360', '2');
 INSERT INTO `shop_admin_password` VALUES ('2', 'f1fb7410224db1a74979045c2de93e7f', '1560319393', '1');
 INSERT INTO `shop_admin_password` VALUES ('2', 'd5ad30d1bad4e2afc6b1dd1bc64d5877', '1560319428', '0');
+INSERT INTO `shop_admin_password` VALUES ('4', '3b5326ff8ce1447ff490db4ad2c96160', '1560414756', '0');
+INSERT INTO `shop_admin_password` VALUES ('3', '3b5326ff8ce1447ff490db4ad2c96160', '1560414807', '0');
 
 -- ----------------------------
 -- Table structure for shop_admin_role
@@ -261,16 +283,14 @@ DROP TABLE IF EXISTS `shop_admin_role`;
 CREATE TABLE `shop_admin_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '角色id',
   `name` varchar(30) NOT NULL COMMENT '角色名称',
-  `rights` varchar(50) NOT NULL COMMENT '权限id',
   `is_del` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否删除0未删除，1删除',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of shop_admin_role
 -- ----------------------------
-INSERT INTO `shop_admin_role` VALUES ('1', '测试人', 'abc', '0');
-INSERT INTO `shop_admin_role` VALUES ('2', '测试人2', 'abc', '0');
+INSERT INTO `shop_admin_role` VALUES ('1', '超级管理员', '0');
 
 -- ----------------------------
 -- Table structure for shop_areas
@@ -296,7 +316,7 @@ CREATE TABLE `shop_cat_brands` (
   `cat_Id` int(11) DEFAULT NULL COMMENT '商品分类自增ID',
   `brand_Id` int(11) DEFAULT NULL COMMENT '品牌自增ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of shop_cat_brands
@@ -311,10 +331,11 @@ CREATE TABLE `shop_comments` (
   `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
   `goods_id` int(11) DEFAULT NULL COMMENT '商品ID',
   `comment` text COLLATE utf8_unicode_ci COMMENT '评价',
-  `status` int(11) DEFAULT '0' COMMENT '评价状态  0.未通过   1.通过',
+  `status` int(11) DEFAULT '0' COMMENT '评价状态  0.未审核   1.通过   2.未通过',
   `add_time` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reply_status` int(11) DEFAULT '0' COMMENT '回复的状态  0.未回复   1.回复',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of shop_comments
@@ -431,64 +452,55 @@ CREATE TABLE `shop_goods_attributes` (
   `attrVal` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '属性值',
   `attrSort` int(11) NOT NULL DEFAULT '0' COMMENT '排序号',
   `isShow` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否显示:1:显示 0:不显示',
-  `dataFlag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '有效状态:1:有效 -1:无效',
+  `dataFlag` tinyint(4) NOT NULL DEFAULT '1' COMMENT '有效状态:1:有效 -1:无效',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`attrId`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Records of shop_goods_attributes
 -- ----------------------------
-INSERT INTO `shop_goods_attributes` VALUES ('8', '33', '上衣,T恤,白色,尴尬,', '江芬', '0', '说的福克斯', '498', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('9', '10', '上衣,T恤,白色,尴尬,', '万波', '1', '说的福克斯', '785', '0', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('10', '33', '上衣,T恤,白色,尴尬,', '苑超', '0', '说的福克斯', '895', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('11', '26', '上衣,T恤,白色,尴尬,', '林明', '1', '说的福克斯', '955', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('13', '30', '上衣,T恤,白色,尴尬,', '贺俊', '0', '说的福克斯', '654', '1', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('14', '28', '上衣,T恤,白色,尴尬,', '官哲', '0', '说的福克斯', '916', '1', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('15', '11', '上衣,T恤,白色,尴尬,', '柯翔', '1', '说的福克斯', '313', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('17', '14', '上衣,T恤,白色,尴尬,', '涂林', '0', '说的福克斯', '715', '1', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('18', '7', '上衣,T恤,白色,尴尬,', '罗飞', '0', '说的福克斯', '271', '0', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('20', '47', '上衣,T恤,白色,尴尬,', '丁雪', '0', '说的福克斯', '358', '0', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('21', '32', '上衣,T恤,白色,尴尬,', '奚翼', '2', '阿斯蒂芬', '554', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('22', '33', '上衣,T恤,白色,尴尬,', '马桂芳', '1', '阿斯蒂芬', '750', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('23', '30', '上衣,T恤,白色,尴尬,', '瞿平', '1', '阿斯蒂芬', '995', '1', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('24', '31', '上衣,T恤,白色,尴尬,', '辛丽华', '2', '阿斯蒂芬', '939', '0', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('25', '30', '上衣,T恤,白色,尴尬,', '贺婷', '0', '阿斯蒂芬', '971', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('26', '7', '上衣,T恤,白色,尴尬,', '邬正豪', '0', '阿斯蒂芬', '558', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('27', '45', '上衣,T恤,白色,尴尬,', '洪瑞', '2', '阿斯蒂芬', '698', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('28', '36', '上衣,T恤,白色,尴尬,', '宇亮', '1', '阿斯蒂芬', '101', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('29', '2', '上衣,T恤,白色,尴尬,', '聂建华', '0', '阿斯蒂芬', '861', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('30', '6', '上衣,T恤,白色,尴尬,', '仲珺', '2', '阿斯蒂芬', '444', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('31', '36', '上衣,T恤,白色,尴尬,', '宫祥', '2', '阿斯蒂芬', '948', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('32', '44', '上衣,T恤,白色,尴尬,', '郭燕', '1', '阿斯蒂芬', '232', '1', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('33', '43', '上衣,T恤,白色,尴尬,', '席瑞', '0', '阿斯蒂芬', '410', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('34', '4', '上衣,T恤,白色,尴尬,', '汪彬', '0', '阿斯蒂芬', '929', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('35', '19', '上衣,T恤,白色,尴尬,', '胡艳', '2', '阿斯蒂芬', '923', '0', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('36', '6', '上衣,T恤,白色,尴尬,', '薄博涛', '0', '阿斯蒂芬', '179', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('37', '8', '上衣,T恤,白色,尴尬,', '木建明', '1', '阿斯蒂芬', '706', '1', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('38', '10', '上衣,T恤,白色,尴尬,', '房建国', '1', '阿斯蒂芬', '691', '0', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('39', '47', '上衣,T恤,白色,尴尬,', '翁明', '0', '阿斯蒂芬', '744', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('40', '17', '上衣,T恤,白色,尴尬,', '宋桂花', '1', '阿斯蒂芬', '939', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('41', '35', '上衣,T恤,白色,尴尬,', '喻桂芬', '2', '阿斯蒂芬', '272', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('42', '13', '上衣,T恤,白色,尴尬,', '隋宇', '0', '阿斯蒂芬', '830', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('43', '2', '上衣,T恤,白色,尴尬,', '姜婷婷', '2', '阿斯蒂芬', '550', '1', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('44', '11', '上衣,T恤,白色,尴尬,', '欧鹏', '0', '阿斯蒂芬', '779', '0', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('45', '45', '上衣,T恤,白色,尴尬,', '盖彬', '2', '阿斯蒂芬', '584', '1', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('46', '19', '上衣,T恤,白色,尴尬,', '保洋', '0', '阿斯蒂芬', '133', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('47', '11', '上衣,T恤,白色,尴尬,', '于婷', '1', '阿斯蒂芬', '891', '0', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('48', '26', '上衣,T恤,白色,尴尬,', '康玉英', '2', '阿斯蒂芬', '691', '1', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('49', '22', '上衣,T恤,白色,尴尬,', '牟桂荣', '2', '阿斯蒂芬', '752', '0', '-1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('50', '30', '上衣,T恤,白色,尴尬,', '窦欢', '2', '阿斯蒂芬', '874', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('51', '36', '上衣,T恤,白色,尴尬,', '送的发送到', '1', '啊撒发撒', '0', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('52', '36', '上衣,T恤,白色,尴尬,', '送的发送到', '1', '啊撒发撒', '0', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('53', '36', '上衣,T恤,白色,尴尬,', '送的发送到', '1', '啊撒发撒', '0', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('54', '8', '内衣,', '四谛法', '1', '阿斯蒂芬', '0', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('55', '8', '内衣,', '四谛法', '1', '阿斯蒂芬', '0', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('56', '6', '配饰,', '啊舒服萨德', '0', '啊撒发撒', '0', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('57', '6', '配饰,', '啊舒服萨德', '0', '啊撒发撒', '0', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('58', '7', '美妆,', '撒旦法', '0', '阿斯蒂芬', '0', '1', '1', null, null);
-INSERT INTO `shop_goods_attributes` VALUES ('59', '7', '美妆,', '啊沙发', '0', '阿斯蒂芬', '0', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('13', '30', '上衣,T恤,白色,尴尬,', '贺俊', '0', '说的福克斯,asdfasdf,事发地点时', '654', '1', '0', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('14', '28', '上衣,T恤,白色,尴尬,', '官哲', '0', '说的福克斯,asdfasdf', '916', '0', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('15', '11', '上衣,T恤,白色,尴尬,', '柯翔', '1', '说的福克斯,asdfasdf', '313', '1', '0', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('17', '14', '上衣,T恤,白色,尴尬,', '涂林', '0', '说的福克斯,asdfasdf', '715', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('18', '7', '上衣,T恤,白色,尴尬,', '罗飞', '0', '说的福克斯,asdfasdf', '271', '1', '0', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('21', '32', '上衣,T恤,白色,尴尬,', '奚翼', '2', '说的福克斯,asdfasdf', '554', '0', '0', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('23', '30', '上衣,T恤,白色,尴尬,', '瞿平', '1', '说的福克斯,asdfasdf', '995', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('25', '30', '上衣,T恤,白色,尴尬,', '贺婷', '0', '说的福克斯,asdfasdf', '971', '1', '0', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('29', '2', '上衣,T恤,白色,尴尬,', '聂建华', '0', '说的福克斯,asdfasdf', '861', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('30', '6', '上衣,T恤,白色,尴尬,', '仲珺', '2', '说的福克斯,asdfasdf', '444', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('31', '36', '上衣,T恤,白色,尴尬,', '宫祥', '2', '说的福克斯,asdfasdf', '948', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('32', '44', '上衣,T恤,白色,尴尬,', '郭燕', '1', '说的福克斯,asdfasdf', '232', '0', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('33', '43', '上衣,T恤,白色,尴尬,', '席瑞', '0', '说的福克斯,asdfasdf', '410', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('34', '4', '上衣,T恤,白色,尴尬,', '汪彬', '0', '说的福克斯,asdfasdf', '929', '1', '0', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('35', '19', '上衣,T恤,白色,尴尬,', '胡艳', '2', '说的福克斯,asdfasdf', '923', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('36', '6', '上衣,T恤,白色,尴尬,', '薄博涛', '0', '说的福克斯,asdfasdf', '179', '0', '0', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('37', '8', '上衣,T恤,白色,尴尬,', '木建明', '1', '说的福克斯,asdfasdf', '706', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('38', '10', '上衣,T恤,白色,尴尬,', '房建国', '1', '说的福克斯,asdfasdf', '691', '1', '0', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('39', '47', '上衣,T恤,白色,尴尬,', '翁明', '0', '说的福克斯,asdfasdf', '744', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('40', '17', '上衣,T恤,白色,尴尬,', '宋桂花', '1', '说的福克斯,asdfasdf', '939', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('41', '35', '上衣,T恤,白色,尴尬,', '喻桂芬', '2', '说的福克斯,asdfasdf', '272', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('42', '13', '上衣,T恤,白色,尴尬,', '隋宇', '0', '说的福克斯,asdfasdf', '830', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('43', '2', '上衣,T恤,白色,尴尬,', '姜婷婷', '2', '说的福克斯,asdfasdf', '550', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('44', '11', '上衣,T恤,白色,尴尬,', '欧鹏', '0', '说的福克斯,asdfasdf', '779', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('45', '45', '上衣,T恤,白色,尴尬,', '盖彬', '2', '说的福克斯,asdfasdf', '584', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('46', '19', '上衣,T恤,白色,尴尬,', '保洋', '0', '说的福克斯,asdfasdf', '133', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('47', '11', '上衣,T恤,白色,尴尬,', '于婷', '1', '说的福克斯,asdfasdf', '891', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('48', '26', '上衣,T恤,白色,尴尬,', '康玉英', '2', '说的福克斯,asdfasdf', '691', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('49', '22', '上衣,T恤,白色,尴尬,', '牟桂荣', '2', '说的福克斯,asdfasdf', '752', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('50', '30', '上衣,T恤,白色,尴尬,', '窦欢', '2', '说的福克斯,asdfasdf', '874', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('51', '36', '上衣,T恤,白色,尴尬,', '送的发送到', '1', '说的福克斯,asdfasdf', '0', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('52', '36', '上衣,T恤,白色,尴尬,', '送的发送到', '1', '说的福克斯,asdfasdf', '0', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('53', '36', '上衣,T恤,白色,尴尬,', '送的发送到', '1', '说的福克斯,asdfasdf', '0', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('54', '8', '内衣,', '四谛法', '1', '说的福克斯,asdfasdf', '0', '1', '0', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('55', '8', '内衣,', '四谛法', '1', '说的福克斯,asdfasdf', '0', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('56', '6', '配饰,', '啊舒服萨德', '0', '说的福克斯,asdfasdf', '0', '0', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('57', '6', '配饰,', '啊舒服萨德', '0', '说的福克斯,asdfasdf', '0', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('58', '7', '美妆,', '撒旦法', '0', '说的福克斯,asdfasdf', '0', '1', '1', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('59', '7', '美妆,', '啊沙发', '0', '说的福克斯,asdfasdf', '0', '1', '0', null, null);
+INSERT INTO `shop_goods_attributes` VALUES ('60', '25', '上衣,T恤,黑色,', '啊撒发撒', '0', '说的福克斯,asdfasdf', '0', '1', '1', null, null);
 
 -- ----------------------------
 -- Table structure for shop_goods_cats
@@ -505,11 +517,14 @@ CREATE TABLE `shop_goods_cats` (
   `dataFlag` tinyint(4) NOT NULL DEFAULT '1' COMMENT '删除标志:	1:有效 -1：删除',
   `createTime` datetime NOT NULL COMMENT '建立时间',
   PRIMARY KEY (`catId`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of shop_goods_cats
 -- ----------------------------
+INSERT INTO `shop_goods_cats` VALUES ('3', '0', '测试分类', '测试', '1', '1', '1', '1', '2019-06-13 08:22:30');
+INSERT INTO `shop_goods_cats` VALUES ('4', '0', '测试分类2', '测试', '1', '1', '2', '1', '2019-06-13 08:22:58');
+INSERT INTO `shop_goods_cats` VALUES ('5', '3', '测试分类3', '测试', '1', '1', '3', '1', '2019-06-13 08:23:22');
 
 -- ----------------------------
 -- Table structure for shop_goods_specs
@@ -593,14 +608,27 @@ DROP TABLE IF EXISTS `shop_opinions`;
 CREATE TABLE `shop_opinions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
-  `opinion` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '意见',
+  `content` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '意见',
   `add_time` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '添加时间',
+  `reply_status` int(10) DEFAULT '0' COMMENT '回复状态   0.未回复   1.已回复',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of shop_opinions
 -- ----------------------------
+INSERT INTO `shop_opinions` VALUES ('1', '1', '地方是发达', '1560345100', '0');
+INSERT INTO `shop_opinions` VALUES ('2', '1', '啊飒飒分发多少分', '1560345123', '0');
+INSERT INTO `shop_opinions` VALUES ('3', '1', '阿发而发', '1560345145', '0');
+INSERT INTO `shop_opinions` VALUES ('4', '1', '回复国际化规划局', '1560345150', '1');
+INSERT INTO `shop_opinions` VALUES ('5', '1', '一样是多少', '1560345185', '1');
+INSERT INTO `shop_opinions` VALUES ('6', '2', '地方是发达', '1560345100', '0');
+INSERT INTO `shop_opinions` VALUES ('7', '2', '啊飒飒分发多少分', '1560345123', '1');
+INSERT INTO `shop_opinions` VALUES ('8', '2', '阿发而发', '1560345145', '1');
+INSERT INTO `shop_opinions` VALUES ('9', '2', '回复国际化规划局', '1560345150', '1');
+INSERT INTO `shop_opinions` VALUES ('10', '2', '一样是多少', '1560345185', '1');
+INSERT INTO `shop_opinions` VALUES ('11', '2', '回复国际化规划局', '1560345150', '1');
+INSERT INTO `shop_opinions` VALUES ('12', '2', '一样是多少', '1560345185', '1');
 
 -- ----------------------------
 -- Table structure for shop_order
@@ -695,13 +723,57 @@ CREATE TABLE `shop_right` (
   `types` tinyint(2) NOT NULL DEFAULT '1' COMMENT '权限类型 1页面权限，2操作权限',
   `is_del` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否删除0未删除，1删除',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of shop_right
 -- ----------------------------
-INSERT INTO `shop_right` VALUES ('1', '测试权限1', 'goods@goods_list	', '1', '0');
-INSERT INTO `shop_right` VALUES ('2', '测试权限2', 'goods@update_price,goods@update_commend,goods@update_store,goods@goods_stats,goods@goods_img_upload,goods@goods_edit,goods@goods_update,goods@member_price,goods@model_init,goods@ajax_sort,goods@goods_share	', '2', '0');
+INSERT INTO `shop_right` VALUES ('1', '[权限]权限管理', '', '1', '0');
+INSERT INTO `shop_right` VALUES ('2', '[权限]管理员', 'AdminController@index', '1', '0');
+INSERT INTO `shop_right` VALUES ('3', '[权限]管理员的CURD', 'AdminController@getData,AdminController@addAdmin,AdminController@AdminStore,AdminController@AdminEdit,AdminController@AdminUpd', '2', '0');
+INSERT INTO `shop_right` VALUES ('4', '[权限]角色', 'RoleController@index', '1', '0');
+INSERT INTO `shop_right` VALUES ('5', '[权限]角色的CURD', 'RoleController@RoleData,RoleController@RoleCreate,RoleController@RoleStore,RoleController@RoleEdit,RoleController@RoleUpd', '2', '0');
+INSERT INTO `shop_right` VALUES ('6', '[权限]权限资源', 'AuthController@index', '1', '0');
+INSERT INTO `shop_right` VALUES ('7', '[权限]权限资源的CURD', 'AuthController@getData,AuthController@addAuth,AuthController@getAction,AuthController@AuthStore,AuthController@MenuCreate,AuthController@MenuStore', '2', '0');
+INSERT INTO `shop_right` VALUES ('10', '[首页]首页管理', '', '1', '0');
+INSERT INTO `shop_right` VALUES ('11', '[首页]首页', 'StaticController@index', '1', '0');
+
+-- ----------------------------
+-- Table structure for shop_role_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `shop_role_menu`;
+CREATE TABLE `shop_role_menu` (
+  `rid` int(11) NOT NULL COMMENT '角色id',
+  `mid` int(11) NOT NULL COMMENT '菜单id'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- ----------------------------
+-- Records of shop_role_menu
+-- ----------------------------
+INSERT INTO `shop_role_menu` VALUES ('1', '1');
+INSERT INTO `shop_role_menu` VALUES ('1', '4');
+INSERT INTO `shop_role_menu` VALUES ('1', '5');
+INSERT INTO `shop_role_menu` VALUES ('1', '6');
+
+-- ----------------------------
+-- Table structure for shop_role_right
+-- ----------------------------
+DROP TABLE IF EXISTS `shop_role_right`;
+CREATE TABLE `shop_role_right` (
+  `rid` int(11) NOT NULL COMMENT '角色id',
+  `aid` int(11) NOT NULL COMMENT '权限id'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- ----------------------------
+-- Records of shop_role_right
+-- ----------------------------
+INSERT INTO `shop_role_right` VALUES ('1', '2');
+INSERT INTO `shop_role_right` VALUES ('1', '3');
+INSERT INTO `shop_role_right` VALUES ('1', '4');
+INSERT INTO `shop_role_right` VALUES ('1', '5');
+INSERT INTO `shop_role_right` VALUES ('1', '6');
+INSERT INTO `shop_role_right` VALUES ('1', '7');
+INSERT INTO `shop_role_right` VALUES ('1', '11');
 
 -- ----------------------------
 -- Table structure for shop_warehouses
