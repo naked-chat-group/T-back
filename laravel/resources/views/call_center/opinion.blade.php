@@ -37,10 +37,10 @@
 <body>
 <div class="cBody">
     <div class="console">
-        <form class="layui-form" action="CommentManagementSearch" method="get">
+        <form class="layui-form" action="OpinionManagementSearch" method="get">
             <div class="layui-form-item">
                 <div class="layui-input-inline">
-                    <input type="text" name="name" placeholder="输入商品名称" autocomplete="off" class="layui-input">
+                    <input type="text" name="name" placeholder="输入用户名称" autocomplete="off" class="layui-input">
                 </div>
                 <button class="layui-btn"  lay-filter="formDemo">搜索</button>
             </div>
@@ -55,11 +55,8 @@
         <thead>
         <tr>
             <th>用户名称</th>
-            <th>商品名称</th>
-            <th>评论内容</th>
-            <th>评论时间</th>
-            <th>状态</th>
-            <th>审核</th>
+            <th>意见内容</th>
+            <th>添加时间</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -67,24 +64,11 @@
             <tbody>
             <tr>
                 <td>{{$v['nick']}}</td>
-                <td>{{$v['goodsName']}}</td>
-                <td>{{$v['comment']}}</td>
+                <td>{{$v['content']}}</td>
                 <td>{{date("Y-m-d H:i:s",$v['add_time'])}}</td>
                 <td>
-                    @if($v['status']==1)
-                        <button class="layui-btn layui-btn-xs">通过</button>
-                    @elseif($v['status']==2)
-                        <button class="layui-btn layui-btn-xs">未通过</button>
-                    @else
-                        <button class="layui-btn layui-btn-xs">未审核</button>
-                    @endif
-                </td>
-                <td>
-                    <button class="layui-btn layui-btn-radius layui-btn-danger" id="btn" onclick="status({{$v['status']}},{{$v['id']}})">审核</button>
-                </td>
-                <td>
                     @if($v['reply_status']==0)
-                    <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="reply({{$v['id']}})">回复</button>
+                        <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="reply({{$v['id']}})">回复</button>
                     @else
                         <button class="layui-btn layui-btn-xs layui-btn-disabled">已回复</button>
                     @endif
@@ -104,7 +88,7 @@
             }, function(value, index, elem){
                 var comment = value
                 $.ajax({
-                    url:"CommentManagementReply",
+                    url:"OpinionManagementReply",
                     data:{id:id,reply_status:1,comment:comment},
                     type:'get',
                     success:function (v) {
@@ -112,33 +96,6 @@
                     }
                 })
             });
-        }
-        function status(i,id) {
-            if(i==1){
-                var arr = ['不通过','返回']
-                var status=2;
-            }else{
-                var arr = ['通过','返回']
-                var status=1;
-            }
-            layer.confirm('评论审核', {
-
-                btn: arr //可以无限个按钮
-                ,btn3: function(index, layero){
-                    //按钮【按钮三】的回调
-                }
-            }, function(index){
-                    $.ajax({
-                        url:"CommentManagementChange",
-                        data:{id:id,status:status},
-                        type:'get',
-                        success:function (v) {
-                            history.go(0)
-                        }
-                    })
-            },
-            );
-
         }
 
     </script>

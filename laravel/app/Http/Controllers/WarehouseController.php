@@ -19,7 +19,7 @@ class WarehouseController extends BaseController
     //仓库列表
     public function index()
     {
-        $list = Shop_warehouse::paginate(5);
+        $list = Shop_warehouse::orderBy('add_time', 'DESC')->paginate(5);
         return view('warehouse.warehouse',['data'=>$list]);
     }
     //展示添加
@@ -36,6 +36,7 @@ class WarehouseController extends BaseController
     //添加数据
     public function insert(Request $request){
         $data = Input::get();
+        $data['serve_area'] = implode('、',$data['serve_area']);
         $rules = [
             'name' => 'required|max:20|regex:/\p{Han}/u',
             'number' => 'required|max:20',
@@ -100,6 +101,7 @@ class WarehouseController extends BaseController
     public function up(){
         $id = Input::get('id');
         $data = Shop_warehouse::where('id',$id)->get()->toArray();
+        $data[0]['serve_area'] = explode('、',$data[0]['serve_area']);
         $area = Shop_areas::area();
         $city = Shop_areas::city($data[0]['provid']);
         return view('warehouse.warehouse_up',['data'=>$data,'provid'=>$area,'city'=>$city]);
@@ -108,6 +110,7 @@ class WarehouseController extends BaseController
     public function update(){
         $id = Input::get('id');
         $data = Input::get();
+        $data['serve_area'] = implode('、',$data['serve_area']);
         unset($data['id']);
         $rules = [
             'name' => 'required|max:20|regex:/\p{Han}/u',
