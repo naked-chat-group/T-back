@@ -63,7 +63,6 @@
 							@foreach($val['children'] as $val2)
 							<dt><a href="javascript:void(0)" onclick="menuCAClick('{{ route($val2['right']) }}',this)">{{ $val2['name'] }}</a></dt>
 							@endforeach
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('JurisdManagement',this)">管理员角色列表</a></dt>
 						</dl>
 					</li>
 					@endforeach
