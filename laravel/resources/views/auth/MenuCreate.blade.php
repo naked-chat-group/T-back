@@ -35,23 +35,82 @@
 
 <body>
 <div class="cBody">
-    <div id="test1"></div>
-
+    <form id="addForm" class="layui-form" action="javascript:void(0)">
+        <input type="hidden" value="{{ $parentMenu['id'] }}" name="parentId">
+        <div class="layui-form-item">
+            <label class="layui-form-label">操作面板</label>
+            <div class="layui-input-block">
+                <div id="test1"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="submitBut">立即保存</button>
+            </div>
+        </div>
+    </form>
     <script>
 
-        layui.use('transfer', function() {
-            var transfer = layui.transfer;
+        layui.use(['transfer','form'], function() {
+            var transfer = layui.transfer
+                ,form = layui.form;
+
+            var data = [
+                @foreach($childMenu as $key => $val)
+                    {"value": "{{ $val['id'] }}", "title": "{{ $val['name'] }}", "disabled": "", "checked": ""},
+                @endforeach
+            ];
+            var value = [
+                @foreach($ownMenu as $key => $val)
+                {{ $val['right']['id'] }},
+                @endforeach
+            ];
 
             //渲染
             transfer.render({
                 elem: '#test1'  //绑定元素
-                , data: [
-                    {"value": "1", "title": "李白", "disabled": "", "checked": ""}
-                    , {"value": "2", "title": "杜甫", "disabled": "", "checked": ""}
-                    , {"value": "3", "title": "贤心", "disabled": "", "checked": ""}
+                , title: [
+                    '子级菜单',
+                    '{{ $parentMenu['name'] }}'
                 ]
+                , data: data
+                , value:value
+                ,showSearch: true
                 , id: 'demo1' //定义索引
             });
+
+            form.on('submit(submitBut)', function(data) {
+                var childMenu = transfer.getData('demo1');
+                var child = {};
+                $.each(childMenu, function(i,v) {
+                    child[i] = v.value;
+                });
+                data.field.child = child;
+                var index = layer.load();
+                ajax('/MenuStore', 'post', data.field, function(e){
+                    if (200 != e.code) {
+                        layer.close(index);
+                        layer.msg(e.msg, {icon: 5,anim: 6,time:2000});
+                        return;
+                    }
+                    layer.close(index);
+                    layer.msg(e.msg, {icon: 6, time: 1000}, function() {
+                        location.href = '/AuthManagement';
+                    })
+                });
+                return false;
+            });
+
+            function ajax(url, method, data, callback) {
+                $.ajax({
+                    url:url,
+                    method:method,
+                    data:data,
+                    dataType: 'json',
+                    headers: { 'X-CSRF-TOKEN' : '{{ csrf_token() }}' },
+                    success: callback
+                })
+            }
         });
 
     </script>

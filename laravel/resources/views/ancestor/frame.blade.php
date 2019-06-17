@@ -55,72 +55,18 @@
 		    </div>
 		    <div class="menu">
 		        <ul>
+                    <?php $menu = Illuminate\Support\Facades\Redis::get('adminMenu1') ?>
+					@foreach(unserialize($menu) as $val)
 					<li>
-						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>权限管理<i class="iconfont icon-dajiantouyou right"></i></a>
+						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>{{ $val['name'] }}<i class="iconfont icon-dajiantouyou right"></i></a>
 						<dl>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('RoleManagement',this)">角色</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('AdminManagement',this)">管理员</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('AuthManagement',this)">权限资源</a></dt>
+							@foreach($val['children'] as $val2)
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('{{ route($val2['right']) }}',this)">{{ $val2['name'] }}</a></dt>
+							@endforeach
 						</dl>
 					</li>
-		        	<li>
-		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>商品管理<i class="iconfont icon-dajiantouyou right"></i></a>
-		                <dl>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagement',this)">基本商品库</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagementAdd',this)">添加商品</a></dt>
-		                </dl>
-		            </li>
-					<li>
-						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>商品分类管理<i class="iconfont icon-dajiantouyou right"></i></a>
-						<dl>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('ClassManagementAdd',this)">添加商品分类</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('ClassManagement',this)">商品分类列表</a></dt>
-						</dl>
-					</li>
-					<li>
-						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-liuliangyunpingtaitubiao03 left"></i>商品属性管理<i class="iconfont icon-dajiantouyou right"></i></a>
-						<dl>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('CommodManagementAdd',this)">添加商品属性</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('CommodManagement',this)">商品属性列表</a></dt>
-						</dl>
-					</li>
-		            <li>
-		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>订单管理<i class="iconfont icon-dajiantouyou right"></i></a>
-		                <dl>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('OrderManagement',this)">订单管理</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('OrderManagementList',this)">投诉订单</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('OrderManagementUpdate',this)">退款订单</a></dt>
-		                </dl>
-		            </li>
-		        	<li>
-		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>品牌管理<i class="iconfont icon-dajiantouyou right"></i></a>
-		                <dl>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('BrandManagement',this)">分类列表</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('BrandManagementList',this)">基本商品库</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('BrandManagementAdd',this)">添加商品分类</a></dt>
-		                </dl>
-		            </li>
-					<li>
-						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>商品管理<i class="iconfont icon-dajiantouyou right"></i></a>
-						<dl>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagement',this)">商品列表</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagementAdd',this)">添加商品</a></dt>
-						</dl>
-					</li>
-					<li>
-						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>仓库管理<i class="iconfont icon-dajiantouyou right"></i></a>
-						<dl>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('WarehouseManagement',this)">仓库列表</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('WarehouseManagementAdd',this)">添加仓库</a></dt>
-						</dl>
-					</li>
-					<li>
-						<a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>客服中心<i class="iconfont icon-dajiantouyou right"></i></a>
-						<dl>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('CommentManagement',this)">商品评论审核</a></dt>
-							<dt><a href="javascript:void(0)" onclick="menuCAClick('opinionManagement',this)">意见反馈列表</a></dt>
-						</dl>
-					</li>
+					@endforeach
+
 		        </ul>
 		    </div>
 		</div>
