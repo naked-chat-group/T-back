@@ -39,12 +39,13 @@ class Call_centerController extends BaseController
     }
     //评论回复
     public function reply(){
+        session_start();
         $id = Input::get('id');
         $status = Input::get('reply_status');
         $comment = Input::get('comment');
         $arr['content'] = $comment;
         $arr['p_id'] = $id;
-        $arr['admin_id'] = 1;
+        $arr['admin_id'] = $_SESSION['id'];
         $arr['type'] = 1;
         $arr['add_time'] = time();
         $res = Shop_comment::reply($id);
@@ -69,12 +70,13 @@ class Call_centerController extends BaseController
         return view("call_center.opinion",['list'=>$list]);
     }
     public function opinion_reply(){
+        session_start();
         $id = Input::get('id');
         $status = Input::get('reply_status');
         $comment = Input::get('comment');
         $arr['content'] = $comment;
         $arr['p_id'] = $id;
-        $arr['admin_id'] = 1;
+        $arr['admin_id'] = $_SESSION['id'];
         $arr['type'] = 2;
         $arr['add_time'] = time();
         $res = Shop_opinions::reply($id);

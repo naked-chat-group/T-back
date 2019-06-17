@@ -70,3 +70,9 @@ Route::get('CommentManagementSearch','Call_centerController@search');
 Route::get('OpinionManagement','Call_centerController@opinion');
 Route::get('OpinionManagementReply','Call_centerController@opinion_reply');
 Route::get('OpinionManagementSearch','Call_centerController@opinion_search');
+
+//活动管理
+Route::get('PromotionManagement','ActivityController@promotion');
+Route::get('PromotionManagementAdd','ActivityController@promotionAdd');
+Route::get('TicketManagement','ActivityController@ticket');
+Route::get('TicketManagementAdd','ActivityController@ticketAdd');
