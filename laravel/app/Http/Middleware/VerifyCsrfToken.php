@@ -29,6 +29,7 @@ class VerifyCsrfToken extends Middleware
         'CommodManagementUpdateShus',
         'ShopManagementUpload',
         'ShopManagementValue',
-        'ShopManagementValues'
+        'ShopManagementInputs',
+        'ShopManagementType'
     ];
 }

@@ -130,13 +130,31 @@ Route::get('CommodManagementUpdateShu/{id}', 'CommodController@updatesShu')->nam
 Route::post('CommodManagementUpdateShus', 'CommodController@updatesShus')->name('CommodController@updatesShus');//修改属性值
 
 
+Route::any('ShopManagementSku', 'SkuController@index');//修改属性值
+Route::any('ShopManagementType', 'SkuController@type');//修改属性值
+
+
 //商品管理
+<<<<<<< HEAD
 Route::get('ShopManagement', 'ShopController@index')->name('ShopController@index');
 Route::get('ShopManagementAdd', 'ShopController@add')->name('ShopController@add');
 Route::get('ShopManagementBrand/{id}', 'ShopController@brand')->name('ShopController@brand');//所属品牌
 Route::post('ShopManagementUpload', 'ShopController@upload')->name('ShopController@upload');//文件上传
 Route::post('ShopManagementValue', 'ShopController@value')->name('ShopController@value');//文件上传
 Route::post('ShopManagementValues', 'ShopController@values')->name('ShopController@values');//文件上传
+=======
+Route::post('ShopManagementTwo', 'ShopController@two');
+Route::get('ShopManagement', 'ShopController@index');
+Route::get('ShopManagementAdd', 'ShopController@add');
+Route::get('ShopManagementBrand/{id}', 'ShopController@brand');//所属品牌
+Route::post('ShopManagementUpload', 'ShopController@upload');//文件上传
+Route::post('ShopManagementValue', 'ShopController@value');//文件上传
+Route::post('ShopManagementInputs', 'ShopController@inputs');//文件上传
+Route::get('ShopManagementView', 'ShopController@view');//文件上传
+Route::get('ShopManagementDel', 'ShopController@del');//文件上传
+Route::get('ShopManagementUpdate/{id}', 'ShopController@update');
+Route::get('ShopManagementUpdates', 'ShopController@updates');
+>>>>>>> origin/gouqun3
 
 
 //权限管理

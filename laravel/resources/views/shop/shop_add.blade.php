@@ -68,6 +68,20 @@
 					<label class="layui-form-label">基本信息</label>
                     <div class="layui-inline">
                         <div class="layui-input-block">
+                            <label class="layui-form-label">商品编号</label>
+                            <div class="layui-inline">
+                                <input type="text" name="goodsSn" class="layui-input" name="" lay-verify="required">
+                            </div>
+                            <i class="iconfont icon-huaban bt"></i>
+                        </div>
+                        <div class="layui-input-block">
+                            <label class="layui-form-label">商品货号</label>
+                            <div class="layui-inline">
+                                <input type="text" name="productNo" class="layui-input" name="" lay-verify="required">
+                            </div>
+                            <i class="iconfont icon-huaban bt"></i>
+                        </div>
+                        <div class="layui-input-block">
                             <label class="layui-form-label">商品名称</label>
                             <div class="layui-inline">
                                 <input type="text" name="goodsName" class="layui-input" name="" lay-verify="required">
@@ -152,7 +166,7 @@
 							<input type="radio" name="sku" value="1" title="开启" id="kaiqis" lay-filter="sku">
 							<input type="radio" name="sku" value="0" title="禁用" id="kaiqi" lay-filter="sku" checked="checked">
                             <div class="layui-inline"><button type="button"  class="layui-btn layui-btn-primary layui-btn-sm" id="plshbtn" style="display: none;"><i class="layui-icon"></i></button></div>
-                            <div class="layui-inline"><button type="button"  class="layui-btn layui-btn-primary layui-btn-sm" id="plshbtns" style="display: none;">添加属性</button></div>
+                            <div class="layui-inline"><button type="button"  class="layui-btn layui-btn-primary layui-btn-sm" id="plshbtns" style="display: none;" value="1">添加属性</button></div>
                         </div>
 					</div>
 				</div>
@@ -179,7 +193,7 @@
                     </div>
                 </div>
                 <div>
-                    <input type="hidden" id="skutu" name="skuimg" value="">
+                    <input type="hidden" id="skutu" name="specImg" value="">
                 </div>
             </form>
 		</div>
@@ -253,10 +267,10 @@
 {{--文件上传--}}
     <script>
 		var ca = ''//图片的路径
-        layui.use('upload',function () {
+        layui.use(['upload','form'],function () {
             var $ = layui.jquery
                 ,upload = layui.upload;
-
+            var form = layui.form;
 
             var demoListView = $('#demoList')
                 ,uploadListIns = upload.render({
@@ -341,7 +355,7 @@
 {{--生成sku--}}
 	<script>
         var cas = '';
-
+        files = 1;
         $(document).on('click','.del',function(){
             $(this).parents('.cames').remove();//删除sku
         })
@@ -352,14 +366,21 @@
             //添加sku
             $('#plshbtn').on('click',function(){
                 $('#came').append(slik(catId));//添加sku
+
                 form.render();
             })
             //添加属性
             $('#plshbtns').on('click',function(){
-                $('#came').empty();
-                str = slicks(catId);
-                $('#came').append(str);//添加sku
-                str =  '<div class="layui-input-block cass"><div class="layui-inline">\n';
+                if($(this).val() == 1)
+                {
+                    $('#came').empty();
+                    $('#plshbtns').attr('value',2);
+                    str = slicks(catId);
+                    $('#came').append(str);//添加sku
+                }
+
+
+                str =  '<div class="layui-input-block cass"><i class="iconfont icon-huaban bt"></i><div class="layui-inline">\n';
 
                 if(catId.length == 0)
                 {
@@ -368,14 +389,14 @@
                 }
                 else
                 {
-                    str+='<select name="spac[]" class="select" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
+                    str+='<select name="warnStockval[]" class="select" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
                         '                                        <option value="">请选择</option>\n'+
                         catId+
                         '                                    </select>\n';
                 }
 
                 str+='                                </div></div>\n';
-                $('.cass').after(str);//添加sku属性
+                $('.cass:last').after(str);//添加sku属性
                 form.render();
             })
             $(document).on('blur','.specStock',function () {
@@ -407,7 +428,6 @@
                     '      </div>');
             })//售价范围
             form.on('radio(sku)', function (data) {
-
                     if(data.value == 1)
                     {
                         str = slik(catId);
@@ -419,37 +439,6 @@
                         $('#shop-ku input').attr("placeholder","已禁用");//修改商品中的库存
                         $("#plshbtn").attr("style","display:block;");
                         $("#plshbtns").attr("style","display:block;");
-                        var uploadInst = upload.render({
-                            elem: '.test1'
-                            ,url: 'ShopManagementUpload'
-                            ,before: function(obj){
-                                //预读本地文件示例，不支持ie8
-                                obj.preview(function(index, file, result){
-                                    $('#demo1').attr('src', result); //图片链接（base64）
-                                });
-                            }
-                            ,done: function(res){
-                                //如果上传失败
-                                if(res.code > 0){
-                                    return layer.msg('上传失败');
-                                }
-                                //上传成功
-                                delete files[index];
-                                cas = res.src
-                                console.log(cas)
-                                $('#skutu').val($('#skutu').val()+','+cas);
-
-                                $('#test1').removeAttr('id');
-                            }
-                            ,error: function(){
-                                //演示失败状态，并实现重传
-                                var demoText = $('#demoText');
-                                demoText.html('<span style="color: #ff5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-                                demoText.find('.demo-reload').on('click', function(){
-                                    uploadInst.upload();
-                                });
-                            }
-                        });
                     }
                     else
                     {
@@ -457,9 +446,50 @@
                         $('#plshbtn').attr('style','display:none');
                         $('#plshbtns').attr('style','display:none');
                     }
+
                 form.render();
 
-            });
+            })
+            window.Add=function () {
+                nhn('.test1');
+            }
+            function nhn(id) {
+                var uploadInst = upload.render({
+                    elem: id
+                    ,url: 'ShopManagementUpload'
+                    ,choose: function(obj,index) {
+                        files  =this.files= obj.pushFile();
+                    }
+
+                    ,before: function(obj){
+                        files = obj.pushFile();
+                        //预读本地文件示例，不支持ie8
+                        obj.preview(function(index, file, result){
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                        });
+                    }
+                    ,done: function(res,index,upload){
+                        //如果上传失败
+                        if(res.code > 0){
+                            return layer.msg('上传失败');
+                        }
+                        //上传成功
+                        alert(1)
+                        cas = res.src
+                        $('#skutu').val($('#skutu').val()+','+cas);
+                        delete files[index];
+                    }
+                    ,error: function(){
+                        //演示失败状态，并实现重传
+                        var demoText = $('#demoText');
+                        demoText.html('<span style="color: #ff5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                        demoText.find('.demo-reload').on('click', function(){
+                            uploadInst.upload();
+                        });
+                    }
+                });
+            };
+
             form.on('select(shuxing)', function(data){
               var  that = $(this);
                   ajax('ShopManagementValue',{val:data.value},'post',function (datas) {
@@ -468,7 +498,7 @@
                           var str = '';
 
                           str+= '                                <div class="layui-inline">\n';
-                          str+='<select name="shuxing[]" class="select" lay-verify="required" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
+                          str+='<select name="spac[]" class="select" lay-verify="required" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
                               '                                        <option value="">请选择</option>\n';
                           $(datas.data).each(function (i,n) {
                               str+='<option value="'+n+'">'+n+'</option>\n';
@@ -483,11 +513,31 @@
             })
             //监听提交
             form.on('submit(demo1)', function(data){
-                layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
+                console.log(data.field)
+                ajax('ShopManagementInputs',data.field,'post',function (data) {
+                    if(data.code == 1)
+                    {
+                        layer.msg(data.mess, {
+                            icon:6,
+                            offset: 'a',
+                            anim: 6,
+                            success:function () {
+                                document.getElementById("addForm").reset();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        layer.msg(data.mess, {
+                            icon:5,
+                            offset: 'a',
+                            anim: 6
+                        });
+                    }
                 })
                 return false;
             });
+
         });
         function slicks(catId){
             var str =
@@ -543,7 +593,7 @@
                 '<div class="layui-form-item ">\n' +
                 '                            <div class="layui-input-block inputs">\n' +
                 '                                <label class="layui-form-label">商品属性</label>\n' +
-                '                                <div class="layui-inline cass"><div class="layui-inline">\n';
+                '                                <div class="layui-inline cass"><i class="iconfont icon-huaban bt"></i><div class="layui-inline">\n';
 
             if(catId.length == 0)
             {
@@ -552,14 +602,13 @@
             }
             else
             {
-                str+='<select name="spac[]" class="select" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
+                str+='<select name="warnStockval[]" class="select" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
                     '                                        <option value="">请选择</option>\n'+
                     catId+
                     '                                    </select>\n';
             }
 
             str+='                                </div></div>\n' +
-                '                                <i class="iconfont icon-huaban bt"></i>\n' +
                 '                            </div>\n' +
                 '                        </div>'+
                 '<hr>'+
