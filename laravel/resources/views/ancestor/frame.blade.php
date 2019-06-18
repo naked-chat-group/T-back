@@ -79,7 +79,8 @@
 		                <a class="menuFA" href="javascript:void(0)"><i class="iconfont icon-shangpin left"></i>商品管理<i class="iconfont icon-dajiantouyou right"></i></a>
 		                <dl>
 		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagement',this)">基本商品库</a></dt>
-		                	<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagementAdd',this)">添加商品</a></dt>
+							<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagementAdd',this)">添加商品</a></dt>
+{{--							<dt><a href="javascript:void(0)" onclick="menuCAClick('ShopManagementSku',this)">添加sku</a></dt>--}}
 		                </dl>
 		            </li>
 					<li>

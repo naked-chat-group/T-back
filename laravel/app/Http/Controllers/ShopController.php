@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\ShopGood;
+use App\Facades\ShopGoodsSpeces;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -66,8 +68,127 @@ class ShopController extends BaseController
         }
 
     }
-    public function values(Request $request)
+    public function inputs(Request $request)
+    {
+        $names = $request->post();
+        $data = [
+            'goodsSn'=> $request->post('goodsSn'),
+            'productNo'=> $request->post('productNo'),
+            'goodsName'=> $request->post('goodsName'),
+            'goodsDesc'=> $request->post('goodsDesc'),
+            'goodsImg'=> $request->post('goodsImg'),
+            'shopPrice'=> $request->post('shopPrice'),
+            'goodsStock'=> $request->post('goodsStock'),
+            'isSale'=> $request->post('isSale'),
+            'isBes'=> $request->post('isBes'),
+            'goodsCatId'=> $request->post('goodsCatId'),
+            'brandId'=> $request->post('brandId'),
+            'isSpec'=> $request->post('sku'),
+            'cangku'=> $request->post('cangku')
+        ];
+        if($request->post('sku'))
+        {
+            $data['marketPrice'] = $request->post('marketPrice_min')."-".$request->post('marketPrice_max');
+        }
+        else
+            {
+                $data['marketPrice'] = $request->post('marketPrice');
+            }
+
+        $data = ShopGood::create($data);
+//        添加sku
+        $a = count($request->post('spacess'));
+        $b = count($request->post('spac'));
+        $c = $b/$a;
+        for ($i=0;$i<$a;$i++)
+        {
+            $info = [
+                'goodsId'=>$data->goodsId,
+                'goodsName'=>$request->post('spacess')[$i],
+                'marketPrice'=>$request->post('spaces')[$i],
+                'marketPrice'=>$request->post('spaces')[$i],
+                'specPrice'=>$request->post('space')[$i],
+                'specStock'=>$request->post('specStock')[$i],
+
+            ];
+            $info['warnStockval'] = '';
+            $info['warnStock'] = '';
+            for ($j = 0; $j< $c;$j++)
+            {
+                $info['warnStockval'] .= $names['warnStockval'][$j].',';
+                $info['warnStock'] .= $names['spac'][$j].',';
+                unset($names['warnStockval'][$j]);
+                unset($names['spac'][$j]);
+            }
+            $names['warnStockval'] = array_values($names['warnStockval']);
+            $names['spac'] = array_values($names['spac']);
+            $price = ShopGoodsSpeces::create($info);
+            if($price)
+            {
+                return response(['code'=>1,'mess'=>'添加成功']);
+            }
+            else
+            {
+                return response(['code'=>2,'mess'=>'添加失败']);
+            }
+        }
+    }
+    public function updates(Request $request)
     {
         dd($request->post());
+        $data = [
+            'goodsSn'=> $request->post('goodsSn'),
+            'productNo'=> $request->post('productNo'),
+            'goodsName'=> $request->post('goodsName'),
+            'goodsDesc'=> $request->post('goodsDesc'),
+            'goodsImg'=> $request->post('goodsImg'),
+            'marketPrice'=> $request->post('marketPrice'),
+            'shopPrice'=> $request->post('shopPrice'),
+            'goodsStock'=> $request->post('goodsStock'),
+            'isSale'=> $request->post('isSale'),
+            'isBes'=> $request->post('isBes'),
+            'goodsCatId'=> $request->post('goodsCatId'),
+            'brandId'=> $request->post('brandId'),
+            'isSpec'=> $request->post('sku'),
+            'cangku'=> $request->post('cangku')
+        ];
+        $data = ShopGood::find($request->post('goodsId'))->update($data);
+        if($data)
+        {
+            return response(['code'=>'1','mess'=>'修改成功']);
+        }
+        else{
+            return response(['code'=>'2','mess'=>'修改失败']);
+        }
+    }
+    public function view(Request $request)
+    {
+        $page = $request->get('page');
+        $limit = $request->get('limit');
+        if ($key = $request->get('key')) {//搜索
+            $count = ShopGood::where('attrName','like',"$key%")->count();
+            $data = ShopGood::findAllById($key,($page-1)*$limit,$limit);
+        } else {//分页
+            $count = ShopGood::count();
+            $data = ShopGood::findAll(($page-1)*$limit,$limit);
+
+        }
+        return response(['code'=>0,'msg'=>'','count'=>$count,'data'=>$data]);
+    }
+
+    //  删除
+    public function del(Request $request)
+    {
+        $data = ShopGood::del($request->get('goodsId'));
+        if($data)
+        {
+            return response(['code'=>1,'message'=>'删除成功']);
+        }else{
+            return response(['code'=>2,'message'=>'删除失败']);
+        }
+    }
+    public function update($id)
+    {
+        return view('shop.update', ['user'=>ShopGood::find($id),'data' => ShopGoodsCats::two(0),'datas'=>ShopWarehouses::index()]);
     }
 }
