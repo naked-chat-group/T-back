@@ -42,4 +42,15 @@ class shop_good extends Model
     {
         return $this->select('goodsName','goodsCatId')->get();
     }
+    public function updflag($data)
+    {
+        if($data['flag'] == 0)
+        {
+            return $this->where('goodsId',$data['attrId'])->update(['isSpec'=>1]);
+        }
+        else
+        {
+            return $this->where('goodsId',$data['attrId'])->update(['isSpec'=>0]);
+        }
+    }
 }

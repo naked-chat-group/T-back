@@ -55,7 +55,7 @@ Route::post('CommodManagementUpdateShus', 'CommodController@updatesShus');//修�
 
 
 Route::any('ShopManagementSku', 'SkuController@index');//修改属性值
-Route::any('ShopManagementType', 'SkuController@type');//修改属性值
+Route::get('ShopManagementType', 'SkuController@type');//修改属性值
 
 
 //商品管理
@@ -68,8 +68,9 @@ Route::post('ShopManagementValue', 'ShopController@value');//文件上传
 Route::post('ShopManagementInputs', 'ShopController@inputs');//文件上传
 Route::get('ShopManagementView', 'ShopController@view');//文件上传
 Route::get('ShopManagementDel', 'ShopController@del');//文件上传
-Route::get('ShopManagementUpdate/{id}', 'ShopController@update');
+Route::any('ShopManagementUpdate/{id}', 'ShopController@update');
 Route::get('ShopManagementUpdates', 'ShopController@updates');
+Route::post('ShopManagementUpdateSpec', 'ShopController@spec');
 
 
 //权限管理

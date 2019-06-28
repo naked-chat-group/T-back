@@ -28,7 +28,6 @@
     <script src="../../framework/jquery-ui-1.10.4.min.js"></script>
     <script src="../../framework/jquery.mousewheel.min.js"></script>
     <script src="../../framework/jquery.mCustomScrollbar.min.js"></script>
-    <!-- 公共样式 结束 -->
 
     <style>
         .layui-form{
@@ -41,6 +40,7 @@
 <body>
 <div class="cBody">
     <form id="addForm" class="layui-form" action="javascript:;">
+        <input type="hidden" value="{{ $user->goodsId }}" name="goodsId">
         <div class="layui-form-item" id="type">
             <label class="layui-form-label">所属分类</label>
             <div class="layui-input-inline" id="1">
@@ -62,7 +62,6 @@
                 </select>
             </div>
         </div>
-        <input type="hidden" value="{{ $user->goodsId }}" name="goodsId">
         <hr class="layui-bg-green">
         <div class="layui-form-item">
             <label class="layui-form-label">基本信息</label>
@@ -77,7 +76,7 @@
                 <div class="layui-input-block">
                     <label class="layui-form-label">商品货号</label>
                     <div class="layui-inline">
-                        <input type="text" name="productNo" class="layui-input" value="{{ $user->productNo }}" lay-verify="required">
+                        <input type="text" name="productNo" class="layui-input" value="{{ $user->productNo}}" lay-verify="required">
                     </div>
                     <i class="iconfont icon-huaban bt"></i>
                 </div>
@@ -91,21 +90,21 @@
                 <div class="layui-input-block">
                     <label class="layui-form-label">商品描述</label>
                     <div class="layui-inline">
-                        <input type="text" class="layui-input" name="goodsDesc" value="{{ $user->goodsDesc }}" lay-verify="required">
+                        <input type="text" class="layui-input" value="{{ $user->goodsDesc }}" name="goodsDesc" lay-verify="required">
                     </div>
                     <i class="iconfont icon-huaban bt"></i>
                 </div>
                 <div class="layui-input-block">
                     <label class="layui-form-label">商品售价</label>
                     <div class="layui-inline" id="shop-price">
-                        <input type="text" name="marketPrice" class="layui-input" value="{{ $user->marketPrice }}" lay-verify="required">
+                        <input type="text" name="marketPrice" class="layui-input" lay-verify="required">
                     </div>
                     <i class="iconfont icon-huaban bt"></i>
                 </div>
                 <div class="layui-input-block">
                     <label class="layui-form-label">商品划线价</label>
                     <div class="layui-inline">
-                        <input type="text" name="shopPrice" class="layui-input" value="{{ $user->shopPrice }}" lay-verify="required">
+                        <input type="text" name="shopPrice" class="layui-input" lay-verify="required">
                     </div>
                     <i class="iconfont icon-huaban bt"></i>
                 </div>
@@ -120,7 +119,7 @@
                 <div class="layui-input-block">
                     <label class="layui-form-label">商品库存</label>
                     <div class="layui-inline" id="shop-ku">
-                        <input type="text" value="{{ $user->goodsStock }}" name="goodsStock" id="kucun" lay-verify="required" class="layui-input">
+                        <input type="text" value="" name="goodsStock" id="kucun" lay-verify="required" class="layui-input">
                     </div>
                     <i class="iconfont icon-huaban bt"></i>
                 </div>
@@ -171,6 +170,9 @@
                 </div>
             </div>
 
+            <div class="layui-form-item" id="hun">
+
+            </div>
             <hr class="layui-bg-green">
             <div class="layui-form-item">
                 <label class="layui-form-label">所属仓库</label>
@@ -192,190 +194,443 @@
                 </div>
             </div>
         </div>
-        <div>
-            <input type="hidden" id="skutu" name="specImg" value="">
-        </div>
+
     </form>
 </div>
 </body>
 {{--品牌分类--}}
 <script>
-    var catId = '';
-    layui.use(['form'], function() {
-        var form = layui.form;
-        var upload = layui.upload;
-        var layer = layui.layer;
-        {{--所属分类--}}
-        form.on('select(provid)', function(data){
+  var catId = '';
+  layui.use(['form'], function() {
+    var form = layui.form;
+    var upload = layui.upload;
+    var layer = layui.layer;
+      {{--所属分类--}}
+      form.on('select(provid)', function(data){
 
-            var that = $(this);
-            var id = that.parents('.layui-input-inline').attr('id');
-            $('#'+id).nextAll().remove();
-            alert(data.value)
-            ajax('ShopManagementTwo',{catId:data.value},'GET',function(data){
-                if(data.code == 1)
-                {
-                    str = constr(data.data,id+1);
-                    $('#type').append(str);
-                    $('#kaiqi').attr('checked',true);
-                    form.render('select');
-                }
-                else
-                {
-                    //	所属品牌
-                    var str = '';
-                    str += '<select name="brandId" class="select" lay-verify="required" lay-reqtext="请选择">' +
-                        '<option value="">请选择</option>';
-                    $.each(data.data,function (i,n) {
-                        str+='<option value="'+n.one.brandId+'">'+n.one.brandName+'</option>';
-                    })
-                    $.each(data.info,function (i,n) {
-                        catId +=
-                            '                                        <option value="'+n.attrId+'">'+n.attrName+'</option>\n'
-                    })
-                    str += '</select>';
-                    $('#brands').html(str);
-                    $('#kaiqi').attr('checked',true);
-                    form.render('select');
-                }
-            });
+        var that = $(this);
+        var id = that.parents('.layui-input-inline').attr('id');
+        $('#'+id).nextAll().remove();
+        ajax('/CommodManagementTwo',{catId:data.value},'post',function(data){
+          if(data.code == 1)
+          {
+            str = constr(data.data,id+1);
+            $('#type').append(str);
+            $('#kaiqi').attr('checked',true);
+            form.render('select');
+          }
+          else
+          {
+            //	所属品牌
+            var str = '';
+            str += '<select name="brandId" class="select" lay-verify="required" lay-reqtext="请选择">' +
+              '<option value="">请选择</option>';
+            $.each(data.data,function (i,n) {
+              str+='<option value="'+n.one.brandId+'">'+n.one.brandName+'</option>';
+            })
+            $.each(data.info,function (i,n) {
+              catId +=
+                '                                        <option value="'+n.attrId+'">'+n.attrName+'</option>\n'
+            })
+            str += '</select>';
+            $('#brands').html(str);
+            $('#kaiqi').attr('checked',true);
+            form.render('select');
+          }
         });
+      });
+  });
+
+  function constr(data,ids){
+    var str="";
+    str += "<div class='layui-input-inline' id='"+ids+"'>";
+    str+="<select name='brandId' id='' class='select' lay-verify='required' lay-filter='provid'>";
+    str+="<option value= ''>请选择</option>";
+    $.each( data, function(i,n){
+      str+="<option value='"+n.catId+"'>"+n.catName+"</option>";
     });
-
-    function constr(data,ids){
-        var str="";
-        str += "<div class='layui-input-inline' id='"+ids+"'>";
-        str+="<select name='brandId' id='' class='select' lay-verify='required' lay-filter='provid'>";
-        str+="<option value= ''>请选择</option>";
-        $.each( data, function(i,n){
-            str+="<option value='"+n.catId+"'>"+n.catName+"</option>";
-        });
-        str+="</select>";
-        str+="</div>";
-        return str;
-    }
-    function ajax(url,data,type,detal){
-        $.ajax({
-            url: url,
-            data: data,
-            type: type,
-            dataType: "json",
-            success: detal
-        })
-    }
+    str+="</select>";
+    str+="</div>";
+    return str;
+  }
+  function ajax(url,data,type,detal){
+    $.ajax({
+      url: url,
+      data: data,
+      type: type,
+      dataType: "json",
+      success: detal
+    })
+  }
 
 </script>
 {{--文件上传--}}
 <script>
-    var ca = ''//图片的路径
-    layui.use(['upload','form'],function () {
-        var $ = layui.jquery
-            ,upload = layui.upload;
-        var form = layui.form;
-        form.on('submit(demo1)', function(data){
-            ajax('ShopManagementUpdates',data.field,'post',function (data) {
-                if(data.code == 1)
-                {
-                    layer.msg(data.mess, {
-                        icon:6,
-                        offset: 'a',
-                        anim: 6,
-                        success:function () {
-                            document.getElementById("addForm").reset();
-                        }
-                    });
-                }
-                else
-                {
-                    layer.msg(data.mess, {
-                        icon:6,
-                        offset: 'a',
-                        anim: 6
-                    });
-                }
-            })
-            return false;
+  var ca = ''//图片的路径
+  layui.use(['upload','form'],function () {
+    var $ = layui.jquery
+      ,upload = layui.upload;
+    var form = layui.form;
+
+    var demoListView = $('#demoList')
+      ,uploadListIns = upload.render({
+      elem: '#testList'
+      ,url: '/ShopManagementUpload'
+      ,accept: 'file'
+      ,multiple: true
+      ,auto: false
+      ,bindAction: '#testListAction'
+      ,choose: function(obj){
+        // console.log(this)
+        var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+        //读取本地文件
+
+        obj.preview(function(index, file, result){
+
+          var tr = $(['<tr id="upload-'+ index +'">'
+            ,'<td>'+ file.name +'</td>'
+            ,'<td><img src="'+result+'" width="50px" height="50px" onmouseover="hoverOpenImg()"></td>'
+            ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+            ,'<td>等待上传</td>'
+            ,'<td>'
+            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+            ,'</td>'
+            ,'</tr>'].join(''));
+
+          //单个重传
+          tr.find('.demo-reload').on('click', function(){
+            obj.upload(index, file);
+          });
+
+          //删除
+          tr.find('.demo-delete').on('click', function(){
+            delete files[index]; //删除对应的文件
+            tr.remove();
+            uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+          });
+
+          demoListView.append(tr);
         });
+      }
+      ,done: function(res, index, upload){
+        if(res.code == 0){ //上传成功
+          var tr = demoListView.find('tr#upload-'+ index)
+            ,tds = tr.children();
+          tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
+          tds.eq(4).html(''); //清空操作
+          ca += res.src+',';
+          // console.log(ca);
+          $('#duotu').val(ca);
+          return delete this.files[index]; //删除文件队列已经上传成功的文件
+        }
+        this.error(index, upload);
+      }
+      ,error: function(index, upload){
+        var tr = demoListView.find('tr#upload-'+ index)
+          ,tds = tr.children();
+        tds.eq(3).html('<span style="color: #FF5722;">上传失败</span>');
+        tds.eq(4).find('.demo-reload').removeClass('layui-hide'); //显示重传
+      }
+    });
 
-        var demoListView = $('#demoList')
-            ,uploadListIns = upload.render({
-            elem: '#testList'
-            ,url: 'ShopManagementUpload'
-            ,accept: 'file'
-            ,multiple: true
-            ,auto: false
-            ,bindAction: '#testListAction'
-            ,choose: function(obj){
-                // console.log(this)
-                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-                //读取本地文件
 
-                obj.preview(function(index, file, result){
-
-                    var tr = $(['<tr id="upload-'+ index +'">'
-                        ,'<td>'+ file.name +'</td>'
-                        ,'<td><img src="'+result+'" width="50px" height="50px" onmouseover="hoverOpenImg()"></td>'
-                        ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
-                        ,'<td>等待上传</td>'
-                        ,'<td>'
-                        ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
-                        ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
-                        ,'</td>'
-                        ,'</tr>'].join(''));
-
-                    //单个重传
-                    tr.find('.demo-reload').on('click', function(){
-                        obj.upload(index, file);
-                    });
-
-                    //删除
-                    tr.find('.demo-delete').on('click', function(){
-                        delete files[index]; //删除对应的文件
-                        tr.remove();
-                        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-                    });
-
-                    demoListView.append(tr);
-                });
-            }
-            ,done: function(res, index, upload){
-                if(res.code == 0){ //上传成功
-                    var tr = demoListView.find('tr#upload-'+ index)
-                        ,tds = tr.children();
-                    tds.eq(3).html('<span style="color: #5FB878;">上传成功</span>');
-                    tds.eq(4).html(''); //清空操作
-                    ca += res.src+',';
-                    // console.log(ca);
-                    $('#duotu').val(ca);
-                    return delete this.files[index]; //删除文件队列已经上传成功的文件
-                }
-                this.error(index, upload);
-            }
-            ,error: function(index, upload){
-                var tr = demoListView.find('tr#upload-'+ index)
-                    ,tds = tr.children();
-                tds.eq(3).html('<span style="color: #FF5722;">上传失败</span>');
-                tds.eq(4).find('.demo-reload').removeClass('layui-hide'); //显示重传
-            }
-        });
-    })
-    function hoverOpenImg(){
-        var img_show = null; // tips提示
-        $('td img').hover(function(){
-            var kd=$(this).width();
-            kd1=kd*3;          //图片放大倍数
-            kd2=kd*3+30;       //图片放大倍数
-            var img = "<img class='img_msg' src='"+$(this).attr('src')+"' style='width:"+kd1+"px;' />";
-            img_show = layer.tips(img, this,{
-                tips:[2, 'rgba(41,41,41,.5)']
-                ,area: [kd2+'px']
-            });
-        },function(){
-            layer.close(img_show);
-        });
-        $('td img').attr('style','max-width:70px;display:block!important');
-    }
+  })
+  function hoverOpenImg(){
+    var img_show = null; // tips提示
+    $('td img').hover(function(){
+      var kd=$(this).width();
+      kd1=kd*3;          //图片放大倍数
+      kd2=kd*3+30;       //图片放大倍数
+      var img = "<img class='img_msg' src='"+$(this).attr('src')+"' style='width:"+kd1+"px;' />";
+      img_show = layer.tips(img, this,{
+        tips:[2, 'rgba(41,41,41,.5)']
+        ,area: [kd2+'px']
+      });
+    },function(){
+      layer.close(img_show);
+    });
+    $('td img').attr('style','max-width:70px;display:block!important');
+  }
 
 </script>
+{{--生成sku--}}
+<script>
+  var cas = '';
+  files = 1;
+  $(document).on('click','.del',function(){
+    $(this).parents('.cames').remove();//删除sku
+  })
+  layui.use(['form','upload'], function () {
+    var form = layui.form;
+    var $ = layui.jquery
+      ,upload = layui.upload;
+    //添加sku
+    $('#plshbtn').on('click',function(){
+      $('#came').append(slik(catId));//添加sku
 
+      form.render();
+    })
+    //添加属性
+    $('#plshbtns').on('click',function(){
+      if($(this).val() == 1)
+      {
+        $('#came').empty();
+        $('#plshbtns').attr('value',2);
+        str = slicks(catId);
+        $('#came').append(str);//添加sku
+      }
+
+
+      str =  '<div class="layui-input-block cass"><i class="iconfont icon-huaban bt"></i><div class="layui-inline">\n';
+
+      if(catId.length == 0)
+      {
+
+        str+= '<p>请选择分类</p>';
+      }
+      else
+      {
+        str+='<select name="spac[]" class="select" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
+          '                                        <option value="">请选择</option>\n'+
+          catId+
+          '                                    </select>\n';
+      }
+
+      str+='                                </div></div>\n';
+      $('.cass:last').after(str);//添加sku属性
+      form.render();
+    })
+    $(document).on('blur','.specStock',function () {
+      var sum = 0
+      $($('.specStock')).each(function (data,v) {
+        sum = sum+parseInt($(this).val());
+      })
+      $('#kucun').val(sum)
+    })//库存求和
+    $(document).on('blur','.price',function () {
+      var max = $('.price:eq(0)').val();
+      var min = $('.price:eq(0)').val();
+      $('.price').each(function(){
+        if($(this).val()>max)
+        {
+          max = $(this).val();
+        }
+        if($(this).val()<min)
+        {
+          min = $(this).val();
+        }
+      })
+      $('#shop-price').html('<div class="layui-input-inline" style="width: 100px;">\n' +
+        '        <input type="text" name="marketPrice_min" value="'+min+'" disabled placeholder="￥" autocomplete="off" class="layui-input">\n' +
+        '      </div>\n' +
+        '      <div class="layui-form-mid">-</div>\n' +
+        '      <div class="layui-input-inline" style="width: 100px;">\n' +
+        '        <input type="text" name="marketPrice_max" value="'+max+'" disabled placeholder="￥" autocomplete="off" class="layui-input">\n' +
+        '      </div>');
+    })//售价范围
+    form.on('radio(sku)', function (data) {
+      if(data.value == 1)
+      {
+        str = slik(catId);
+        $('#slik').after(str);//添加sku
+        form.render();
+        $('#shop-price input').attr("disabled",true);//修改商品中的价格
+        $('#shop-price input').attr("placeholder","已禁用");//修改商品中的价格
+        $('#shop-ku input').attr("disabled",true);//修改商品中的库存
+        $('#shop-ku input').attr("placeholder","已禁用");//修改商品中的库存
+        $("#plshbtn").attr("style","display:block;");
+        $("#plshbtns").attr("style","display:block;");
+
+      }
+      else
+      {
+        $('#came').remove();
+        $('#plshbtn').attr('style','display:none');
+        $('#plshbtns').attr('style','display:none');
+      }
+
+
+      form.render();
+
+    })
+
+
+
+    form.on('select(shuxing)', function(data){
+      var  that = $(this);
+      ajax('/ShopManagementValue',{val:data.value},'post',function (datas) {
+        if(datas.data != 1)
+        {
+          var str = '';
+
+          str+= '                                <div class="layui-inline">\n';
+          str+='<select name="warnStockval[]" class="select" lay-verify="required" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
+            '                                        <option value="">请选择</option>\n';
+          $(datas.data).each(function (i,n) {
+            str+='<option value="'+n+'">'+n+'</option>\n';
+          })
+          str+=        '                                    </select>\n';
+          str+='                                </div>\n'
+          that.parents('.cass').append(str);
+          form.render();
+        }
+
+      })
+    })
+    //监听提交
+    form.on('submit(demo1)', function(data){
+      console.log(data.field)
+      ajax('/ShopManagementInputs',data.field,'post',function (data) {
+        if(data.code == 1)
+        {
+          layer.msg("修改成功", {
+            icon:6,
+            offset: 'a',
+            anim: 6,
+            success:function () {
+              setTimeout(function () {
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index)
+                parent.location.reload();
+              },1000)
+              document.getElementById("addForm").reset();
+            }
+          });
+        }
+        else
+        {
+          layer.msg(data.mess, {
+            icon:5,
+            offset: 'a',
+            anim: 6
+          });
+        }
+      })
+      return false;
+    });
+
+  });
+  function slicks(catId){
+    var str =
+      '<div class="cames">'+
+      '<div class="layui-form-item ">\n' +
+      '                        <div class="layui-input-block">\n' +
+      '                            <label class="layui-form-label">商品名称</label>\n' +
+      '                            <div class="layui-inline">\n' +
+      '                                <input type="text" name="spacess[]" lay-verify="required" class="layui-input">\n' +
+      '                            </div>\n' +
+      '                            <div class="layui-inline"><button type="button" class="layui-btn layui-btn-primary layui-btn-sm del"><i class="layui-icon"></i></button></div>\n'+
+      '                            <i class="iconfont icon-huaban bt"></i>\n' +
+      '                        </div>\n' +
+      '                    </div>'+
+      '<div class="layui-form-item">\n' +
+      '                        <div class="layui-input-block">\n' +
+      '                            <label class="layui-form-label">商品售价</label>\n' +
+      '                            <div class="layui-inline">\n' +
+      '                                <input type="text" name="spaces[]" lay-verify="required" class="layui-input">\n' +
+      '                            </div>\n' +
+      '                            <i class="iconfont icon-huaban bt"></i>\n' +
+      '                        </div>\n' +
+      '                    </div>'+
+      '<div class="layui-form-item">\n' +
+      '                        <div class="layui-input-block">\n' +
+      '                            <label class="layui-form-label">商品划线价</label>\n' +
+      '                            <div class="layui-inline">\n' +
+      '                                <input type="text" name="space[]" lay-verify="required" value="" class="layui-input price">\n' +
+      '                            </div>\n' +
+      '                            <i class="iconfont icon-huaban bt"></i>\n' +
+      '                        </div>\n' +
+      '                    </div>'+
+      '<div class="layui-form-item">\n' +
+      '                        <div class="layui-input-block">\n' +
+      '                            <label class="layui-form-label">库存</label>\n' +
+      '                            <div class="layui-inline">\n' +
+      '                                <input type="text" lay-verify="required" name="specStock[]" value="" class="layui-input specStock">\n' +
+      '                            </div>\n' +
+      '                            <i class="iconfont icon-huaban bt"></i>\n' +
+      '                        </div>\n' +
+      '                    </div>'+
+      '<div class="layui-input-block">\n' +
+      '                                                    <label class="layui-form-label">商品图片</label>\n' +
+      '                                                    <i class="iconfont icon-huaban bt"></i>\n' +
+      '                                                    <div class="layui-inline">\n' +
+      '                                                        <button type="button" class="layui-btn test1" >上传图片</button>\n' +
+      '                                                        </div>\n' +
+      '                                                    </div>\n' +
+      '                                            </div>'+
+      '<div class="layui-form-item ">\n' +
+      '                            <div class="layui-input-block inputs">\n' +
+      '                                <label class="layui-form-label">商品属性</label>\n' +
+      '                                <div class="layui-inline cass"><i class="iconfont icon-huaban bt"></i><div class="layui-inline">\n';
+
+    if(catId.length == 0)
+    {
+
+      str+= '<p>请选择分类</p>';
+    }
+    else
+    {
+      str+='<select name="spac[]" class="select" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
+        '                                        <option value="">请选择</option>\n'+
+        catId+
+        '                                    </select>\n';
+    }
+
+    str+='                                </div></div>\n' +
+      '                            </div>\n' +
+      '                        </div>'+
+      '<hr>'+
+      '</div>';
+
+    return str;
+  }
+  function slik(catId) {
+    var str = '<div id="came">';
+    str += slicks(catId);
+    str+= '</div>';
+    return str;
+  }
+</script>
+<script>
+  $(document).on('click','.test1',function(){
+    that = $(this)
+    layui.use(['form','upload'], function () {
+      var form = layui.form;
+      var $ = layui.jquery
+        ,upload = layui.upload;
+      layer.open({
+        type: 1,
+        title: "添加图片",
+        shade: false,
+        skin: "myclass",
+        area: ["20%"],
+        content:
+          '            <div class="layui-input-block">\n' +
+          '                <br/>\n' +
+          '                <button type="button" class="layui-btn upload-btn-whole">\n' +
+          '                    <i class="layui-icon">&#xe67c;</i>上传图片\n' +
+          '                </button>\n' +
+          '            </div>\n',
+        success: function () {
+          form.render();
+          upload.render({
+            elem: '.upload-btn-whole', //绑定元素
+            url: '/ShopManagementUpload'
+            ,done: function (data) {
+              //上传完毕回调
+              that.parent('div').append('<input type="hidden" name="spacImg[]" value="'+data.src+'" disabled>');
+              // $('#skutu').val($('#skutu').val()+','+data.src);
+              layer.closeAll();
+            }
+            , error: function () {
+              //请求异常回调
+              layer.msg(data.message);
+            }
+          });
+        }
+      })
+    })
+  })
+</script>
 </html>
