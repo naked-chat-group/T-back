@@ -75,7 +75,7 @@
 								{
 									var html = "";
 									html +='<a href="ClassManagementAdd?parentId='+d.catId+'"><button type="button" class="layui-btn"><i class="layui-icon">&#xe608;</i> 添加二级分类</button></a>';
-									html +='<a href="CatsUpd?catId='+d.catId+'"><button type="button" class="layui-btn"><i class="layui-icon layui-icon-edit">&#xe642;</i></button></a>';
+									html +='<a href="CatsUpd?catId='+d.catId+'"><button type="button" class="layui-btn"><i class="layui-icon layui-icon-edit"></i></button></a>';
 									html +='<button type="button" class="layui-btn delete" id="'+d.catId+'"><i class="layui-icon layui-icon-delete" ></i></button>'
 									return html;
 								}}

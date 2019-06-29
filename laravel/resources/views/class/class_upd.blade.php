@@ -42,7 +42,7 @@
 <body>
 <div class="cBody">
 
-        <i class="layui-icon layui-icon-edit go">&#xe65c;</i>
+        <i class="layui-icon  go">&#xe65c;</i>
 
 
     <form id="addForm" class="layui-form" action="CatsUpd" method="post">

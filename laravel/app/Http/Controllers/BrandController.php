@@ -42,7 +42,9 @@ class BrandController extends BaseController
         if($request->isMethod('post'))
         {
             $post = $request->post();
+
             $brandName = Brands::BrandsSel($post['brandName'])->toarray();
+
             if(!$brandName)
             {
                 return  Brands::BrandsAdd($post);

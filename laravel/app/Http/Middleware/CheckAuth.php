@@ -50,6 +50,10 @@ class CheckAuth
             Redis::set('adminMenu1', $newMenu);
         }
         $route = $request->route()->getName();
+        $action = $request->route()->getActionName();
+        if (strstr($action, 'LoginController')) {
+            return $response;
+        }
         if (!in_array($route, unserialize($newAuth))) {
             dd('没有权限');
         }

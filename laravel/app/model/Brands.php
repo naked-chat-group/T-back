@@ -29,9 +29,11 @@ class Brands extends Model
             'dataFlag'=>1,
             'sortNo'=>$post['sortNo']
         ];
+
         DB::beginTransaction();
         try{
             $brandId = Brands::create($data)->brandId;
+
             $arrs =[];
             foreach ($cat_Id as $val)
             {
