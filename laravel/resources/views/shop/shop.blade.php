@@ -61,7 +61,7 @@
 		})
 	}
 
-	layui.use('table', function(){
+	layui.use(['table','form'], function(){
 		var table = layui.table,form = layui.form;
 		table.on('tool(user)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 			var data = obj.data //获得当前行数据
@@ -91,19 +91,20 @@
 					anim:3,
 					content: 'ShopManagementUpdate/'+obj.data.goodsId, //这里content是一个普通的String
 					success:function (layero, index) {
-						console.log(layero, index);
+
 					}
 				});
 			}else if(layEvent === 'load'){
-				layer.open({
-					type: 2,
-					skin: 'layui-layer-rim', //加上边框
-					area: ['1000px', '600px'], //
-					anim:3,
-					content: 'CommodManagementUpdateShu/'+obj.data.goodsId, //这里content是一个普通的String
-					success:function (layero, index) {
-					}
-				});
+				alert(1);
+				// layer.open({
+				// 	type: 2,
+				// 	skin: 'layui-layer-rim', //加上边框
+				// 	area: ['1000px', '600px'], //
+				// 	anim:3,
+				// 	content: 'CommodManagementUpdateShu/'+obj.data.goodsId, //这里content是一个普通的String
+				// 	success:function (layero, index) {
+				// 	}
+				// });
 			}
 		});
 		var $ = layui.$, active = {
@@ -139,22 +140,33 @@
 				,{field:'productNo', title:'商品货号'}
 				,{field:'goodsName', title:'商品名称'}
 				,{field:'isSpec', title:'是否有规格',templet:function (d) {
-						return '<input type="checkbox" name="isShow" attrid="'+d.isSpec+'" value="'+d.isSpec+'" lay-skin="switch" lay-text="yes|no" lay-filter="sexDemo" '+(d.isSpec == 1 ? 'checked':'')+'>';
+						return '<input type="checkbox" name="isShow" attrid="'+d.goodsId+'" value="'+d.isSpec+'" lay-skin="switch" lay-text="yes|no" lay-filter="sexDemo" '+(d.isSpec == 1 ? 'checked':'')+'>';
 
 					}}
-				// ,{field:'isShow', title:'是否显示', templet: function(d){
-				// 		return '<input type="checkbox" name="isShow" attrid="'+d.attrId+'" value="'+d.isShow+'" lay-skin="switch" lay-text="yes|no" lay-filter="sexDemo" '+(d.isShow == 1 ? 'checked':'')+'>';
-				// 	}}
-				// ,{field:'dataFlag', title:'有效状态',templet: function(d){
-				// 		return '<input type="checkbox" name="dataFlag" attrid="'+d.attrId+'" value="'+d.dataFlag+'" lay-filter="lockDemo" title="有效" '+(d.dataFlag == 1 ? 'checked':'')+'>';
-				// 	}}
 				,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
 			]]
 			,id: 'testReload'
 			,page: true
 			,height: 500
 		});
-
+		form.on('switch(sexDemo)', function(obj){
+			var that = $(this);
+			var val = $(this).val();
+			ajax('ShopManagementUpdateSpec',{attrId:$(this).attr('attrId'),flag:$(this).val()},'post',function (data) {
+				if(data.code == 1)
+				{
+					if(val == 1)
+					{
+						that.val(0);
+					}
+					else
+					{
+						that.val(1)
+					}
+					layer.msg('成功');
+				}
+			})
+		});
 
 
 	});

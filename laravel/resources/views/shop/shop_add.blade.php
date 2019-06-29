@@ -171,8 +171,11 @@
 					</div>
 				</div>
 
+                    <div class="layui-form-item" id="hun">
+
+                    </div>
                     <hr class="layui-bg-green">
-				<div class="layui-form-item">
+                    <div class="layui-form-item">
 					<label class="layui-form-label">所属仓库</label>
                     <div class="layui-block">
                         <div class="layui-inline">
@@ -192,9 +195,7 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <input type="hidden" id="skutu" name="specImg" value="">
-                </div>
+
             </form>
 		</div>
 	</body>
@@ -333,6 +334,8 @@
                     tds.eq(4).find('.demo-reload').removeClass('layui-hide'); //显示重传
                 }
             });
+
+
         })
         function hoverOpenImg(){
             var img_show = null; // tips提示
@@ -389,7 +392,7 @@
                 }
                 else
                 {
-                    str+='<select name="warnStockval[]" class="select" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
+                    str+='<select name="spac[]" class="select" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
                         '                                        <option value="">请选择</option>\n'+
                         catId+
                         '                                    </select>\n';
@@ -439,6 +442,7 @@
                         $('#shop-ku input').attr("placeholder","已禁用");//修改商品中的库存
                         $("#plshbtn").attr("style","display:block;");
                         $("#plshbtns").attr("style","display:block;");
+
                     }
                     else
                     {
@@ -447,48 +451,12 @@
                         $('#plshbtns').attr('style','display:none');
                     }
 
+
                 form.render();
 
             })
-            window.Add=function () {
-                nhn('.test1');
-            }
-            function nhn(id) {
-                var uploadInst = upload.render({
-                    elem: id
-                    ,url: 'ShopManagementUpload'
-                    ,choose: function(obj,index) {
-                        files  =this.files= obj.pushFile();
-                    }
 
-                    ,before: function(obj){
-                        files = obj.pushFile();
-                        //预读本地文件示例，不支持ie8
-                        obj.preview(function(index, file, result){
-                            $('#demo1').attr('src', result); //图片链接（base64）
-                        });
-                    }
-                    ,done: function(res,index,upload){
-                        //如果上传失败
-                        if(res.code > 0){
-                            return layer.msg('上传失败');
-                        }
-                        //上传成功
-                        alert(1)
-                        cas = res.src
-                        $('#skutu').val($('#skutu').val()+','+cas);
-                        delete files[index];
-                    }
-                    ,error: function(){
-                        //演示失败状态，并实现重传
-                        var demoText = $('#demoText');
-                        demoText.html('<span style="color: #ff5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-                        demoText.find('.demo-reload').on('click', function(){
-                            uploadInst.upload();
-                        });
-                    }
-                });
-            };
+
 
             form.on('select(shuxing)', function(data){
               var  that = $(this);
@@ -498,7 +466,7 @@
                           var str = '';
 
                           str+= '                                <div class="layui-inline">\n';
-                          str+='<select name="spac[]" class="select" lay-verify="required" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
+                          str+='<select name="warnStockval[]" class="select" lay-verify="required" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
                               '                                        <option value="">请选择</option>\n';
                           $(datas.data).each(function (i,n) {
                               str+='<option value="'+n+'">'+n+'</option>\n';
@@ -582,11 +550,8 @@
                 '<div class="layui-input-block">\n' +
                 '                                                    <label class="layui-form-label">商品图片</label>\n' +
                 '                                                    <i class="iconfont icon-huaban bt"></i>\n' +
-                '                                                    <div class="layui-upload">\n' +
+                '                                                    <div class="layui-inline">\n' +
                 '                                                        <button type="button" class="layui-btn test1" >上传图片</button>\n' +
-                '                                                        <div class="layui-upload-list">\n' +
-                '                                                            <img class="layui-upload-img" id="demo1">\n' +
-                '                                                            <p id="demoText"></p>\n' +
                 '                                                        </div>\n' +
                 '                                                    </div>\n' +
                 '                                            </div>'+
@@ -602,7 +567,7 @@
             }
             else
             {
-                str+='<select name="warnStockval[]" class="select" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
+                str+='<select name="spac[]" class="select" lay-verify="required" lay-filter="shuxing" lay-reqtext="请选择">\n' +
                     '                                        <option value="">请选择</option>\n'+
                     catId+
                     '                                    </select>\n';
@@ -623,4 +588,45 @@
             return str;
         }
 	</script>
+    <script>
+        $(document).on('click','.test1',function(){
+            that = $(this)
+            layui.use(['form','upload'], function () {
+                var form = layui.form;
+                var $ = layui.jquery
+                    ,upload = layui.upload;
+                layer.open({
+                    type: 1,
+                    title: "添加图片",
+                    shade: false,
+                    skin: "myclass",
+                    area: ["20%"],
+                    content:
+                        '            <div class="layui-input-block">\n' +
+                        '                <br/>\n' +
+                        '                <button type="button" class="layui-btn upload-btn-whole">\n' +
+                        '                    <i class="layui-icon">&#xe67c;</i>上传图片\n' +
+                        '                </button>\n' +
+                        '            </div>\n',
+                    success: function () {
+                        form.render();
+                        upload.render({
+                            elem: '.upload-btn-whole', //绑定元素
+                            url: 'ShopManagementUpload'
+                            ,done: function (data) {
+                                //上传完毕回调
+                                that.parent('div').append('<input type="hidden" name="spacImg[]" value="'+data.src+'" disabled>');
+                                // $('#skutu').val($('#skutu').val()+','+data.src);
+                                layer.closeAll();
+                            }
+                            , error: function () {
+                                //请求异常回调
+                                layer.msg(data.message);
+                            }
+                        });
+                    }
+                })
+            })
+        })
+    </script>
 </html>

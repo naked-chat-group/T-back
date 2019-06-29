@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 class ShopController extends BaseController
 {
-
     public function index()
     {
         return view('shop.shop');
@@ -24,6 +23,7 @@ class ShopController extends BaseController
 
     public function add()
     {
+
         return view('shop.shop_add',['data' => ShopGoodsCats::two(0),'datas'=>ShopWarehouses::index()]);
     }
     public function upload(Request $request)
@@ -70,6 +70,14 @@ class ShopController extends BaseController
     }
     public function inputs(Request $request)
     {
+        if(isset($request->goodsId))
+        {
+            $data = ShopGood::find($request->goodsId)->delete();
+            if(ShopGoodsSpeces::where('goodsId',$request->goodsId)->get()->toarray())
+            {
+                ShopGoodsSpeces::where('goodsId',$request->goodsId)->delete();
+            }
+        }
         $names = $request->post();
         $data = [
             'goodsSn'=> $request->post('goodsSn'),
@@ -94,43 +102,46 @@ class ShopController extends BaseController
             {
                 $data['marketPrice'] = $request->post('marketPrice');
             }
-
         $data = ShopGood::create($data);
 //        添加sku
-        $a = count($request->post('spacess'));
-        $b = count($request->post('spac'));
-        $c = $b/$a;
-        for ($i=0;$i<$a;$i++)
+        if(!empty($request->spacess))
         {
-            $info = [
-                'goodsId'=>$data->goodsId,
-                'goodsName'=>$request->post('spacess')[$i],
-                'marketPrice'=>$request->post('spaces')[$i],
-                'marketPrice'=>$request->post('spaces')[$i],
-                'specPrice'=>$request->post('space')[$i],
-                'specStock'=>$request->post('specStock')[$i],
+            $a = count($request->post('spacess'));
+            $b = count($request->post('spac'));
+            $c = $b/$a;
+            for ($i=0;$i<$a;$i++)
+            {
+                $info = [
+                    'goodsId'=>$data->goodsId,
+                    'goodsName'=>$request->post('spacess')[$i],
+                    'marketPrice'=>$request->post('spaces')[$i],
+                    'specPrice'=>$request->post('space')[$i],
+                    'specStock'=>$request->post('specStock')[$i],
+                    'specImg'=>$request->post('spacImg')[$i]
+                ];
+                $info['warnStockval'] = '';
+                $info['warnStock'] = '';
+                for ($j = 0; $j< $c;$j++)
+                {
+                    $info['warnStockval'] .= $names['warnStockval'][$j].',';
+                    $info['warnStock'] .= $names['spac'][$j].',';
+                    unset($names['warnStockval'][$j]);
+                    unset($names['spac'][$j]);
+                }
 
-            ];
-            $info['warnStockval'] = '';
-            $info['warnStock'] = '';
-            for ($j = 0; $j< $c;$j++)
-            {
-                $info['warnStockval'] .= $names['warnStockval'][$j].',';
-                $info['warnStock'] .= $names['spac'][$j].',';
-                unset($names['warnStockval'][$j]);
-                unset($names['spac'][$j]);
-            }
-            $names['warnStockval'] = array_values($names['warnStockval']);
-            $names['spac'] = array_values($names['spac']);
-            $price = ShopGoodsSpeces::create($info);
-            if($price)
-            {
-                return response(['code'=>1,'mess'=>'添加成功']);
-            }
-            else
-            {
-                return response(['code'=>2,'mess'=>'添加失败']);
-            }
+                $names['warnStockval'] = array_values($names['warnStockval']);
+                $names['spac'] = array_values($names['spac']);
+                $price = ShopGoodsSpeces::create($info);
+        }
+
+        }
+        if( $data||$price )
+        {
+            return response(['code'=>1,'mess'=>'添加成功']);
+        }
+        else
+        {
+            return response(['code'=>2,'mess'=>'添加失败']);
         }
     }
     public function updates(Request $request)
@@ -190,5 +201,14 @@ class ShopController extends BaseController
     public function update($id)
     {
         return view('shop.update', ['user'=>ShopGood::find($id),'data' => ShopGoodsCats::two(0),'datas'=>ShopWarehouses::index()]);
+    }
+    public function spec(Request $request)
+    {
+        $data = ShopGood::updflag($request->post());
+        if($data)
+        {
+            return response(['code'=>1]);
+        }
+        return response(['code'=>2]);
     }
 }
