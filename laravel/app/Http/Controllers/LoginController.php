@@ -23,7 +23,7 @@ class LoginController extends BaseController
         //echo $response->serverStatus;
         //确保验证状态是SERVER_SUCCESS，SDK中有容错机制，在网络出现异常的情况会返回通过
         if($response->result){
-
+            return 0;
         }
         else{
             /**token验证失败**/

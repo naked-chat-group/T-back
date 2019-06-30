@@ -22,10 +22,10 @@ class CheckAuth
 
         $response = $next($request);
 
-//        $user = Session::get('user');
+        $user = Session::get('uid');
 
-        $newMenu = Redis::get('adminMenu1');
-        $newAuth = Redis::get('adminAuth1');
+        $newMenu = Redis::get('adminMenu' . $user);
+        $newAuth = Redis::get('adminAuth' . $user);
         if (!$newMenu || !$newAuth) {
             $auth = RoleAuth::getAuth(1);
             $newAuth = [];
