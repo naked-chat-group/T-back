@@ -47,7 +47,7 @@ class LoginController extends BaseController
         }
         $request->session()->put('uid',$arr1['id']);
         $uid = $request->session()->get('uid');
-        Admin::where('id',$uid)->update(['last_time'=>date('Y-m-d H:i:s',time())]);
+        Admin::where('id',$uid)->update(['last_time'=>date('Y-m-d H:i:s')]);
         return 5;
     }
     //修改密码

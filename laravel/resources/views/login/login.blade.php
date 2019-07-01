@@ -78,8 +78,7 @@
 				data:{token:token},
                 headers: { 'X-CSRF-TOKEN' : '{{ csrf_token() }}' },
 				success:function(data) {
-                    $("#c1").remove();
-                    $(".dx_captcha_loading_overlay").css('display', 'none');
+                    myCaptcha.hide();
                     if (data == 3){
                         alert('token获取失败');
                         return;
@@ -131,6 +130,7 @@
         var form = layui.form;
         //监听提交
         form.on('submit(loginBut)', function (data) {
+            myCaptcha.reload();
             myCaptcha.show();
             return false;
         });

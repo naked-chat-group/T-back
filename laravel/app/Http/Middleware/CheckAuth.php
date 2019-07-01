@@ -23,7 +23,9 @@ class CheckAuth
         $response = $next($request);
 
         $user = Session::get('uid');
-
+        if (!$user) {
+            dd('请登录');
+        }
         $newMenu = Redis::get('adminMenu' . $user);
         $newAuth = Redis::get('adminAuth' . $user);
         if (!$newMenu || !$newAuth) {
@@ -51,7 +53,7 @@ class CheckAuth
         }
         $route = $request->route()->getName();
         $action = $request->route()->getActionName();
-        if (strstr($action, 'LoginController')) {
+        if (strstr($action, 'LoginController') || strstr($action, 'StaticController')) {
             return $response;
         }
         if (!in_array($route, unserialize($newAuth))) {
